@@ -48,7 +48,7 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-sm-9">
-                                <a class="btn btn-w-m btn-success" href="{{route('wechat_menu.create')}}">增加公众号账号</a>
+                                <a class="btn btn-w-m btn-success" href="{{route('official_account.create')}}">增加公众号账号</a>
                             </div>
                             <div class="col-sm-3 right">
                                 <div class="input-group">
@@ -79,8 +79,8 @@
                                             {{ $i->model }}
                                         </td>
                                         <td>
-                                            <a href="{{route('wechat_menu.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
-                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('wechat_menu.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
+                                            <a href="{{route('official_account.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
+                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('official_account.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
                                             </button>
                                         </td>
 

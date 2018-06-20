@@ -26,7 +26,7 @@
                     <a href="{{route('official_account.index')}}">浏览公众号信息</a>
                 </li>
                 <li>
-                    <strong>增加公众号信息</strong>
+                    <strong>修改公众号信息</strong>
                 </li>
             </ol>
         </div>
@@ -41,27 +41,28 @@
         <div class="row">
 
                 <div class=" text-center middle-box "style="margin-top: 20px; max-width: 600px">
-                    <form id="signupForm" method="post" action="{{route('official_account.store')}}" class="form-horizontal">
+                    <form id="signupForm" method="post" action="{{route('official_account.update',['id'=>$account->id])}}" class="form-horizontal">
                         {{ csrf_field() }}
+                        {{ method_field('put') }}
                     <div class="col-md-12">
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">公众号名称：</label>
                             <div class="col-sm-9">
-                                <input id="name" type="text" name="name"  class="form-control" placeholder="请输入文本">
+                                <input id="name" type="text" name="name"  class="form-control" placeholder="请输入文本" value="{{$account->name}}">
                                 <span class="help-block m-b-none">公众号名称</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Appid：</label>
                             <div class="col-sm-9">
-                                <input id="appid" type="text" name="appid"  class="form-control" placeholder="请输入Appid">
+                                <input id="appid" type="text" name="appid"  class="form-control" placeholder="请输入Appid" value="{{$account->appid}}">
                                 <span class="help-block m-b-none">Appid</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">AppSecret：</label>
                             <div class="col-sm-9">
-                                <input id="appsecret" type="text" name="appsecret"  class="form-control" placeholder="请输入Appscret">
+                                <input id="appsecret" type="text" name="appsecret"  class="form-control" placeholder="请输入Appscret" value="{{$account->appsecret}}">
                                 <span class="help-block m-b-none">AppSecret</span>
                             </div>
                         </div>
@@ -77,7 +78,7 @@
                                 <div class="checkbox-inline">
                                     @foreach($admin_list as $admin)
                                         <label style="width: 60px">
-                                            <input type="checkbox" name="admin_id[]" value="{{ $admin->id }}" required>{{ $admin->name }}
+                                            <input type="checkbox" name="admin_id[]" value="{{ $admin->id }}" @if($account->admin()->wherePivot('admin_id',$admin->id)->count()) checked @endif>{{ $admin->name }}
                                         </label>
                                     @endforeach
                                 </div>
