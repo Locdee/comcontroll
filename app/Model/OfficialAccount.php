@@ -11,7 +11,9 @@ class OfficialAccount extends Model
         'name',
         'appid',
         'appsecret',
-        'status'
+        'status',
+        'token',
+        'aes_key'
     ];
     public function admin(){
         return $this->belongsToMany(Admin::class,'admin_official_accounts');

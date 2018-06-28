@@ -67,8 +67,22 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-3 control-label">Token：</label>
+                            <div class="col-sm-9">
+                                <input id="token" type="text" name="token"  class="form-control" placeholder="请输入Token"  value="{{$account->token}}">
+                                <span class="help-block m-b-none">token</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">AesKey：</label>
+                            <div class="col-sm-9">
+                                <input id="aes_key" type="text" name="aes_key"  class="form-control" placeholder="请输入AesKey"   value="{{$account->aes_key}}">
+                                <span class="help-block m-b-none">AesKey</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
 
-                            <label class="col-sm-3 control-label">相关管理人员：</label>
+                            <label class="col-sm-3 control-label">相关编辑人员：</label>
 
                             <div class="col-sm-9 text-left">
                                 <label class="checkbox">

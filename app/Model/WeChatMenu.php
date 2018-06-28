@@ -11,6 +11,7 @@ class WeChatMenu extends Model
         'official_account_id',
         'name',
         'pid',
+        'order_id',
         'type',
         'status',
         'url', //view 对应的地址

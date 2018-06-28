@@ -179,6 +179,9 @@ return [
 
         //百度编辑器
         Overtrue\LaravelUEditor\UEditorServiceProvider::class,
+
+        //微信公众号
+        Overtrue\LaravelWechat\ServiceProvider::class,
     ],
 
     /*
@@ -228,6 +231,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        //微信公众号
+        'EasyWeChat' => Overtrue\LaravelWechat\Facade::class,
     ],
 
 ];

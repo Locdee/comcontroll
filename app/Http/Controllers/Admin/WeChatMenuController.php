@@ -15,6 +15,11 @@ class WeChatMenuController extends Controller
         if($account_id==0){
             $account_id = $account_list[0]['id'];
         }
+
         return view('admin.wechat_menu.table',compact('account_list','menu_list'));
+    }
+
+    private function tree($id){
+
     }
 }

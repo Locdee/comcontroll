@@ -19,6 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('123456',function(){
-    return session(['a'=>1]);
+Route::get('wechat/{id}','Home\WechatController@index');
+
+
+Route::get('app',function(){
+    dd(app());
 });
