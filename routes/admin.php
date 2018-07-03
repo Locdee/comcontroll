@@ -61,6 +61,9 @@ Route::resource('vote','VoteController');
 //投票队伍
 Route::resource('vote_team','VoteTeamController');
 
+//活动
+Route::resource('activity','ActivityController');
+
 //报名活动
 Route::resource('register_activity','RegitserActivityController');
 //报名用户

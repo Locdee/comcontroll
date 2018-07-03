@@ -187,7 +187,6 @@
 //                    alert(12);
                     $("input[name='admin_id[]']").prop("checked",true);
 
-
                 }else{
 //                    alert(34);
                     $("input[name='admin_id[]']").prop("checked",false);
