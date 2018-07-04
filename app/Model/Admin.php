@@ -46,4 +46,8 @@ class Admin extends Authenticatable
     public function role(){
         return $this->hasOne(Role::class,'id','role_id');
     }
+
+    public function official_account(){
+        return $this->belongsToMany(OfficialAccount::class,'admin_official_accounts');
+    }
 }

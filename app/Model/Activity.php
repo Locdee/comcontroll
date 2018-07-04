@@ -29,4 +29,6 @@ class Activity extends Model
     public function official(){
         return $this->hasOne(OfficialAccount::class,'id','official_account_id');
     }
+
+
 }

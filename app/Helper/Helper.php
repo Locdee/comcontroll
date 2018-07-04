@@ -76,3 +76,13 @@ if (!function_exists('rbac_determine')) {
         return App\Policies\AdminRbackPolicy::determine($model,$action);
     }
 }
+/*
+ * 获取编辑相关公众号信息
+ *
+ */
+if (!function_exists('admin_offical_list')) {
+    function admin_offical_list(){
+        return App\Policies\AdminRbackPolicy::admin_offical_list();
+    }
+}
+

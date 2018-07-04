@@ -2,9 +2,11 @@
 
 namespace App\Policies;
 
+use App\Model\OfficialAccount;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Auth;
+
 class AdminRbackPolicy
 {
     use HandlesAuthorization;
@@ -46,4 +48,21 @@ class AdminRbackPolicy
 
     }
 
+    //相关公众号
+    public static function admin_offical_list(){
+
+        $admin_session = Auth::guard('admin');
+
+        //超级管理员判断
+        $admin = $admin_session->user();
+        if(!$admin){
+            return array();
+        }
+        if($admin->role_id==1){
+            return  OfficialAccount::get();
+        }else{
+            $official_list = $admin->official_account()->get();
+//            dd($official_list);
+        }
+    }
 }
