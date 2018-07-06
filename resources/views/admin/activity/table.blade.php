@@ -47,12 +47,25 @@
                     </div>
                     <div class="ibox-content">
                         <div class="row">
-                            <div class="col-sm-9">
-                                <a class="btn btn-w-m btn-success" href="{{route('admin_feedback.create')}}">增加后台反馈</a>
+                            <div class="col-sm-6">
+                                <a class="btn btn-w-m btn-success" href="{{route('activity.create')}}">增加活动</a>
                             </div>
-                            <div class="col-sm-3 right">
+                            <div class="col-sm-6 right">
                                 <div class="input-group">
-                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
+                                    <div class="col-sm-6 right">
+                                        <input type="text" placeholder="请输入关键词" class="form-control">
+                                    </div>
+                                    <div class="col-sm-6 right">
+
+                                        <select name="official_account_id" class="form-control ">
+                                            <option value="">相关公众号</option>
+                                            @foreach($official_list as $official)
+                                                <option value="{{$official->id}}">{{$official->name}}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
+                                    <span class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
                                 </div>
                             </div>
@@ -63,33 +76,38 @@
                                     <tr>
 
                                         <th><input type="checkbox" class="i-checks" name="input[]">全选</th>
-                                        <th>反馈人员</th>
-                                        <th>反馈内容</th>
-                                        <th>反馈时间</th>
-                                        <th>问题状态</th>
-                                        {{--<th>操作</th>--}}
+                                        <th>专题名称</th>
+                                        <th>专题类型</th>
+                                        <th>相关公众号</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($list as $i)
+                                    @foreach($activity_list as $i)
                                     <tr>
                                         <td>
                                             <input type="checkbox"  class="i-checks" name="input[]">
                                         </td>
-                                        <td>{{ $i->admin->name }}</td>
-                                        <td>{!! $i->content !!}</td>
-                                        <td>{{ $i->created_at }}</td>
+                                        <td>{{ $i->activityname }}</td>
+                                        <td>
+                                            {{$i->is_register?:'报名'}}&nbsp;
+                                            {{$i->is_vote?:'投票'}}&nbsp;
+                                            {{$i->is_lottery?:'抽奖'}}&nbsp;
+                                        </td>
+
+                                        <td>{{ $i->official->name}}</td>
                                         <td>
                                             @if($i->status==1)
-                                                <button type="button" class="btn btn-w-m btn-warning" data-url="{{ route('admin_feedback.status',['id'=>$i->id])}} " >待处理</button>
-                                            @elseif($i->status==2)
-                                                <button type="button" class="btn btn-w-m btn-success">已处理</button>
-                                            @elseif($i->status==3)
-                                                <button type="button" class="btn btn-w-m btn-default">已忽略</button>
+                                                <button type="button" class="btn btn-w-m btn-success">进行中</button>
+                                            @else($i->status==2)
+                                                <button type="button" class="btn btn-w-m btn-success">已关闭</button>
                                             @endif
-                                            {{--<a href="{{route('admin_feedback.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>--}}
-                                            {{--<button class="btn btn-warning btn-delete " type="button" data-url="{{ route('admin_feedback.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>--}}
-                                            {{--</button>--}}
+                                        </td>
+                                        <td>
+                                            <a href="{{route('activity.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
+                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('activity.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
+                                            </button>
                                         </td>
 
                                     </tr>

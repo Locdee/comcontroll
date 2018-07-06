@@ -61,7 +61,7 @@ class AdminRbackPolicy
         if($admin->role_id==1){
             return  OfficialAccount::get();
         }else{
-            $official_list = $admin->official_account()->get();
+            return $admin->official_account()->get();
 //            dd($official_list);
         }
     }
