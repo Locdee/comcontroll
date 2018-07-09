@@ -15,6 +15,12 @@
     <link href="{{asset('admin/css/font-awesome.css?v=4.4.0')}}" rel="stylesheet">
     <link href="{{asset('admin/css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('admin/css/style.css?v=4.1.0')}}" rel="stylesheet">
+
+    {{--时间插件--}}
+    <link href="{{asset('admin/css/plugins/datapicker/datepicker3.css')}}" rel="stylesheet">
+
+    <link href="{{asset('admin/css/plugins/datapicker/datetimepicker.css')}}" rel="stylesheet">
+
 </head>
 
 <body class="gray-bg">
@@ -41,7 +47,7 @@
         <div class="row">
 
                 <div class=" text-center middle-box "style="margin-top: 20px">
-                    <form id="signupForm" method="post" action="{{route('menu.store')}}" class="form-horizontal">
+                    <form id="signupForm" method="post" action="{{route('activity.store')}}" class="form-horizontal">
                         {{ csrf_field() }}
                     <div class="col-md-12">
                         <div class="form-group" >
@@ -62,14 +68,44 @@
                                 </select>
                             </div>
                         </div>
-                        <label class="col-sm-3 control-label">复选框：</label>
+                        <label class="col-sm-3 control-label">活动类型：</label>
                         <div class="col-sm-9">
                             <label class="checkbox-inline">
                                 <input name="is_register" type="checkbox" value="1" id="is_register">信息采集(报名，征稿等)</label>
                             <label class="checkbox-inline">
-                                <input name="is_vote" type="checkbox" value="option2" id="is_vote">投票</label>
+                                <input name="is_vote" type="checkbox" value="1" id="is_vote">投票</label>
                             <label class="checkbox-inline">
-                                <input type="checkbox" value="option3" id="inlineCheckbox3">选项3</label>
+                                <input type="checkbox" value="option3" id="is_lottery">抽奖</label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" value="option3" id="is_questionnaire">答题</label>
+                        </div>
+                        <div class="register_part">
+                            <div class="form-group" id="data_5">
+                                <label class="col-sm-3 control-label">开始结束时间设置:</label>
+                                <div class="input-daterange input-group" id="datepicker">
+                                    <input type="text" class="input-sm form-control" id="date_timepicker_start" name="start" value="2014-11-11" />
+                                    <span class="input-group-addon">到</span>
+                                    <input type="text" class="input-sm form-control" id="date_timepicker_end" name="end" value="2014-11-17" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vote_part">
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">投票频率：</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" name="vote_times">
+                                        @foreach($official_list as $o)
+                                            <option value="{{$o->id}}">{{$o->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lottery_part">
+
+                        </div>
+                        <div class="questionnaire_part">
+
                         </div>
 
                         <div class="form-group">
@@ -101,6 +137,10 @@
     <script src="{{asset('admin/js/jquery.form.js')}}"></script>
     {{--弹出js--}}
     <script src="{{asset('admin/plugins/layer/layer.js')}}"></script>
+    <!-- Data picker -->
+    <script src="{{asset('admin/js/plugins/datapicker/bootstrap-datepicker.js')}}"></script>
+    <script src="{{asset('admin/js/plugins/datetimepicker/jquery.datetimepicker.full.js')}}"></script>
+
     <!-- jQuery Validation plugin javascript-->
     <script src="{{asset('admin/js/plugins/validate/jquery.validate.min.js')}}"></script>
     <script src="{{asset('admin/js/plugins/validate/messages_zh.min.js')}}"></script>
@@ -182,7 +222,32 @@
                     Actionsubmit(form,'POST','{{route("menu.index")}}');
                 }
             });
+            //时间选择
+//            $('#data_5 .input-daterange').datepicker({
+//                keyboardNavigation: false,
+//                forceParse: false,
+//                autoclose: true
+//            });
 
+            jQuery('#date_timepicker_start').datetimepicker({
+                format:'Y年m月d日 h:mm',
+                onShow:function( ct ){
+                    this.setOptions({
+                        maxDate:jQuery('#date_timepicker_end').val()?jQuery('#date_timepicker_end').val():false
+                    })
+                },
+                timepicker:false
+            });
+
+            jQuery('#date_timepicker_end').datetimepicker({
+                format:'Y年m月d日 h:mm',
+                onShow:function( ct ){
+                    this.setOptions({
+                        minDate:jQuery('#date_timepicker_start').val()?jQuery('#date_timepicker_start').val():false
+                    })
+                },
+                timepicker:false
+            });
         });
     </script>
 

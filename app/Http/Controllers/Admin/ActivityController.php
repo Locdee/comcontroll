@@ -25,7 +25,20 @@ class ActivityController extends Controller
     public function create(){
         $official_list = admin_offical_list();
         $status_arr=[1=>'进行中',2=>'已关闭'];
-        return view('admin.activity.create',compact('official_list','status_arr'));
+        //信息采集相关
+        $register_element_type_arr = array(
+            1=>'文字信息',
+            2=>'单张图片信息',
+            3=>'多张图片信息'
+        );
+        //投票相关
+        $vote_times_arr = array(
+            1=>'每天',
+            2=>'总共一次'
+        );
+        //抽奖相关
+        //答题相关
+        return view('admin.activity.create',compact('official_list','status_arr','register_element_type_arr','vote_times_arr'));
     }
 
     //编辑
