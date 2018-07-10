@@ -32,7 +32,7 @@
                     <a href="{{route('activity.index')}}">浏览</a>
                 </li>
                 <li>
-                    <strong>增加活动</strong>
+                    <strong>编辑活动</strong>
                 </li>
             </ol>
         </div>
@@ -47,13 +47,14 @@
         <div class="row">
 
                 <div class=" text-center larger-box "style="margin-top: 20px">
-                    <form id="signupForm" method="post" action="{{route('activity.store')}}" class="form-horizontal">
+                    <form id="signupForm" method="post" action="{{route('activity.update',['id'=>$activity->id])}}" class="form-horizontal">
                         {{ csrf_field() }}
+                        {{ method_field('put') }}
                     <div class="col-md-12">
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">活动名称：</label>
                             <div class="col-sm-9">
-                                <input id="name" type="text" name="activityname"  class="form-control" placeholder="请输入文本">
+                                <input id="name" type="text" name="activityname"  class="form-control" placeholder="请输入文本" value="{{$activity->activityname}}">
                                 <span class="help-block m-b-none">活动名称</span>
                             </div>
                         </div>
@@ -63,7 +64,7 @@
                             <div class="col-sm-9">
                                 <select class="form-control" name="official_account_id">
                                     @foreach($official_list as $o)
-                                        <option value="{{$o->id}}">{{$o->name}}</option>
+                                        <option value="{{$o->id}}" {{$activity->official_account_id==$o->id?'selected':''}}>{{$o->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -71,21 +72,21 @@
                         <label class="col-sm-3 control-label">活动类型：</label>
                         <div class="col-sm-9">
                             <label class="checkbox-inline">
-                                <input name="is_register" type="checkbox" value="1" id="is_register">信息采集(报名，征稿等)</label>
+                                <input name="is_register" type="checkbox" value="1" id="is_register" {{$activity->is_register==1?'checked':''}}>信息采集(报名，征稿等)</label>
                             <label class="checkbox-inline">
-                                <input name="is_vote" type="checkbox" value="1" id="is_vote">投票</label>
+                                <input name="is_vote" type="checkbox" value="1" id="is_vote" {{$activity->is_vote==1?'checked':''}}>投票</label>
                             <label class="checkbox-inline">
-                                <input name="is_lottery" type="checkbox" value="1" id="is_lottery">抽奖</label>
+                                <input name="is_lottery" type="checkbox" value="1" id="is_lottery" {{$activity->is_lottery==1?'checked':''}}>抽奖</label>
                             <label class="checkbox-inline">
-                                <input name="is_questionnaire" type="checkbox" value="1" id="is_questionnaire">答题</label>
+                                <input name="is_questionnaire" type="checkbox" value="1" id="is_questionnaire" {{$activity->is_questionnaire==1?'checked':''}}>答题</label>
                         </div>
                         <div class="register_part">
                             <div class="form-group" id="data_5">
                                 <label class="col-sm-3 control-label">信息采集时间段:</label>
                                 <div class="input-daterange input-group" id="">
-                                    <input type="text" class="input-sm form-control"name="register_start_time" value="{{ date('Y-m-d') }}" />
+                                    <input type="text" class="input-sm form-control"name="register_start_time" value="{{ date('Y-m-d',$activity->register_start_time) }}" />
                                     <span class="input-group-addon">到</span>
-                                    <input type="text" class="input-sm form-control" name="register_end_time" value="{{ date('Y-m-d') }}" />
+                                    <input type="text" class="input-sm form-control" name="register_end_time" value="{{ date('Y-m-d',$activity->register_end_time) }}" />
                                 </div>
                             </div>
                             <div>
@@ -94,27 +95,29 @@
                                 </button>
                             </div>
                             <div id="element_list" style="background-color: #7fe3e9">
-                                <div class="element">
-                                    <div class="form-group" >
-                                        <label class="col-sm-3 control-label">要素名称：</label>
-                                        <div class="col-sm-3">
-                                            <input id="name" type="text" name="element_name[]"  class="form-control" placeholder="请输入文本">
-                                            <span class="help-block m-b-none">需要采集的要素名称</span>
+                                @foreach($activity->register_content as $element)
+                                    <div class="element">
+                                        <div class="form-group" >
+                                            <label class="col-sm-3 control-label">要素名称：</label>
+                                            <div class="col-sm-3">
+                                                <input id="name" type="text" name="element_name[]"  class="form-control" placeholder="请输入文本" value="{{$element->name}}">
+                                                <span class="help-block m-b-none">需要采集的要素名称</span>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group" >
-                                        <label class="col-sm-3 control-label">类型：</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control" name="element_type[]">
-                                                @foreach($register_element_type_arr as $key=>$i)
-                                                    <option value="{{$key}}">{{$i}}</option>
-                                                @endforeach
-                                            </select>
+                                        <div class="form-group" >
+                                            <label class="col-sm-3 control-label">类型：</label>
+                                            <div class="col-sm-3">
+                                                <select class="form-control" name="element_type[]">
+                                                    @foreach($register_element_type_arr as $key=>$i)
+                                                        <option value="{{$key}}" {{ $element->type==$key?'selected':'' }}>{{$i}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
+                                        <button type="button" class="btn btn-w-m btn-warning element_remove"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                                     </div>
-                                    <button type="button" class="btn btn-w-m btn-warning element_remove"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                                </div>
+                                @endforeach
                             </div>
 
                         </div>
@@ -124,7 +127,7 @@
                                 <div class="col-sm-9">
                                     <select class="form-control" name="vote_times">
                                         @foreach($vote_times_arr as $key=>$i)
-                                            <option value="{{$key}}">{{$i}}</option>
+                                            <option value="{{$key}}" {{$activity->vote_times==$key?'selected':''}}>{{$i}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -132,9 +135,9 @@
                             <div class="form-group" id="">
                                 <label class="col-sm-3 control-label">投票时间段:</label>
                                 <div class="input-daterange input-group" id="">
-                                    <input type="text" class="input-sm form-control" name="vote_start_time" value="{{ date('Y-m-d') }}" />
+                                    <input type="text" class="input-sm form-control" name="vote_start_time" value="{{ date('Y-m-d',$activity->vote_start_time) }}" />
                                     <span class="input-group-addon">到</span>
-                                    <input type="text" class="input-sm form-control" name="vote_end_time" value="{{ date('Y-m-d') }}" />
+                                    <input type="text" class="input-sm form-control" name="vote_end_time" value="{{ date('Y-m-d',$activity->vote_end_time) }}" />
                                 </div>
                             </div>
                             <div class="form-group" >
@@ -157,9 +160,9 @@
                             <div class="form-group" id="">
                                 <label class="col-sm-3 control-label">抽奖时间段:</label>
                                 <div class="input-daterange input-group" id="">
-                                    <input type="text" class="input-sm form-control" name="lottery_start_time" value="{{ date('Y-m-d') }}" />
+                                    <input type="text" class="input-sm form-control" name="lottery_start_time" value="{{ date('Y-m-d',$activity->lottery_start_time) }}" />
                                     <span class="input-group-addon">到</span>
-                                    <input type="text" class="input-sm form-control" name="lottery_end_time" value="{{ date('Y-m-d') }}" />
+                                    <input type="text" class="input-sm form-control" name="lottery_end_time" value="{{ date('Y-m-d',$activity->lottery_end_time) }}" />
                                 </div>
                             </div>
 
@@ -168,9 +171,9 @@
                             <div class="form-group" id="">
                                 <label class="col-sm-3 control-label">答题时间段:</label>
                                 <div class="input-daterange input-group" id="">
-                                    <input type="text" class="input-sm form-control"  name="questionnaire_start_time" value="{{ date('Y-m-d') }}" />
+                                    <input type="text" class="input-sm form-control"  name="questionnaire_start_time" value="{{ date('Y-m-d',$activity->questionnaire_start_time) }}" />
                                     <span class="input-group-addon">到</span>
-                                    <input type="text" class="input-sm form-control"  name="questionnaire_end_time" value="{{ date('Y-m-d') }}" />
+                                    <input type="text" class="input-sm form-control"  name="questionnaire_end_time" value="{{ date('Y-m-d',$activity->questionnaire_end_time) }}" />
                                 </div>
                             </div>
                         </div>
@@ -180,7 +183,7 @@
                             <div class="col-sm-9">
                                 @foreach($status_arr as $k=>$status)
                                 <label class="checkbox-inline">
-                                    <input type="radio" name="status" value="{{ $k }}" required>{{ $status}}
+                                    <input type="radio" name="status" value="{{ $k }}" required {{$activity->status==$k?'checked':''}}>{{ $status}}
                                 </label>
                                 @endforeach
                             </div>
@@ -282,17 +285,17 @@
                     model: "required"
                 },
                 messages: {
-                    name: icon + "请输入活动名称",
+                    name: icon + "请输入节点名称",
                     model: icon + "请输入模型名"
                 },
                 submitHandler:function(form){
                     Actionsubmit(form,'POST','{{route("activity.index")}}');
                 }
             });
-            $('.register_part').hide();
-            $('.vote_part').hide();
-            $('.lottery_part').hide();
-            $('.questionnaire_part').hide();
+            $('input[name=is_register]').is(':checked')?$('.register_part').show():$('.register_part').hide();
+            $('input[name=is_vote]').is(':checked')?$('.vote_part').show():$('.vote_part').hide();
+            $('input[name=is_lottery]').is(':checked')?$('.lottery_part').show():$('.lottery_part').hide();
+            $('input[name=is_questionnaire]').is(':checked')?$('.questionnaire_part').show():$('.questionnaire_part').hide();
 
             $('input[name=is_register]').click(function(){
                 if($(this).is(':checked')){

@@ -18,11 +18,16 @@ class Activity extends Model
         'vote_start_time',
         'vote_end_time',
         'vote_rule',
+
         'is_lottery',
         'lottery_start_time',
         'lottery_end_time',
         'lottery_rule',
+
         'is_questionnaire',
+        'questionnaire_start_time',
+        'questionnaire_end_time',
+
         'status'
     ];
 

@@ -91,9 +91,19 @@
                                         </td>
                                         <td>{{ $i->activityname }}</td>
                                         <td>
-                                            {{$i->is_register?:'报名'}}&nbsp;
-                                            {{$i->is_vote?:'投票'}}&nbsp;
-                                            {{$i->is_lottery?:'抽奖'}}&nbsp;
+                                            @if($i->is_register==1)
+                                                <button type="button" class="btn  btn-primary">信息采集</button>&nbsp;
+                                            @endif
+                                            @if($i->is_vote==1)
+                                                <button type="button" class="btn  btn-success">投票</button>&nbsp;
+                                            @endif
+                                                @if($i->is_lottery==1)
+                                                    <button type="button" class="btn btn-info">抽奖</button>&nbsp;
+                                                @endif
+
+                                                @if($i->is_questionnaire==1)
+                                                    <button type="button" class="btn btn-primary">答题</button>&nbsp;
+                                                @endif
                                         </td>
 
                                         <td>{{ $i->official->name}}</td>
