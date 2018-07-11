@@ -29,7 +29,8 @@ class ActivityController extends Controller
         $register_element_type_arr = array(
             1=>'文字信息',
             2=>'单张图片信息',
-            3=>'多张图片信息'
+            3=>'多张图片信息',
+            4=>'图文信息'
         );
         //投票相关
         $vote_times_arr = array(
@@ -49,7 +50,8 @@ class ActivityController extends Controller
         $register_element_type_arr = array(
             1=>'文字信息',
             2=>'单张图片信息',
-            3=>'多张图片信息'
+            3=>'多张图片信息',
+            4=>'图文信息'
         );
         //投票相关
         $vote_times_arr = array(
@@ -61,6 +63,8 @@ class ActivityController extends Controller
             abort(404,'该活动不存在或已经被删除');
         }
         $activity->register_content=\GuzzleHttp\json_decode($activity->register_content);
+        $activity->vote_rule = \GuzzleHttp\json_decode($activity->vote_rule);
+//        dd($activity);
         return view('admin.activity.edit',compact('activity','official_list','status_arr','register_element_type_arr','vote_times_arr'));
     }
 
@@ -96,6 +100,7 @@ class ActivityController extends Controller
         if($data['is_vote']){
             $rule_arr = array(
                 'vote_times'=>$request->get('vote_times'),
+                'vote_person_times'=>$request->get('vote_person_times'),
                 'vote_repeat_times'=>$request->get('vote_repeat_times')
             );
             $data['vote_rule']=json_encode($rule_arr, JSON_UNESCAPED_UNICODE);
@@ -141,6 +146,7 @@ class ActivityController extends Controller
         if($data['is_vote']){
             $rule_arr = array(
                 'vote_times'=>$request->get('vote_times'),
+                'vote_person_times'=>$request->get('vote_person_times'),
                 'vote_repeat_times'=>$request->get('vote_repeat_times')
             );
             $data['vote_rule']=json_encode($rule_arr, JSON_UNESCAPED_UNICODE);

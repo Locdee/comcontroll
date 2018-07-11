@@ -143,14 +143,14 @@
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">每人投票次数：</label>
                                 <div class="col-sm-3">
-                                    <input id="vote_times" type="number" name="vote_times" min="1"  class="form-control" placeholder="请输入文本">
+                                    <input id="vote_times" type="number" name="vote_person_times" min="1"  class="form-control" placeholder="请输入文本" value="{{$activity->vote_rule->vote_person_times}}">
                                     <span class="help-block m-b-none">个人每天或总的投票次数</span>
                                 </div>
                             </div>
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">候选人重复投票次数：</label>
                                 <div class="col-sm-3">
-                                    <input id="vote_repeat_times" type="number" name="vote_repeat_times" min="1"  class="form-control" placeholder="请输入数字">
+                                    <input id="vote_repeat_times" type="number" name="vote_repeat_times" min="1"  class="form-control" placeholder="请输入数字"  value="{{$activity->vote_rule->vote_repeat_times}}">
                                     <span class="help-block m-b-none">个人每天或总的对同一候选人的投票次数</span>
                                 </div>
                             </div>

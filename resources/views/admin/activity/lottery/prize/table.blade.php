@@ -48,7 +48,7 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-sm-6">
-                                <a class="btn btn-w-m btn-success" href="{{route('activity.create')}}">增加活动</a>
+                                <a class="btn btn-w-m btn-success" href="{{route('prize.create',['activity_id'=>$ac_id])}}">增加奖品</a>
                             </div>
                             <div class="col-sm-6 right">
                                 <div class="input-group">
@@ -57,10 +57,10 @@
                                     </div>
                                     <div class="col-sm-6 right">
 
-                                        <select name="official_account_id" class="form-control ">
-                                            <option value="">相关公众号</option>
-                                            @foreach($official_list as $official)
-                                                <option value="{{$official->id}}">{{$official->name}}</option>
+                                        <select name="activity_id" class="form-control ">
+                                            <option value="">相关活动</option>
+                                            @foreach($activity_list as $a)
+                                                <option value="{{$a->id}}">{{$a->activityname}}</option>
                                             @endforeach
                                         </select>
 
@@ -76,86 +76,39 @@
                                     <tr>
 
                                         <th><input type="checkbox" class="i-checks" name="input[]">全选</th>
-                                        <th>专题名称</th>
-                                        <th>专题类型</th>
-                                        <th>相关公众号</th>
+                                        <th>奖品</th>
+                                        <th>剩余数量</th>
+                                        <th>权重</th>
+                                        <th>相关活动</th>
                                         <th>状态</th>
-                                        <th>查看</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($activity_list as $i)
+                                    @foreach($prize_list as $i)
                                     <tr>
                                         <td>
                                             <input type="checkbox"  class="i-checks" name="input[]">
                                         </td>
-                                        <td>{{ $i->activityname }}</td>
+                                        <td>{{ $i->prizename }}</td>
                                         <td>
-                                            @if($i->is_register==1)
-                                                <button type="button" class="btn  btn-primary">信息采集</button>&nbsp;
-                                            @endif
-                                            @if($i->is_vote==1)
-                                                <button type="button" class="btn  btn-success">投票</button>&nbsp;
-                                            @endif
-                                                @if($i->is_lottery==1)
-                                                    <button type="button" class="btn btn-info">抽奖</button>&nbsp;
-                                                @endif
-
-                                                @if($i->is_questionnaire==1)
-                                                    <button type="button" class="btn btn-primary">答题</button>&nbsp;
-                                                @endif
+                                            {{ $i->count }}
                                         </td>
-
-                                        <td>{{ $i->official->name}}</td>
+                                        <td>
+                                            {{ $i->weight }}
+                                        </td>
+                                        <td>{{ $i->activity->activityname}}</td>
                                         <td>
                                             @if($i->status==1)
-                                                <button type="button" class="btn btn-w-m btn-success btn-status">进行中</button>
+                                                <button type="button" class="btn btn-w-m btn-success btn-status">正常</button>
                                             @else($i->status==2)
-                                                <button type="button" class="btn btn-w-m btn-success btn-status">已关闭</button>
+                                                <button type="button" class="btn btn-w-m btn-success btn-status">已下架</button>
                                             @endif
                                         </td>
+
                                         <td>
-                                            <div class="btn-group">
-                                                <button data-toggle="dropdown" class="btn btn-warning dropdown-toggle" aria-expanded="false">查看 <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    @if($i->is_register==1)
-                                                    <li>
-                                                        <a href="buttons.html#">信息采集列表</a>
-                                                    </li>
-                                                        <li class="divider"></li>
-                                                    @endif
-
-                                                    @if($i->is_vote==1)
-                                                        <li>
-                                                            <a href="buttons.html#">投票记录</a>
-                                                        </li>
-                                                        <li class="divider"></li>
-                                                    @endif
-
-                                                    @if($i->is_lottery==1)
-                                                        <li><a href="{{route('prize.index',['activity_id'=>$i->id])}}">相关奖品</a>
-                                                        </li>
-                                                        <li><a href="{{route('lottery_log.index',['activity_id'=>$i->id])}}">抽奖记录</a>
-                                                        </li>
-                                                            <li class="divider"></li>
-                                                    @endif
-
-                                                    @if($i->is_questionnaire==1)
-                                                        <li><a href="buttons.html#">相关题目</a>
-                                                        </li>
-                                                        <li><a href="buttons.html#">答题记录</a>
-                                                        </li>
-                                                            <li class="divider"></li>
-                                                    @endif
-
-                                                </ul>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="{{route('activity.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
-                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('activity.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
+                                            <a href="{{route('prize.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
+                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('prize.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
                                             </button>
                                         </td>
 

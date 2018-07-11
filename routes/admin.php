@@ -64,6 +64,16 @@ Route::resource('vote_team','VoteTeamController');
 //活动
 Route::resource('activity','ActivityController');
 
+//相关奖品
+Route::resource('prize','PrizeController');
+//中奖记录
+Route::resource('lottery_log','LotteryLogController');
+
+//相关题目
+Route::resource('question','QuestionController');
+//答题记录
+Route::resource('answer_log','AnswerLogController');
+
 //报名活动
 Route::resource('register_activity','RegitserActivityController');
 //报名用户

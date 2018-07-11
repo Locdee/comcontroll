@@ -140,7 +140,7 @@
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">每人投票次数：</label>
                                 <div class="col-sm-3">
-                                    <input id="vote_times" type="number" name="vote_times" min="1"  class="form-control" placeholder="请输入文本">
+                                    <input id="vote_times" type="number" name="vote_person_times" min="1"  class="form-control" placeholder="请输入文本">
                                     <span class="help-block m-b-none">个人每天或总的投票次数</span>
                                 </div>
                             </div>
