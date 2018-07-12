@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Activity;
 use App\Model\Prize;
+use App\Model\LotteryLog;
 class PrizeController extends Controller
 {
     //
@@ -87,11 +88,14 @@ class PrizeController extends Controller
     }
 
     public function destroy($id){
-
-        if(Prize::destroy($id)){
-            return ajaxResponse("删除成功",1);
+        if(LotteryLog::where('prize_id',$id)->count()>0){
+            return ajaxResponse("该奖品已经有人中奖，无法删除");
         }else{
-            return ajaxResponse("删除失败");
+            if(Prize::destroy($id)){
+                return ajaxResponse("删除成功",1);
+            }else{
+                return ajaxResponse("删除失败");
+            }
         }
     }
 

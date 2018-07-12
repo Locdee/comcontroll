@@ -12,6 +12,7 @@ class Prize extends Model
         'weight',
         'activity_id',
         'count',
+        'web_index',//前端页面标识
         'status'
     ];
 

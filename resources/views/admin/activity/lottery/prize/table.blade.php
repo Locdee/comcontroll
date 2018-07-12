@@ -17,6 +17,7 @@
     <link href="{{asset('admin/css/plugins/iCheck/custom.css')}}" rel="stylesheet">
     <link href="{{asset('admin/css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('admin/css/style.css?v=4.1.0')}}" rel="stylesheet">
+    <link href="{{asset('admin/css/plugins/chosen/chosen.css')}}" rel="stylesheet">
 
 </head>
 
@@ -57,7 +58,7 @@
                                     </div>
                                     <div class="col-sm-6 right">
 
-                                        <select name="activity_id" class="form-control ">
+                                        <select name="activity_id" data-placeholder="选择相关活动..." class="chosen-select" style="width: 100%" tabindex="2">
                                             <option value="">相关活动</option>
                                             @foreach($activity_list as $a)
                                                 <option value="{{$a->id}}" {{ $ac_id==$a->id?'selected':'' }}>{{$a->activityname}}</option>
@@ -129,7 +130,8 @@
     <script src="{{asset('admin/js/jquery.min.js?v=2.1.4')}}"></script>
     <script src="{{asset('admin/js/bootstrap.min.js?v=3.3.6')}}"></script>
 
-
+    <!-- Chosen -->
+    <script src="{{asset('admin/js/plugins/chosen/chosen.jquery.js')}}"></script>
 
     <!-- Peity -->
     <script src="{{asset('admin/js/plugins/peity/jquery.peity.min.js')}}"></script>
@@ -158,15 +160,21 @@
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green',
             });
+            //下拉选择
+            $('.chosen-select').chosen({
+                no_results_text:'没有相关活动',//搜索无结果时显示的提示
+                search_contains:true,   //关键字模糊搜索，设置为false，则只从开头开始匹配
+            });
+
             //删除弹窗事件
             $('.btn-delete').click(function(){
                 var url = $(this).data('url');
-                layer.confirm('确认已经处理了吗？', {
+                layer.confirm('确认删除该奖品吗？', {
                     title:'提示框',
                     btn: ['确定', '取消'], //可以无限个按钮
                     yes:function(){
                         $.ajax({
-                            type:'PUT',
+                            type:'DELETE',
                             dataType:'json',
                             url:url,
                             success:function(res){
