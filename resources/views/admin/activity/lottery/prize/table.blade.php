@@ -60,7 +60,7 @@
                                         <select name="activity_id" class="form-control ">
                                             <option value="">相关活动</option>
                                             @foreach($activity_list as $a)
-                                                <option value="{{$a->id}}">{{$a->activityname}}</option>
+                                                <option value="{{$a->id}}" {{ $ac_id==$a->id?'selected':'' }}>{{$a->activityname}}</option>
                                             @endforeach
                                         </select>
 
@@ -107,7 +107,7 @@
                                         </td>
 
                                         <td>
-                                            <a href="{{route('prize.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
+                                            <a href="{{route('prize.edit',['id'=>$i->id,'activity_id'=>$ac_id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
                                             <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('prize.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
                                             </button>
                                         </td>
@@ -159,7 +159,7 @@
                 radioClass: 'iradio_square-green',
             });
             //删除弹窗事件
-            $('.btn-status').click(function(){
+            $('.btn-delete').click(function(){
                 var url = $(this).data('url');
                 layer.confirm('确认已经处理了吗？', {
                     title:'提示框',
