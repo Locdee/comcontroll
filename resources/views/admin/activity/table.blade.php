@@ -122,7 +122,7 @@
                                                 <ul class="dropdown-menu">
                                                     @if($i->is_register==1)
                                                     <li>
-                                                        <a href="buttons.html#">信息采集列表</a>
+                                                        <a href="{{route('register_activity.index',['activity_id'=>$i->id])}}">信息采集列表</a>
                                                     </li>
                                                         <li class="divider"></li>
                                                     @endif

@@ -75,7 +75,7 @@ Route::resource('question','QuestionController');
 Route::resource('answer_log','AnswerLogController');
 
 //报名活动
-Route::resource('register_activity','RegitserActivityController');
+Route::resource('register_activity','ActivityRegisterController');
 //报名用户
 Route::resource('register_user','RegisterActivityUserController');
 //后台反馈

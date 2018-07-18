@@ -83,6 +83,13 @@ class ActivityController extends Controller
 
         $data['questionnaire_start_time']=strtotime($data['questionnaire_start_time']);
         $data['questionnaire_end_time']=strtotime($data['questionnaire_end_time']);
+        //提交名称
+        $r_name_arr = array(
+            1=>'text',
+            2=>'single_image',
+            3=>'images',
+            4=>'reach_text'
+        );
 
         if($data['is_register']==1){
             $content_arr = array();
@@ -92,6 +99,7 @@ class ActivityController extends Controller
                 $content = array();
                 $content['name']=$i;
                 $content['type']=$element_type[$k];
+                $content['r_name']=$r_name_arr[$element_type[$k]].'_'.$k;
                 $content_arr[]=$content;
             }
             $data['register_content'] = json_encode($content_arr,JSON_UNESCAPED_UNICODE);
@@ -130,6 +138,14 @@ class ActivityController extends Controller
         $data['questionnaire_start_time']=strtotime($data['questionnaire_start_time']);
         $data['questionnaire_end_time']=strtotime($data['questionnaire_end_time']);
 
+        //提交名称
+        $r_name_arr = array(
+            1=>'text',
+            2=>'single_image',
+            3=>'images',
+            4=>'reach_text'
+        );
+
         if($data['is_register']==1){
             $content_arr = array();
             $element_name = $request->get('element_name');
@@ -138,6 +154,9 @@ class ActivityController extends Controller
                 $content = array();
                 $content['name']=$i;
                 $content['type']=$element_type[$k];
+
+                $content['r_name']=$r_name_arr[$element_type[$k]].'_'.$k;
+
                 $content_arr[]=$content;
             }
             $data['register_content'] = json_encode($content_arr,JSON_UNESCAPED_UNICODE);

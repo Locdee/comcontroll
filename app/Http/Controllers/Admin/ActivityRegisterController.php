@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Model\ActivityRegister;
+use App\Model\Activity;
+class ActivityRegisterController extends Controller
+{
+    //
+    public function index(Request $request){
+        $official_list = admin_offical_list();
+        $o_ids = array(0);
+        foreach($official_list as $o){
+            $o_ids[]=$o->id;
+        }
+        $activity_list = Activity::whereIn('official_account_id',$o_ids)->get(['id','activityname']);
+        $ac_ids = array(0);
+        foreach($activity_list as $a){
+            $ac_ids[]=$a->id;
+        }
+        $ac_id = $request->get('activity_id',0);
+
+        $condition = array();
+        if($ac_id){
+            $condition[]=array('activity_id',$ac_id);
+        }else{
+            abort('403','请选择相关活动');
+        }
+        $activity = Activity::find($ac_id);
+        $activity->register_content = \GuzzleHttp\json_decode($activity->register_content);
+        $register_list = ActivityRegister::where('activity_id',$ac_id)->paginate(20);
+        return view('admin.activity.register.table',compact('activity_list','register_list','activity','ac_id'));
+    }
+
+    public function create(Request $request){
+        $ac_id = $request->get('activity_id',0);
+
+        if($ac_id==0){
+            abort('403','请选择相关活动');
+        }
+        $activity = Activity::find($ac_id);
+        $status_arr = array(
+            1=>'正常',
+            2=>'隐藏'
+        );
+        $activity->register_content = \GuzzleHttp\json_decode($activity->register_content);
+        return view('admin.activity.register.create',compact('activity','ac_id','status_arr'));
+    }
+}
