@@ -15,6 +15,12 @@
     <link href="{{asset('admin/css/font-awesome.css?v=4.4.0')}}" rel="stylesheet">
     <link href="{{asset('admin/css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('admin/css/style.css?v=4.1.0')}}" rel="stylesheet">
+    <!-- 全局js -->
+    <script src="{{asset('admin/js/jquery.min.js?v=2.1.4')}}"></script>
+    <script src="{{asset('admin/js/bootstrap.min.js?v=3.3.6')}}"></script>
+
+    <link href="{{asset('webuploader/webuploader.css')}}" rel="stylesheet">
+    <script src="{{asset('webuploader/webuploader.js')}}" type="text/javascript"></script>
 </head>
 
 <body class="gray-bg">
@@ -55,11 +61,7 @@
                                     </div>
                                 </div>
                             @elseif($i->type==2)
-                                <div id="uploader-demo">
-                                    <!--用来存放item-->
-                                    <div id="fileList" class="uploader-list"></div>
-                                    <div id="filePicker">选择图片</div>
-                                </div>
+                                @include('common.single_image_uploader')
                             @endif
 
                         @endforeach
@@ -83,9 +85,7 @@
         </div>
     </div>
 
-    <!-- 全局js -->
-    <script src="{{asset('admin/js/jquery.min.js?v=2.1.4')}}"></script>
-    <script src="{{asset('admin/js/bootstrap.min.js?v=3.3.6')}}"></script>
+
 
     <!-- 自定义js -->
     <script src="{{asset('admin/js/content.js?v=1.0.0')}}"></script>

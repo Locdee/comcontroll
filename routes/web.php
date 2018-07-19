@@ -25,3 +25,4 @@ Route::get('wechat/{id}','Home\WechatController@index');
 Route::get('app',function(){
     dd(app());
 });
+Route::post('image_upload','Common\ImageController@save')->name('image_upload');
