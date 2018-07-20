@@ -76,44 +76,60 @@
                                     <tr>
 
                                         <th><input type="checkbox" class="i-checks" name="input[]">全选</th>
-                                        <th>相关活动</th>
 
                                         @foreach($activity->register_content as $k=>$i)
                                             <th>{{$i->name}}</th>
                                         @endforeach
+                                        <th>状态</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{--@foreach($prize_list as $i)--}}
-                                    {{--<tr>--}}
-                                        {{--<td>--}}
-                                            {{--<input type="checkbox"  class="i-checks" name="input[]">--}}
-                                        {{--</td>--}}
-                                        {{--<td>{{ $i->prizename }}</td>--}}
-                                        {{--<td>--}}
-                                            {{--{{ $i->count }}--}}
-                                        {{--</td>--}}
-                                        {{--<td>--}}
-                                            {{--{{ $i->weight }}--}}
-                                        {{--</td>--}}
-                                        {{--<td>{{ $i->activity->activityname}}</td>--}}
-                                        {{--<td>--}}
-                                            {{--@if($i->status==1)--}}
-                                                {{--<button type="button" class="btn btn-w-m btn-success btn-status">正常</button>--}}
-                                            {{--@else($i->status==2)--}}
-                                                {{--<button type="button" class="btn btn-w-m btn-success btn-status">已下架</button>--}}
-                                            {{--@endif--}}
-                                        {{--</td>--}}
+                                    @foreach($register_list as $i)
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox"  class="i-checks" name="input[]">
+                                        </td>
 
-                                        {{--<td>--}}
-                                            {{--<a href="{{route('prize.edit',['id'=>$i->id,'activity_id'=>$ac_id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>--}}
-                                            {{--<button class="btn btn-warning btn-delete " type="button" data-url="{{ route('prize.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>--}}
-                                            {{--</button>--}}
-                                        {{--</td>--}}
+                                        @foreach($activity->register_content as $k=>$e)
+                                            @if($e->type==1)
+                                                <th>{{empty($i->content[$e->r_name])?'':$i->content[$e->r_name]}}</th>
+                                            @elseif($e->type==2)
+                                                <th>
+                                                    @if(!empty($i->content[$e->r_name]))
+                                                        <img src="{{$i->content[$e->r_name]}}" style="width: 100px;" />
+                                                    @else
+                                                        暂无图片
+                                                    @endif
+                                                </th>
+                                            @elseif($e->type==3)
+                                                <th>
+                                                    @if(!empty($i->content[$e->r_name]))
+                                                        @foreach($i->content[$e->r_name] as $img)
+                                                            <img src="{{ $img }}" style="width: 100px;" />
+                                                        @endforeach
+                                                    @else
+                                                        暂无图片
+                                                    @endif
+                                                </th>
+                                            @endif
+                                        @endforeach
+                                        <td>
+                                            @if($i->status==1)
+                                                <button type="button" class="btn btn-w-m btn-success btn-status">显示</button>
+                                            @else($i->status==2)
+                                                <button type="button" class="btn btn-w-m btn-success btn-status">隐藏</button>
+                                            @endif
+                                        </td>
 
-                                    {{--</tr>--}}
-                                    {{--@endforeach--}}
+                                        <td>
+                                            <a href="{{route('register_activity.edit',['id'=>$i->id,'activity_id'=>$ac_id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
+                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('register_activity.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
+                                            </button>
+                                        </td>
+
+                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

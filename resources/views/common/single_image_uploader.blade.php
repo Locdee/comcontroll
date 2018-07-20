@@ -1,10 +1,14 @@
 <div class="form-group" >
     <label class="col-sm-3 control-label">{{$i->name}}：</label>
-    <input type="hidden" name="{{$i->r_name}}">
+    <input type="hidden" name="{{$i->r_name}}" value="{{!empty($register->content[$i->r_name])?$register->content[$i->r_name]:''}}">
     <div class="col-sm-9">
         <div id="uploader-demo">
             <!--用来存放item-->
-            <div id="fileList_{{$i->r_name}}" class="uploader-list"></div>
+            <div id="fileList_{{$i->r_name}}" class="uploader-list">
+                @if(!empty(!empty($register->content[$i->r_name])))
+                    <img src="{{$register->content[$i->r_name]}}"  style="width: 110px"/>
+                @endif
+            </div>
             <div id="filePicker_{{$i->r_name}}">选择图片</div>
         </div>
     </div>
@@ -61,7 +65,7 @@
         uploader_{{$i->r_name}}.reset();
         if(response.status == 1){
             $("input[name={{$i->r_name}}]").val(response.data);
-            $("#fileList_{{$i->r_name}}").html("<img style='width: 100%;' src='"+response.data+"' >");
+            $("#fileList_{{$i->r_name}}").html("<img style='width: 110px;' src='"+response.data+"' >");
 //            $().appendTo();
             $("#upload-tips1").remove();
         }else{

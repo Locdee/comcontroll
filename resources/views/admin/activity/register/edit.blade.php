@@ -48,7 +48,7 @@
         <div class="row">
 
                 <div class=" text-center large-box "style="margin-top: 20px">
-                    <form id="signupForm" method="post" action="{{route('register_activity.store')}}" class="form-horizontal">
+                    <form id="signupForm" method="post" action="{{route('register_activity.update',['id'=>$register->id])}}" class="form-horizontal">
                         {{ csrf_field() }}
                         <input name="activity_id" type="hidden" value="{{$ac_id}}">
                     <div class="col-md-12">
@@ -57,7 +57,7 @@
                                 <div class="form-group" >
                                     <label class="col-sm-3 control-label">{{$i->name}}：</label>
                                     <div class="col-sm-9">
-                                        <input id="name" type="text" name="{{$i->r_name}}"  class="form-control" placeholder="请输入文本">
+                                        <input id="name" type="text" name="{{$i->r_name}}"  class="form-control" placeholder="请输入文本" value="{{!empty($register->content[$i->r_name])?$register->content[$i->r_name]:''}}">
                                         <span class="help-block m-b-none">{{$i->name}}信息</span>
                                     </div>
                                 </div>
@@ -73,7 +73,7 @@
                             <div class="col-sm-9">
                                 <select class="form-control" name="status">
                                     @foreach($status_arr as $key=>$i)
-                                        <option value="{{$key}}" >{{$i}}</option>
+                                        <option value="{{$key}}" {{$register->status==$key?'selected':''}} >{{$i}}</option>
                                     @endforeach
                                 </select>
                             </div>
