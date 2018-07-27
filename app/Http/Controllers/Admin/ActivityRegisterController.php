@@ -81,4 +81,12 @@ class ActivityRegisterController extends Controller
 
         return view('admin.activity.register.edit',compact('activity','ac_id','status_arr','register'));
     }
+
+    public function update(Request $request,$id){
+
+        $data= $request->all();
+        $register = ActivityRegister::find($id);
+        $content = json_encode($data, JSON_UNESCAPED_UNICODE);
+
+    }
 }

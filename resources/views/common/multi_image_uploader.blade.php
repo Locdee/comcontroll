@@ -7,7 +7,17 @@
         <div class="page-container">
             <div id="uploader_{{$i->r_name}}" class="wu-example">
                 <div class="queueList">
+
+                    @if(!empty($register->content[$i->r_name]))
+                        <div style="padding-top: 50px;text-align: center">
+                            当前图片
+                        @foreach($register->content[$i->r_name] as $img)
+                            <img src="{{ $img }}" style="width: 100px;" />
+                        @endforeach
+                        </div>
+                    @endif
                     <div id="dndArea" class="placeholder">
+
                         <div id="filePicker_{{$i->r_name}}" class="webuploader-container">
                             <div class="webuploader-pick">点击选择图片</div>
                         </div>
@@ -227,7 +237,7 @@
 
                 switch ( index ) {
                     case 0:
-                        removeFile_{{$i->r_name}}( file );
+                        uploader_{{$i->r_name}}.removeFile( file );
                         return;
 
                     case 1:

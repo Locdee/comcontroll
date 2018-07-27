@@ -33,7 +33,7 @@
                     <a href="{{route('register_activity.index',['activity_id'=>$ac_id])}}">浏览</a>
                 </li>
                 <li>
-                    <strong>增加</strong>
+                    <strong>编辑</strong>
                 </li>
             </ol>
         </div>
@@ -65,6 +65,8 @@
                                 @include('common.single_image_uploader')
                             @elseif($i->type==3)
                                 @include('common.multi_image_uploader')
+                            @elseif($i->type==3)
+                                @include('common.reach_text_editor')
                             @endif
 
                         @endforeach

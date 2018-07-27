@@ -64,7 +64,8 @@
                             @elseif($i->type==2)
                                 @include('common.single_image_uploader')
                             @elseif($i->type==3)
-                                @include('common.multi_image_uploader')
+                                @include('common.multi_image_uploader')'
+
                             @endif
 
                         @endforeach
