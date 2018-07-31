@@ -11,7 +11,8 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     @include('vendor.ueditor.assets')
-    <link rel="shortcut icon" href="{{asset('admin/favicon.ico')}}"> <link href="{{asset('admin/css/bootstrap.min.css?v=3.3.6')}}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{asset('admin/favicon.ico')}}">
+    <link href="{{asset('admin/css/bootstrap.min.css?v=3.3.6')}}" rel="stylesheet">
     <link href="{{asset('admin/css/font-awesome.css?v=4.4.0')}}" rel="stylesheet">
     <link href="{{asset('admin/css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('admin/css/style.css?v=4.1.0')}}" rel="stylesheet">
@@ -50,7 +51,7 @@
                             <div class="col-sm-9" style="height: 800px">
                                 <!-- 实例化编辑器 -->
                                 <script type="text/javascript">
-                                    var ue = UE.getEditor('container');
+                                    var ue = UE.getEditor('container',{initialFrameHeight:500});
                                     ue.ready(function() {
                                         ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
                                     });

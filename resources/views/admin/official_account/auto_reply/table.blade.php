@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>后台反馈管理</title>
+    <title>公众号自动回复管理</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -17,7 +17,6 @@
     <link href="{{asset('admin/css/plugins/iCheck/custom.css')}}" rel="stylesheet">
     <link href="{{asset('admin/css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('admin/css/style.css?v=4.1.0')}}" rel="stylesheet">
-    <link href="{{asset('admin/css/plugins/chosen/chosen.css')}}" rel="stylesheet">
 
 </head>
 
@@ -49,7 +48,7 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-sm-6">
-                                <a class="btn btn-w-m btn-success" href="{{route('register_activity.create',['activity_id'=>$ac_id])}}">添加信息</a>
+                                <a class="btn btn-w-m btn-success" href="{{route('auto_reply.create')}}">增加自动回复</a>
                             </div>
                             <div class="col-sm-6 right">
                                 <div class="input-group">
@@ -58,9 +57,10 @@
                                     </div>
                                     <div class="col-sm-6 right">
 
-                                        <select name="activity_id" data-placeholder="选择相关活动..." class="chosen-select" style="width: 100%" tabindex="2">
-                                            @foreach($activity_list as $a)
-                                                <option value="{{$a->id}}" {{ $ac_id==$a->id?'selected':'' }}>{{$a->activityname}}</option>
+                                        <select name="official_account_id" data-placeholder="选择公众号..." class="chosen-select" style="width: 100%" tabindex="2">
+                                            <option value="">相关公众号</option>
+                                            @foreach($official_list as $o)
+                                                <option value="{{$o->id}}" {{ 0==$o->id?'selected':'' }}>{{$o->name}}</option>
                                             @endforeach
                                         </select>
 
@@ -76,61 +76,28 @@
                                     <tr>
 
                                         <th><input type="checkbox" class="i-checks" name="input[]">全选</th>
-
-                                        @foreach($activity->register_content as $k=>$i)
-                                            <th>{{$i->name}}</th>
-                                        @endforeach
-                                        <th>状态</th>
+                                        <th>关键词</th>
+                                        <th>相关公众号</th>
+                                        <th>回复消息类型</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($register_list as $i)
+                                    @foreach($list as $i)
                                     <tr>
                                         <td>
                                             <input type="checkbox"  class="i-checks" name="input[]">
                                         </td>
-
-                                        @foreach($activity->register_content as $k=>$e)
-                                            @if($e->type==1)
-                                                <th>{{empty($i->content[$e->r_name])?'':$i->content[$e->r_name]}}</th>
-                                            @elseif($e->type==2)
-                                                <th>
-                                                    @if(!empty($i->content[$e->r_name]))
-                                                        <img src="{{$i->content[$e->r_name]}}" style="width: 100px;" />
-                                                    @else
-                                                        暂无图片
-                                                    @endif
-                                                </th>
-                                            @elseif($e->type==3)
-                                                <th>
-                                                    @if(!empty($i->content[$e->r_name]))
-                                                        @foreach($i->content[$e->r_name] as $img)
-                                                            <img src="{{ $img }}" style="width: 100px;" />
-                                                        @endforeach
-                                                    @else
-                                                        暂无图片
-                                                    @endif
-                                                </th>
-                                            @elseif($e->type==4)
-                                                <th>
-                                                    @if(!empty($i->content[$e->r_name]))
-                                                        {!! $i->content[$e->r_name] !!}
-                                                    @endif
-                                                </th>
-                                            @endif
-                                        @endforeach
+                                        <td>{{ $i->key }}</td>
                                         <td>
-                                            @if($i->status==1)
-                                                <button type="button" class="btn btn-w-m btn-success btn-status">显示</button>
-                                            @else($i->status==2)
-                                                <button type="button" class="btn btn-w-m btn-success btn-status">隐藏</button>
-                                            @endif
+                                            {{ $i->official->name }}
                                         </td>
-
                                         <td>
-                                            <a href="{{route('register_activity.edit',['id'=>$i->id,'activity_id'=>$ac_id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
-                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('register_activity.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
+                                            {{ $type_arr[$i->msg_type] }}
+                                        </td>
+                                        <td>
+                                            <a href="{{route('auto_reply.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
+                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('auto_reply.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
                                             </button>
                                         </td>
 
@@ -151,8 +118,7 @@
     <script src="{{asset('admin/js/jquery.min.js?v=2.1.4')}}"></script>
     <script src="{{asset('admin/js/bootstrap.min.js?v=3.3.6')}}"></script>
 
-    <!-- Chosen -->
-    <script src="{{asset('admin/js/plugins/chosen/chosen.jquery.js')}}"></script>
+
 
     <!-- Peity -->
     <script src="{{asset('admin/js/plugins/peity/jquery.peity.min.js')}}"></script>
@@ -181,16 +147,10 @@
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green',
             });
-            //下拉选择
-            $('.chosen-select').chosen({
-                no_results_text:'没有相关活动',//搜索无结果时显示的提示
-                search_contains:true,   //关键字模糊搜索，设置为false，则只从开头开始匹配
-            });
-
             //删除弹窗事件
             $('.btn-delete').click(function(){
                 var url = $(this).data('url');
-                layer.confirm('确认删除该奖品吗？', {
+                layer.confirm('确认删除吗？', {
                     title:'提示框',
                     btn: ['确定', '取消'], //可以无限个按钮
                     yes:function(){

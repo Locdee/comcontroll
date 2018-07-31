@@ -88,5 +88,11 @@ class ActivityRegisterController extends Controller
         $register = ActivityRegister::find($id);
         $content = json_encode($data, JSON_UNESCAPED_UNICODE);
 
+        $data['content']=$content;
+        if($register->update($data)){
+            return ajaxResponse('保存成功',1);
+        }else{
+            return ajaxResponse('文件保存失败');
+        }
     }
 }

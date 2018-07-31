@@ -1,7 +1,11 @@
 <div class="form-group" >
     <label class="col-sm-3 control-label">{{$i->name}}：</label>
     <div id="input_{{$i->r_name}}">
-
+        @if(!empty($register->content[$i->r_name]))
+            @foreach($register->content[$i->r_name] as $img)
+                <input class="old_image" type="hidden" name="{{$i->r_name}}[]" value='{{$img}}'>
+            @endforeach
+        @endif
     </div>
     <div class="col-sm-9">
         <div class="page-container">
@@ -9,7 +13,7 @@
                 <div class="queueList">
 
                     @if(!empty($register->content[$i->r_name]))
-                        <div style="padding-top: 50px;text-align: center">
+                        <div id="recent_image_{{$i->r_name}}" style="padding-top: 50px;text-align: center">
                             当前图片
                         @foreach($register->content[$i->r_name] as $img)
                             <img src="{{ $img }}" style="width: 100px;" />
@@ -494,6 +498,10 @@
             {{--$( '#'+file.id ).remove();--}}
             {{--uploader_{{$i->r_name}}.reset();--}}
             if(response.status == 1){
+
+                $('#input_{{$i->r_name}}').find('.old_image').remove();
+                $("#recent_image_{{$i->r_name}}").remove();
+
                 $('<input type="hidden" name="{{$i->r_name}}[]" value='+response.data+'>').appendTo('#input_{{$i->r_name}}')
 
 //            $().appendTo();

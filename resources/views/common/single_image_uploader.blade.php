@@ -6,7 +6,7 @@
             <!--用来存放item-->
             <div id="fileList_{{$i->r_name}}" class="uploader-list">
 
-                @if(!empty(!empty($register->content[$i->r_name])))
+                @if(!empty($register->content[$i->r_name]))
                     <img src="{{$register->content[$i->r_name]}}"  style="width: 110px"/>
                 @endif
             </div>

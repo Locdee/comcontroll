@@ -22,6 +22,7 @@
     <link href="{{asset('webuploader/webuploader.css')}}" rel="stylesheet">
     <link href="{{asset('webuploader/muti.css')}}" rel="stylesheet">
     <script src="{{asset('webuploader/webuploader.js')}}" type="text/javascript"></script>
+    @include('vendor.ueditor.assets')
 </head>
 
 <body class="gray-bg">
@@ -65,7 +66,8 @@
                                 @include('common.single_image_uploader')
                             @elseif($i->type==3)
                                 @include('common.multi_image_uploader')'
-
+                            @elseif($i->type==4)
+                                @include('common.ueditor')'
                             @endif
 
                         @endforeach

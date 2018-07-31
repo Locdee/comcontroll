@@ -49,7 +49,7 @@ Route::resource('official_account','OfficialAccountController');
 //公众号菜单栏管理
 Route::resource('wechat_menu','WeChatMenuController');
 //自动回复
-Route::resource('auto_reply','AutoReplyController');
+Route::resource('auto_reply','WechatAutoReplyController');
 
 
 //文章分类

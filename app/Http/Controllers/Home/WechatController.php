@@ -24,7 +24,5 @@ class WechatController extends Controller
             $easywechat->cache = new CacheBridge();
         }
         $easywechat->server->setRequest(app('request'));
-
-
     }
 }

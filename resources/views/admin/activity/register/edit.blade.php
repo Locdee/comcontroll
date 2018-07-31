@@ -22,6 +22,7 @@
     <link href="{{asset('webuploader/webuploader.css')}}" rel="stylesheet">
     <link href="{{asset('webuploader/muti.css')}}" rel="stylesheet">
     <script src="{{asset('webuploader/webuploader.js')}}" type="text/javascript"></script>
+    @include('vendor.ueditor.assets')
 </head>
 
 <body class="gray-bg">
@@ -50,7 +51,8 @@
                 <div class=" text-center large-box "style="margin-top: 20px">
                     <form id="signupForm" method="post" action="{{route('register_activity.update',['id'=>$register->id])}}" class="form-horizontal">
                         {{ csrf_field() }}
-                        <input name="activity_id" type="hidden" value="{{$ac_id}}">
+                        {{ method_field('put') }}
+                        {{--<input name="activity_id" type="hidden" value="{{$ac_id}}">--}}
                     <div class="col-md-12">
                         @foreach($activity->register_content as $i)
                             @if($i->type==1)
@@ -65,8 +67,8 @@
                                 @include('common.single_image_uploader')
                             @elseif($i->type==3)
                                 @include('common.multi_image_uploader')
-                            @elseif($i->type==3)
-                                @include('common.reach_text_editor')
+                            @elseif($i->type==4)
+                                @include('common.ueditor')
                             @endif
 
                         @endforeach
