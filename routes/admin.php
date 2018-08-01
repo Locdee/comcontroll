@@ -50,10 +50,11 @@ Route::resource('official_account','OfficialAccountController');
 Route::resource('wechat_menu','WeChatMenuController');
 //自动回复
 Route::resource('auto_reply','WechatAutoReplyController');
-
+Route::put('auto_reply/status/{id}','WechatAutoReplyController@status')->name('auto_reply.status');
 
 //文章分类
 Route::resource('article_class','ArticleClassController');
+Route::put('article_class/status/{id}','ArticleClassController@status')->name('article_class.status');
 //文章
 Route::resource('article','ArticleController');
 //投票

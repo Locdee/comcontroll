@@ -29,13 +29,13 @@
 <body class="gray-bg">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-sm-4">
-            <h2>编辑自动回复</h2>
+            <h2>增加自动回复</h2>
             <ol class="breadcrumb">
                 <li>
-                    <a href="{{route('auto_reply.index')}}">自动回复</a>
+                    <a href="{{route('article.index')}}">增加自动回复</a>
                 </li>
                 <li>
-                    <strong>修改</strong>
+                    <strong>增加</strong>
                 </li>
             </ol>
         </div>
@@ -50,28 +50,27 @@
         <div class="row">
 
                 <div class=" text-center large-box "style="margin-top: 20px">
-                    <form id="signupForm" method="post" action="{{route('auto_reply.update',['id'=>$auto_reply->id])}}" class="form-horizontal">
+                    <form id="signupForm" method="post" action="{{route('auto_reply.store')}}" class="form-horizontal">
                         {{ csrf_field() }}
-                        {{ method_field('put') }}
                     <div class="col-md-12">
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">关键词：</label>
                             <div class="col-sm-9">
-                                <input id="key" type="text" name="key"  class="form-control" placeholder="请输入关键词" value="{{$auto_reply->key}}">
+                                <input id="key" type="text" name="key"  class="form-control" placeholder="请输入关键词">
                                 <span class="help-block m-b-none">自动回复关键词</span>
                             </div>
                         </div>
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">点击key值：</label>
                             <div class="col-sm-9">
-                                <input id="click_key" type="text" name="click_key"  class="form-control" placeholder="请输入关键词" value="{{$auto_reply->click_key}}">
+                                <input id="click_key" type="text" name="click_key"  class="form-control" placeholder="请输入关键词">
                                 <span class="help-block m-b-none">点击key值(和微信菜单栏中的click_key结合使用)</span>
                             </div>
                         </div>
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">回复响应地址(如果填写则移交该链接处理请求)：</label>
                             <div class="col-sm-9">
-                                <input id="external_link" type="text" name="external_link"  class="form-control" placeholder="回复响应地址" value="{{$auto_reply->external_link}}">
+                                <input id="external_link" type="text" name="external_link"  class="form-control" placeholder="回复响应地址" value="">
                                 <span class="help-block m-b-none">回复响应地址</span>
                             </div>
                         </div>
@@ -81,7 +80,7 @@
                                 <select class="form-control" name="msg_type">
                                     @foreach($msg_type_arr as $type)
                                         @if($type['disable']==1)
-                                        <option value="{{$type['type']}}" {{$auto_reply->msg_type==$type['type']?'selected':''}}>{{$type['text']}}</option>
+                                        <option value="{{$type['type']}}">{{$type['text']}}</option>
                                         @endif
                                     @endforeach
                                 </select>
@@ -92,7 +91,7 @@
                             <div class="col-sm-9">
                                 <select class="form-control" name="official_account_id">
                                     @foreach($official_list as $o)
-                                        <option value="{{$o->id}}" {{$auto_reply->official_account_id==$o->id?'selected':'' }}>{{$o->name}}</option>
+                                        <option value="{{$o->id}}">{{$o->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -102,7 +101,7 @@
                             <div class="col-sm-9">
                                 <select class="form-control" name="status">
                                     @foreach($status_arr as $k=>$status)
-                                        <option value="{{ $k }}" {{$auto_reply->status==$k?'selected':'' }}>{{ $status}}</option>
+                                        <option value="{{ $k }}" >{{ $status}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -111,7 +110,7 @@
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">文本回复内容：</label>
                                 <div class="col-sm-9">
-                                    <input id="content" type="text" name="content"  class="form-control" placeholder="文本回复内容" value="{{$auto_reply->content}}">
+                                    <input id="content" type="text" name="content"  class="form-control" placeholder="文本回复内容">
                                     <span class="help-block m-b-none">文本回复内容</span>
                                 </div>
                             </div>
@@ -120,32 +119,32 @@
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">图文消息标题：</label>
                                 <div class="col-sm-9">
-                                    <input id="title" type="text" name="title"  class="form-control" placeholder="图文消息标题" value="{{$auto_reply->title}}" >
+                                    <input id="title" type="text" name="title"  class="form-control" placeholder="图文消息标题">
                                     <span class="help-block m-b-none">图文消息标题</span>
                                 </div>
                             </div>
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">图文消息描述：</label>
                                 <div class="col-sm-9">
-                                    <input id="description" type="text" name="description"  class="form-control" placeholder="图文消息描述" value="{{$auto_reply->description}}">
+                                    <input id="description" type="text" name="description"  class="form-control" placeholder="图文消息描述">
                                     <span class="help-block m-b-none">图文消息描述</span>
                                 </div>
                             </div>
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">图文消息链接：</label>
                                 <div class="col-sm-9">
-                                    <input id="url" type="text" name="url"  class="form-control" placeholder="图文消息链接" value="{{$auto_reply->url}}">
+                                    <input id="url" type="text" name="url"  class="form-control" placeholder="图文消息链接">
                                     <span class="help-block m-b-none">图文消息链接</span>
                                 </div>
                             </div>
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">图文消息显示图片(360*200显示效果最佳)：</label>
-                                <input type="hidden" name="pic_url" value="{{$auto_reply->pic_url}}">
+                                <input type="hidden" name="pic_url" value="">
                                 <div class="col-sm-9">
                                     <div id="uploader-demo">
                                         <!--用来存放item-->
                                         <div id="fileList_pic_url" class="uploader-list">
-                                            <img src="{{$auto_reply->pic_url}}"  style="width: 110px"/>
+
                                         </div>
                                         <div id="filePicker_pic_url">选择图片</div>
                                     </div>

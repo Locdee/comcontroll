@@ -77,7 +77,8 @@
                                     <tr>
 
                                         <th><input type="checkbox" class="i-checks" name="input[]">全选</th>
-                                        <th>名称</th>
+                                        <th>标题</th>
+                                        <th>分类</th>
                                         <th>所在公众号</th>
                                         <th>状态</th>
                                         <th>操作</th>
@@ -89,13 +90,19 @@
                                         <td>
                                             <input type="checkbox"  class="i-checks" name="input[]">
                                         </td>
-                                        <td>{{ $i->classname }}</td>
-                                        <td>{{ $i->official->name }}</td>
-
-                                        <td>{{ $status_arr[$i->status] }}</td>
+                                        <td>{{ $i->title }}</td>
+                                        <td>{{ $i->class->name }}</td>
+                                        <td>{{ $i->class->official->name }}</td>
                                         <td>
-                                            <a href="{{route('article_class.edit',['id'=>$i->id])}}" class="btn btn-info J_menuItem" type="button" ><i class="fa fa-paste"></i> 编辑</a>
-                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('article_class.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
+                                            @if($i->status==1)
+                                                <button type="button" class="btn btn-w-m btn-success btn-status" data-url="{{route('article_class.status',['id'=>$i->id])}}" data-status="2">已开启</button>
+                                            @else
+                                                <button type="button" class="btn btn-w-m btn-default btn-status" data-url="{{route('article_class.status',['id'=>$i->id])}}" data-status="1">已关闭</button>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{route('article.edit',['id'=>$i->id])}}" class="btn btn-info J_menuItem" type="button" ><i class="fa fa-paste"></i> 编辑</a>
+                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('article.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
                                             </button>
                                         </td>
 
@@ -152,6 +159,33 @@
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green',
+            });
+            //修改状态
+            $('.btn-status').click(function(){
+                var url = $(this).data('url');
+                var s =$(this).data('status');
+                layer.confirm('确认修改该回复状态吗？', {
+                    title:'提示框',
+                    btn: ['确定', '取消'], //可以无限个按钮
+                    yes:function(){
+                        $.ajax({
+                            type:'PUT',
+                            dataType:'json',
+                            url:url,
+                            data:{status:s},
+                            success:function(res){
+                                if(res.status=='1'){
+                                    layer.msg(res.message);
+                                    setTimeout('location.reload();',1000);
+                                }else{
+                                    layer.msg(res.message);
+                                }
+                            }
+
+                        })
+                    }
+
+                });
             });
             //删除弹窗事件
             $('.btn-delete').click(function(){

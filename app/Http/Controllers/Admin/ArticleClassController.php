@@ -16,12 +16,12 @@ class ArticleClassController extends Controller
             $o_ids[]=$o->id;
         }
         $article_class_list = ArticleClass::whereIn('official_account_id',$o_ids)->get();
-        $status_arr=[1=>'开放中',2=>'已关闭'];
+        $status_arr=[1=>'已开启',2=>'已关闭'];
         return view('admin.article_class.table',compact('official_list','article_class_list','status_arr'));
     }
 
     public function create(){
-        $status_arr=[1=>'开放中',2=>'已关闭'];
+        $status_arr=[1=>'已开启',2=>'已关闭'];
         $official_list = admin_offical_list();
 
         return view('admin.article_class.create',compact('status_arr','official_list'));
@@ -39,7 +39,7 @@ class ArticleClassController extends Controller
 
     public function edit($id){
         $article_class = ArticleClass::find($id);
-        $status_arr=[1=>'开放中',2=>'已关闭'];
+        $status_arr=[1=>'已开启',2=>'已关闭'];
         $official_list = admin_offical_list();
 
         return view('admin.article_class.edit',compact('status_arr','official_list','article_class'));
@@ -61,5 +61,16 @@ class ArticleClassController extends Controller
         }else{
             return ajaxResponse("删除失败");
         }
+    }
+
+    public function status($id,Request $request){
+        $article_class = ArticleClass::find($id);
+        $article_class->status=$request->get('status');;
+        if($article_class->save()){
+            return ajaxResponse('保存成功',1);
+        }else{
+            return ajaxResponse('保存失败');
+        }
+
     }
 }

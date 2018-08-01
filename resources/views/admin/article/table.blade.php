@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>公众号自动回复管理</title>
+    <title>管理管理</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -17,6 +17,7 @@
     <link href="{{asset('admin/css/plugins/iCheck/custom.css')}}" rel="stylesheet">
     <link href="{{asset('admin/css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('admin/css/style.css?v=4.1.0')}}" rel="stylesheet">
+    <link href="{{asset('admin/css/plugins/chosen/chosen.css')}}" rel="stylesheet">
 
 </head>
 
@@ -48,7 +49,7 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-sm-6">
-                                <a class="btn btn-w-m btn-success" href="{{route('auto_reply.create')}}">增加自动回复</a>
+                                <a class="btn btn-w-m btn-success" href="{{route('article.create')}}">增加</a>
                             </div>
                             <div class="col-sm-6 right">
                                 <div class="input-group">
@@ -63,7 +64,12 @@
                                                 <option value="{{$o->id}}" {{ 0==$o->id?'selected':'' }}>{{$o->name}}</option>
                                             @endforeach
                                         </select>
-
+                                        <select name="class_id" data-placeholder="选择公众号..." class="chosen-select" style="width: 100%" tabindex="2">
+                                            <option value="">相关公众号</option>
+                                            @foreach($official_list as $o)
+                                                <option value="{{$o->id}}" {{ 0==$o->id?'selected':'' }}>{{$o->name}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
@@ -76,36 +82,32 @@
                                     <tr>
 
                                         <th><input type="checkbox" class="i-checks" name="input[]">全选</th>
-                                        <th>关键词</th>
-                                        <th>相关公众号</th>
-                                        <th>回复消息类型</th>
+                                        <th>标题</th>
+                                        <th>分类</th>
+                                        <th>所在公众号</th>
                                         <th>状态</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($list as $i)
+                                    @foreach($article_class_list as $i)
                                     <tr>
                                         <td>
                                             <input type="checkbox"  class="i-checks" name="input[]">
                                         </td>
-                                        <td>{{ $i->key }}</td>
-                                        <td>
-                                            {{ $i->official->name }}
-                                        </td>
-                                        <td>
-                                            {{ $type_arr[$i->msg_type] }}
-                                        </td>
+                                        <td>{{ $i->title }}</td>
+                                        <td>{{ $i->class->name }}</td>
+                                        <td>{{ $i->class->official->name }}</td>
                                         <td>
                                             @if($i->status==1)
-                                                <button type="button" class="btn btn-w-m btn-success btn-status" data-url="{{route('auto_reply.status',['id'=>$i->id])}}" data-status="2">已开启</button>
+                                                <button type="button" class="btn btn-w-m btn-success btn-status" data-url="{{route('article_class.status',['id'=>$i->id])}}" data-status="2">显示</button>
                                             @else
-                                                <button type="button" class="btn btn-w-m btn-default btn-status" data-url="{{route('auto_reply.status',['id'=>$i->id])}}" data-status="1">已关闭</button>
+                                                <button type="button" class="btn btn-w-m btn-default btn-status" data-url="{{route('article_class.status',['id'=>$i->id])}}" data-status="1">隐藏</button>
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{route('auto_reply.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
-                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('auto_reply.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
+                                            <a href="{{route('article.edit',['id'=>$i->id])}}" class="btn btn-info J_menuItem" type="button" ><i class="fa fa-paste"></i> 编辑</a>
+                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('article.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
                                             </button>
                                         </td>
 
@@ -134,6 +136,8 @@
     <!-- 自定义js -->
     <script src="{{asset('admin/js/content.js?v=1.0.0')}}"></script>
 
+    <!-- Chosen -->
+    <script src="{{asset('admin/js/plugins/chosen/chosen.jquery.js')}}"></script>
 
     <!-- iCheck -->
     <script src="{{asset('admin/js/plugins/iCheck/icheck.min.js')}}"></script>
@@ -145,6 +149,12 @@
 
     <script>
         $(document).ready(function () {
+            //下拉选择
+            $('.chosen-select').chosen({
+                no_results_text:'没有相关活动',//搜索无结果时显示的提示
+                search_contains:true,   //关键字模糊搜索，设置为false，则只从开头开始匹配
+            });
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -155,10 +165,11 @@
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green',
             });
+            //修改状态
             $('.btn-status').click(function(){
                 var url = $(this).data('url');
                 var s =$(this).data('status');
-                layer.confirm('确认修改分类状态吗？', {
+                layer.confirm('确认修改该回复状态吗？', {
                     title:'提示框',
                     btn: ['确定', '取消'], //可以无限个按钮
                     yes:function(){

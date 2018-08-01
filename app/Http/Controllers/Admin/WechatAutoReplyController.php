@@ -18,7 +18,7 @@ class WechatAutoReplyController extends Controller
             $condition[] = array('official_account_id',$official_id);
         }
 
-        $status_arr=[1=>'开放中',2=>'已关闭'];
+        $status_arr=[1=>'已开启',2=>'已关闭'];
         $type_arr = [
             'text'=>'文本消息',
             'image'=>'图片消息',
@@ -74,7 +74,7 @@ class WechatAutoReplyController extends Controller
             ),
 
         );
-        $status_arr=[1=>'开放中',2=>'已关闭'];
+        $status_arr=[1=>'已开启',2=>'已关闭'];
 
         $official_list = admin_offical_list();
 
@@ -126,7 +126,7 @@ class WechatAutoReplyController extends Controller
             ),
 
         );
-        $status_arr=[1=>'开放中',2=>'已关闭'];
+        $status_arr=[1=>'已开启',2=>'已关闭'];
 
         $official_list = admin_offical_list();
 
@@ -144,10 +144,20 @@ class WechatAutoReplyController extends Controller
     }
 
     public function destroy($id){
-        if(WechatAutoReply::destory($id)){
+        if(WechatAutoReply::destroy($id)){
             return ajaxResponse('删除成功',1);
         }else{
             return ajaxResponse("删除失败");
+        }
+    }
+
+    public function status($id,Request $request){
+        $auto_reply = WechatAutoReply::find($id);
+        $auto_reply->status = $request->get('status');
+        if($auto_reply->save()!==false){
+            return ajaxResponse("修改成功",1);
+        }else{
+            return ajaxResponse("修改失败");
         }
     }
 }
