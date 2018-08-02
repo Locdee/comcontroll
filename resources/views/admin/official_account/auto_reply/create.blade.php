@@ -32,7 +32,7 @@
             <h2>增加自动回复</h2>
             <ol class="breadcrumb">
                 <li>
-                    <a href="{{route('auto_reply.index')}}">增加自动回复</a>
+                    <a href="{{route('auto_reply.index')}}">浏览</a>
                 </li>
                 <li>
                     <strong>增加</strong>
@@ -54,13 +54,12 @@
                         {{ csrf_field() }}
                     <div class="col-md-12">
                         <div class="form-group" >
-                            <label class="col-sm-3 control-label">标题：</label>
+                            <label class="col-sm-3 control-label">关键词：</label>
                             <div class="col-sm-9">
-                                <input id="title" type="text" name="title"  class="form-control" placeholder="请输入标题">
-                                <span class="help-block m-b-none">文章标题</span>
+                                <input id="key" type="text" name="key"  class="form-control" placeholder="请输入关键词">
+                                <span class="help-block m-b-none">自动回复关键词</span>
                             </div>
                         </div>
-
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">点击key值：</label>
                             <div class="col-sm-9">
@@ -69,14 +68,14 @@
                             </div>
                         </div>
                         <div class="form-group" >
-                            <label class="col-sm-3 control-label">地址：</label>
+                            <label class="col-sm-3 control-label">回复响应地址(如果填写则移交该链接处理请求)：</label>
                             <div class="col-sm-9">
-                                <input id="url" type="text" name="url"  class="form-control" placeholder="外部文章地址" value="">
-                                <span class="help-block m-b-none">外部文章地址</span>
+                                <input id="external_link" type="text" name="external_link"  class="form-control" placeholder="回复响应地址" value="">
+                                <span class="help-block m-b-none">回复响应地址</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">公众号：</label>
+                            <label class="col-sm-3 control-label">回复消息类型：</label>
                             <div class="col-sm-9">
                                 <select class="form-control" name="msg_type">
                                     @foreach($msg_type_arr as $type)

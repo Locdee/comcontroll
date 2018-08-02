@@ -19,6 +19,14 @@ class WeChatMenuController extends Controller
         return view('admin.wechat_menu.table',compact('account_list','menu_list'));
     }
 
+    public function create(){
+        $type_arr = array(
+            1=>'click',
+            2=>'view',
+            3=>'media_id',
+
+        );
+    }
     private function tree($id){
 
     }

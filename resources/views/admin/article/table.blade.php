@@ -58,18 +58,13 @@
                                     </div>
                                     <div class="col-sm-6 right">
 
-                                        <select name="official_account_id" data-placeholder="选择公众号..." class="chosen-select" style="width: 100%" tabindex="2">
-                                            <option value="">相关公众号</option>
-                                            @foreach($official_list as $o)
-                                                <option value="{{$o->id}}" {{ 0==$o->id?'selected':'' }}>{{$o->name}}</option>
+                                        <select name="class_id" data-placeholder="选择分类..." class="chosen-select" style="width: 100%" tabindex="2">
+                                            <option value="">全部分类</option>
+                                            @foreach($article_class_list as $c)
+                                                <option value="{{$c->id}}" {{ 0==$c->id?'selected':'' }}>{{$c->classname}}({{$c->official->name}})</option>
                                             @endforeach
                                         </select>
-                                        <select name="class_id" data-placeholder="选择公众号..." class="chosen-select" style="width: 100%" tabindex="2">
-                                            <option value="">相关公众号</option>
-                                            @foreach($official_list as $o)
-                                                <option value="{{$o->id}}" {{ 0==$o->id?'selected':'' }}>{{$o->name}}</option>
-                                            @endforeach
-                                        </select>
+
                                     </div>
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
@@ -90,14 +85,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($article_class_list as $i)
+                                    @foreach($article_list as $i)
                                     <tr>
                                         <td>
                                             <input type="checkbox"  class="i-checks" name="input[]">
                                         </td>
                                         <td>{{ $i->title }}</td>
-                                        <td>{{ $i->class->name }}</td>
-                                        <td>{{ $i->class->official->name }}</td>
+                                        <td>{{ $i->in_class->classname }}</td>
+                                        <td>{{ $i->in_class->official->name }}</td>
                                         <td>
                                             @if($i->status==1)
                                                 <button type="button" class="btn btn-w-m btn-success btn-status" data-url="{{route('article_class.status',['id'=>$i->id])}}" data-status="2">显示</button>

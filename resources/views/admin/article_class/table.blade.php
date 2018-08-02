@@ -77,8 +77,7 @@
                                     <tr>
 
                                         <th><input type="checkbox" class="i-checks" name="input[]">全选</th>
-                                        <th>标题</th>
-                                        <th>分类</th>
+                                        <th>名称</th>
                                         <th>所在公众号</th>
                                         <th>状态</th>
                                         <th>操作</th>
@@ -90,9 +89,8 @@
                                         <td>
                                             <input type="checkbox"  class="i-checks" name="input[]">
                                         </td>
-                                        <td>{{ $i->title }}</td>
-                                        <td>{{ $i->class->name }}</td>
-                                        <td>{{ $i->class->official->name }}</td>
+                                        <td>{{ $i->classname }}</td>
+                                        <td>{{ $i->official->name }}</td>
                                         <td>
                                             @if($i->status==1)
                                                 <button type="button" class="btn btn-w-m btn-success btn-status" data-url="{{route('article_class.status',['id'=>$i->id])}}" data-status="2">已开启</button>
@@ -101,8 +99,9 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{route('article.edit',['id'=>$i->id])}}" class="btn btn-info J_menuItem" type="button" ><i class="fa fa-paste"></i> 编辑</a>
-                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('article.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
+                                            <a href="{{route('article_class.edit',['id'=>$i->id])}}" class="btn btn-info J_menuItem" type="button" ><i class="fa fa-paste"></i> 编辑</a>
+                                            <a href="{{route('article.create',['class_id'=>$i->id])}}" class="btn btn-primary J_menuItem" type="button" ><i class="fa fa-plus"></i> 添加相关文章</a>
+                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('article_class.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
                                             </button>
                                         </td>
 

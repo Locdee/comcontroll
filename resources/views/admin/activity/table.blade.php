@@ -70,7 +70,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="overflow-x:unset">
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>

@@ -36,7 +36,7 @@
                     <a href="{{route('article.index')}}">浏览</a>
                 </li>
                 <li>
-                    <strong>增加</strong>
+                    <strong>编辑</strong>
                 </li>
             </ol>
         </div>
@@ -51,40 +51,41 @@
         <div class="row">
 
                 <div class=" text-center large-box "style="margin-top: 20px">
-                    <form id="signupForm" method="post" action="{{route('article.store')}}" class="form-horizontal">
+                    <form id="signupForm" method="post" action="{{route('article.update',['id'=>$article->id])}}" class="form-horizontal">
                         {{ csrf_field() }}
+                        {{ method_field('put') }}
                     <div class="col-md-12">
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">标题：</label>
                             <div class="col-sm-9">
-                                <input id="title" type="text" name="title"  class="form-control" placeholder="请输入标题">
+                                <input id="title" type="text" name="title"  class="form-control" placeholder="请输入标题" value="{{$article->title}}">
                                 <span class="help-block m-b-none">文章标题</span>
                             </div>
                         </div>
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">简介：</label>
                             <div class="col-sm-9">
-                                <textarea name="intr" style="width: 100%;height: 155px"></textarea>
+                                <textarea name="intr" style="width: 100%;height: 155px">{{$article->intr}}</textarea>
                             </div>
                         </div>
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">作者：</label>
                             <div class="col-sm-9">
-                                <input id="author" type="text" name="author"  class="form-control" placeholder="文章作者">
+                                <input id="author" type="text" name="author"  class="form-control" placeholder="文章作者" value="{{$article->author}}">
                             </div>
                         </div>
 
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">链接：</label>
                             <div class="col-sm-9">
-                                <input id="url" type="text" name="url"  class="form-control" placeholder="外部文章地址" value="">
+                                <input id="url" type="text" name="url"  class="form-control" placeholder="外部文章地址" value="{{$article->url}}">
                             </div>
                         </div>
                         <div class="text_content reply">
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">来源：</label>
                                 <div class="col-sm-9">
-                                    <input id="source" type="text" name="source"  class="form-control" placeholder="文章来源">
+                                    <input id="source" type="text" name="source"  class="form-control" placeholder="文章来源" value="{{$article->source}}">
                                 </div>
                             </div>
                         </div>
@@ -92,7 +93,7 @@
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">显示顺序：</label>
                                 <div class="col-sm-9">
-                                    <input id="listindex" type="number" name="listindex"  class="form-control" placeholder="显示顺序">
+                                    <input id="listindex" type="number" name="listindex"  class="form-control" placeholder="显示顺序" value="{{$article->listindex}}">
                                 </div>
                             </div>
                         </div>
@@ -101,7 +102,7 @@
                             <div class="col-sm-9">
                                 <select class="form-control" name="class_id">
                                     @foreach($article_class_list as $c)
-                                        <option value="{{$c->id}}" {{$class_id==$c->id?'selected':''}}>{{$c->classname}}({{$c->official->name}})</option>
+                                        <option value="{{$c->id}}" {{$article->class_id==$c->id?'selected':''}}>{{$c->classname}}({{$c->official->name}})</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -111,7 +112,7 @@
                             <div class="col-sm-9">
                                 <select class="form-control" name="status">
                                     @foreach($status_arr as $k=>$status)
-                                        <option value="{{ $k }}" >{{ $status}}</option>
+                                        <option value="{{ $k }}" {{$article->status==$k?'selected':''}}>{{ $status}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -120,12 +121,14 @@
 
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">图片：</label>
-                                <input type="hidden" name="imageurl" value="">
+                                <input type="hidden" name="imageurl" value="{{$article->imageurl}}">
                                 <div class="col-sm-9">
                                     <div id="uploader-demo">
                                         <!--用来存放item-->
                                         <div id="fileList_imageurl" class="uploader-list">
-
+                                            @if($article->imageurl)
+                                                <img style='width: 110px;' src='{{$article->imageurl}}' >
+                                            @endif
                                         </div>
                                         <div id="filePicker_imageurl">选择图片</div>
                                     </div>
@@ -224,7 +227,7 @@
                                     </script>
 
                                     <!-- 编辑器容器 -->
-                                    <script id="container" name="content" type="text/plain"></script>
+                                    <script id="container" name="content" type="text/plain">{!! $article->content !!}</script>
 
                                 </div>
                             </div>

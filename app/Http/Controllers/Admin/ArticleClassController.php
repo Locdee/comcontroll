@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\ArticleClass;
+use App\Model\Article;
 
 class ArticleClassController extends Controller
 {
@@ -56,6 +57,9 @@ class ArticleClassController extends Controller
     }
 
     public function destroy($id){
+        if(Article::where('class_id',$id)->count()>0){
+            return ajaxResponse('该分类下有文章存在，无法删除');
+        }
         if(ArticleClass::destroy($id)){
             return ajaxResponse("删除成功",1);
         }else{
