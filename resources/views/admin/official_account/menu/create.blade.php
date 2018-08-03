@@ -21,23 +21,18 @@
     <script src="{{asset('admin/js/jquery.min.js?v=2.1.4')}}"></script>
     <script src="{{asset('admin/js/bootstrap.min.js?v=3.3.6')}}"></script>
 
-    {{--时间插件--}}
-    <link href="{{asset('admin/css/plugins/datapicker/datepicker3.css')}}" rel="stylesheet">
-    <link href="{{asset('admin/css/plugins/datapicker/datetimepicker.css')}}" rel="stylesheet">
-
     <link href="{{asset('webuploader/webuploader.css')}}" rel="stylesheet">
     <link href="{{asset('webuploader/muti.css')}}" rel="stylesheet">
     <script src="{{asset('webuploader/webuploader.js')}}" type="text/javascript"></script>
-    @include('vendor.ueditor.assets')
 </head>
 
 <body class="gray-bg">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-sm-4">
-            <h2>增加菜单栏</h2>
+            <h2>增加自动回复</h2>
             <ol class="breadcrumb">
                 <li>
-                    <a href="{{route('article.index')}}">浏览</a>
+                    <a href="{{route('wechat_menu.index')}}">浏览</a>
                 </li>
                 <li>
                     <strong>增加</strong>
@@ -46,7 +41,7 @@
         </div>
         <div class="col-sm-8">
             <div class="title-action">
-                <a href="{{route('article.index')}}" class="btn btn-primary">返回</a>
+                <a href="{{route('wechat_menu.index')}}" class="btn btn-primary">返回</a>
             </div>
         </div>
     </div>
@@ -55,65 +50,48 @@
         <div class="row">
 
                 <div class=" text-center large-box "style="margin-top: 20px">
-                    <form id="signupForm" method="post" action="{{route('article.store')}}" class="form-horizontal">
+                    <form id="signupForm" method="post" action="{{route('wechat_menu.store')}}" class="form-horizontal">
                         {{ csrf_field() }}
                     <div class="col-md-12">
                         <div class="form-group" >
-                            <label class="col-sm-3 control-label">标题：</label>
+                            <label class="col-sm-3 control-label">关键词：</label>
                             <div class="col-sm-9">
-                                <input id="title" type="text" name="title"  class="form-control" placeholder="请输入标题">
-                                <span class="help-block m-b-none">文章标题</span>
+                                <input id="key" type="text" name="key"  class="form-control" placeholder="请输入关键词">
+                                <span class="help-block m-b-none">自动回复关键词</span>
                             </div>
                         </div>
                         <div class="form-group" >
-                            <label class="col-sm-3 control-label">简介：</label>
+                            <label class="col-sm-3 control-label">点击key值：</label>
                             <div class="col-sm-9">
-                                <textarea name="intr" style="width: 100%;height: 155px"></textarea>
+                                <input id="click_key" type="text" name="click_key"  class="form-control" placeholder="请输入关键词">
+                                <span class="help-block m-b-none">点击key值(和微信菜单栏中的click_key结合使用)</span>
                             </div>
                         </div>
                         <div class="form-group" >
-                            <label class="col-sm-3 control-label">作者：</label>
+                            <label class="col-sm-3 control-label">回复响应地址(如果填写则移交该链接处理请求)：</label>
                             <div class="col-sm-9">
-                                <input id="author" type="text" name="author"  class="form-control" placeholder="文章作者">
-                            </div>
-                        </div>
-
-                        <div class="form-group" >
-                            <label class="col-sm-3 control-label">链接：</label>
-                            <div class="col-sm-9">
-                                <input id="url" type="text" name="url"  class="form-control" placeholder="外部文章地址" value="">
-                            </div>
-                        </div>
-                        <div class="text_content reply">
-                            <div class="form-group" >
-                                <label class="col-sm-3 control-label">来源：</label>
-                                <div class="col-sm-9">
-                                    <input id="source" type="text" name="source"  class="form-control" placeholder="文章来源">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="lottery_part">
-                            <div class="form-group" id="">
-                                <label class="col-sm-3 control-label">发布时间:</label>
-                                <div class="input-daterange input-group" id="">
-                                    <input type="text" id="publish_time" class="input-sm form-control" placeholder="请选择时间" name="publish_time" value="{{ date('Y-m-d H:i') }}" />
-                                </div>
-                            </div>
-
-                        </div>
-                            <div class="form-group" >
-                                <label class="col-sm-3 control-label">显示顺序：</label>
-                                <div class="col-sm-9">
-                                    <input id="listindex" type="number" name="listindex"  class="form-control" placeholder="显示顺序">
-                                </div>
+                                <input id="external_link" type="text" name="external_link"  class="form-control" placeholder="回复响应地址" value="">
+                                <span class="help-block m-b-none">回复响应地址</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">分类：</label>
+                            <label class="col-sm-3 control-label">回复消息类型：</label>
                             <div class="col-sm-9">
-                                <select class="form-control" name="class_id">
-                                    @foreach($article_class_list as $c)
-                                        <option value="{{$c->id}}" {{$class_id==$c->id?'selected':''}}>{{$c->classname}}({{$c->official->name}})</option>
+                                <select class="form-control" name="msg_type">
+                                    @foreach($msg_type_arr as $type)
+                                        @if($type['disable']==1)
+                                        <option value="{{$type['type']}}">{{$type['text']}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">所在公众号：</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="official_account_id">
+                                    @foreach($official_list as $o)
+                                        <option value="{{$o->id}}">{{$o->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -128,18 +106,47 @@
                                 </select>
                             </div>
                         </div>
-
-
+                        <div class="text_content reply">
                             <div class="form-group" >
-                                <label class="col-sm-3 control-label">图片：</label>
-                                <input type="hidden" name="imageurl" value="">
+                                <label class="col-sm-3 control-label">文本回复内容：</label>
+                                <div class="col-sm-9">
+                                    <input id="content" type="text" name="content"  class="form-control" placeholder="文本回复内容">
+                                    <span class="help-block m-b-none">文本回复内容</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="news reply">
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">图文消息标题：</label>
+                                <div class="col-sm-9">
+                                    <input id="title" type="text" name="title"  class="form-control" placeholder="图文消息标题">
+                                    <span class="help-block m-b-none">图文消息标题</span>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">图文消息描述：</label>
+                                <div class="col-sm-9">
+                                    <input id="description" type="text" name="description"  class="form-control" placeholder="图文消息描述">
+                                    <span class="help-block m-b-none">图文消息描述</span>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">图文消息链接：</label>
+                                <div class="col-sm-9">
+                                    <input id="url" type="text" name="url"  class="form-control" placeholder="图文消息链接">
+                                    <span class="help-block m-b-none">图文消息链接</span>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">图文消息显示图片(360*200显示效果最佳)：</label>
+                                <input type="hidden" name="pic_url" value="">
                                 <div class="col-sm-9">
                                     <div id="uploader-demo">
                                         <!--用来存放item-->
-                                        <div id="fileList_imageurl" class="uploader-list">
+                                        <div id="fileList_pic_url" class="uploader-list">
 
                                         </div>
-                                        <div id="filePicker_imageurl">选择图片</div>
+                                        <div id="filePicker_pic_url">选择图片</div>
                                     </div>
                                 </div>
                             </div>
@@ -152,7 +159,7 @@
                                     }
                                 });
 
-                                var uploader_imageurl = WebUploader.create({
+                                var uploader_pic_url = WebUploader.create({
                                     // 选完文件后，是否自动上传。
                                     auto: true,
 
@@ -164,7 +171,7 @@
 
                                     // 选择文件的按钮。可选。
                                     // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-                                    pick: '#filePicker_imageurl',
+                                    pick: '#filePicker_pic_url',
 
                                     // 只允许选择图片文件。
                                     accept: {
@@ -174,7 +181,7 @@
                                     }
                                 });
                                 // 文件上传过程中创建进度条实时显示。
-                                uploader_imageurl.on( 'uploadProgress', function( file, percentage ) {
+                                uploader_pic_url.on( 'uploadProgress', function( file, percentage ) {
                                     var $li = $( '#'+file.id ),
                                             $percent = $li.find('.progress span');
 
@@ -189,13 +196,13 @@
                                 });
 
                                 // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-                                uploader_imageurl.on( 'uploadSuccess', function( file, response ) {
+                                uploader_pic_url.on( 'uploadSuccess', function( file, response ) {
 //        $( '#'+file.id ).addClass('upload-state-done');
                                     $( '#'+file.id ).remove();
-                                    uploader_imageurl.reset();
+                                    uploader_pic_url.reset();
                                     if(response.status == 1){
-                                        $("input[name=imageurl]").val(response.data);
-                                        $("#fileList_imageurl").html("<img style='width: 110px;' src='"+response.data+"' >");
+                                        $("input[name=pic_url]").val(response.data);
+                                        $("#fileList_pic_url").html("<img style='width: 110px;' src='"+response.data+"' >");
 //            $().appendTo();
                                         $("#upload-tips1").remove();
                                     }else{
@@ -204,7 +211,7 @@
                                 });
 
                                 // 文件上传失败，显示上传出错。
-                                uploader_imageurl.on( 'uploadError', function( file ) {
+                                uploader_pic_url.on( 'uploadError', function( file ) {
                                     var $li = $( '#'+file.id ),
                                             $error = $li.find('div.error');
 
@@ -217,31 +224,13 @@
                                 });
 
                                 // 完成上传完了，成功或者失败，先删除进度条。
-                                uploader_imageurl.on( 'uploadComplete', function( file ) {
+                                uploader_pic_url.on( 'uploadComplete', function( file ) {
                                     $( '#'+file.id ).find('.progress').remove();
                                 });
                             </script>
-
-                        <div class="col-md-12">
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">内容：</label>
-                                <div class="col-sm-9" style="height: 800px">
-                                    <!-- 实例化编辑器 -->
-                                    <script type="text/javascript">
-                                        var ue = UE.getEditor('container',{initialFrameHeight:500});
-                                        ue.ready(function() {
-                                            ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
-                                        });
-                                    </script>
-
-                                    <!-- 编辑器容器 -->
-                                    <script id="container" name="content" type="text/plain"></script>
-
-                                </div>
-                            </div>
                         </div>
 
+                    </div>
                     <div class="col-sm-12 ">
                         <button class="btn btn-primary" type="submit">保存内容</button>
                         <button class="btn btn-white" type="reset">重置</button>
@@ -256,19 +245,11 @@
     <!-- 自定义js -->
     <script src="{{asset('admin/js/content.js?v=1.0.0')}}"></script>
     <script src="{{asset('admin/js/jquery.form.js')}}"></script>
-    {{--jqueryUI--}}
-    <script src="{{asset('admin/js/jquery-ui-1.10.4.min.js')}}"></script>
-
     {{--弹出js--}}
     <script src="{{asset('admin/plugins/layer/layer.js')}}"></script>
     <!-- jQuery Validation plugin javascript-->
     <script src="{{asset('admin/js/plugins/validate/jquery.validate.min.js')}}"></script>
     <script src="{{asset('admin/js/plugins/validate/messages_zh.min.js')}}"></script>
-
-    <!-- Data picker -->
-    <script src="{{asset('admin/js/plugins/datapicker/bootstrap-datepicker.js')}}"></script>
-    <script src="{{asset('admin/js/plugins/datetimepicker/jquery.datetimepicker.full.js')}}"></script>
-
     <script type="text/javascript">
         //以下为修改jQuery Validation插件兼容Bootstrap的方法，没有直接写在插件中是为了便于插件升级
         $.validator.setDefaults({
@@ -330,13 +311,56 @@
         }
         //以下为官方示例
         $().ready(function () {
+            function reply_change(){
+                var t = $('select[name=msg_type]').val();
+                $('.reply').hide();
+                switch(t){
+                    case 'text':
+                        $('.text_content').show();
+                        break;
+                    case 'news':
+                        $('.news').show();
+                        break;
 
-            $.datetimepicker.setLocale('ch');
-            $("#publish_time").datetimepicker({
-                format:'Y-m-d h:i',
-                yearStart:2000
+                    case 'image':
+                        break;
+                    case 'voice':
+                        break;
+                    case 'music':
+                        break;
+                    case 'video':
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            setTimeout(reply_change,500);
+            $('select[name=msg_type]').change(function(){
+//                return;
+                var t = $(this).val();
+                $('.reply').hide();
+                switch(t){
+                    case 'text':
+                        $('.text_content').show();
+                        break;
+                    case 'news':
+                        $('.news').show();
+                        break;
+
+                    case 'image':
+                        break;
+                    case 'voice':
+                        break;
+                    case 'music':
+                        break;
+                    case 'video':
+                        break;
+
+                    default:
+                        break;
+                }
             });
-
 
             // validate signup form on keyup and submit
             var icon = "<i class='fa fa-times-circle'></i> ";
@@ -350,7 +374,7 @@
                     node_id: icon + "请选择管理节点"
                 },
                 submitHandler:function(form){
-                    Actionsubmit(form,'POST','{{route("article.index")}}');
+                    Actionsubmit(form,'POST','{{route("wechat_menu.index")}}');
                 }
             });
 

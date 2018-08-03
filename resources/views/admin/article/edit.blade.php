@@ -21,6 +21,10 @@
     <script src="{{asset('admin/js/jquery.min.js?v=2.1.4')}}"></script>
     <script src="{{asset('admin/js/bootstrap.min.js?v=3.3.6')}}"></script>
 
+    {{--时间插件--}}
+    <link href="{{asset('admin/css/plugins/datapicker/datepicker3.css')}}" rel="stylesheet">
+    <link href="{{asset('admin/css/plugins/datapicker/datetimepicker.css')}}" rel="stylesheet">
+
     <link href="{{asset('webuploader/webuploader.css')}}" rel="stylesheet">
     <link href="{{asset('webuploader/muti.css')}}" rel="stylesheet">
     <script src="{{asset('webuploader/webuploader.js')}}" type="text/javascript"></script>
@@ -89,7 +93,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="lottery_part">
+                            <div class="form-group" id="">
+                                <label class="col-sm-3 control-label">发布时间:</label>
+                                <div class="input-daterange input-group" id="">
+                                    <input type="text" id="publish_time" class="input-sm form-control" placeholder="请选择时间" name="publish_time" value="{{ $article->publish_time>0?substr($article->publish_time,0,-3):date('Y-m-d H:i') }}" />
+                                </div>
+                            </div>
 
+                        </div>
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">显示顺序：</label>
                                 <div class="col-sm-9">
@@ -247,11 +259,16 @@
     <!-- 自定义js -->
     <script src="{{asset('admin/js/content.js?v=1.0.0')}}"></script>
     <script src="{{asset('admin/js/jquery.form.js')}}"></script>
+
     {{--弹出js--}}
     <script src="{{asset('admin/plugins/layer/layer.js')}}"></script>
     <!-- jQuery Validation plugin javascript-->
     <script src="{{asset('admin/js/plugins/validate/jquery.validate.min.js')}}"></script>
     <script src="{{asset('admin/js/plugins/validate/messages_zh.min.js')}}"></script>
+
+    <!-- Data picker -->
+    <script src="{{asset('admin/js/plugins/datapicker/bootstrap-datepicker.js')}}"></script>
+    <script src="{{asset('admin/js/plugins/datetimepicker/jquery.datetimepicker.full.js')}}"></script>
     <script type="text/javascript">
         //以下为修改jQuery Validation插件兼容Bootstrap的方法，没有直接写在插件中是为了便于插件升级
         $.validator.setDefaults({
@@ -313,55 +330,11 @@
         }
         //以下为官方示例
         $().ready(function () {
-            function reply_change(){
-                var t = $('select[name=msg_type]').val();
-                $('.reply').hide();
-                switch(t){
-                    case 'text':
-                        $('.text_content').show();
-                        break;
-                    case 'news':
-                        $('.news').show();
-                        break;
 
-                    case 'image':
-                        break;
-                    case 'voice':
-                        break;
-                    case 'music':
-                        break;
-                    case 'video':
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-            setTimeout(reply_change,500);
-            $('select[name=msg_type]').change(function(){
-//                return;
-                var t = $(this).val();
-                $('.reply').hide();
-                switch(t){
-                    case 'text':
-                        $('.text_content').show();
-                        break;
-                    case 'news':
-                        $('.news').show();
-                        break;
-
-                    case 'image':
-                        break;
-                    case 'voice':
-                        break;
-                    case 'music':
-                        break;
-                    case 'video':
-                        break;
-
-                    default:
-                        break;
-                }
+            $.datetimepicker.setLocale('ch');
+            $("#publish_time").datetimepicker({
+                format:'Y-m-d h:i',
+                yearStart:2000
             });
 
             // validate signup form on keyup and submit

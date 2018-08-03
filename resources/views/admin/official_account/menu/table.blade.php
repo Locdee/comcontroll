@@ -48,7 +48,7 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-sm-9">
-                                <a class="btn btn-w-m btn-success" href="{{route('official_account.create')}}">增加公众号账号</a>
+                                <a class="btn btn-w-m btn-success" href="{{route('wechat_menu.create')}}">增加菜单栏</a>
                             </div>
                             <div class="col-sm-3 right">
                                 <div class="input-group">
@@ -64,23 +64,29 @@
 
                                         <th><input type="checkbox" class="i-checks" name="input[]">全选</th>
                                         <th>名称</th>
-                                        <th>Appid</th>
+                                        <th>所在公众号</th>
+                                        <th>显示顺序</th>
+                                        <th>状态</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($list as $i)
+                                    @foreach($menu_list as $i)
                                     <tr>
                                         <td>
                                             <input type="checkbox"  class="i-checks" name="input[]">
                                         </td>
                                         <td>{{ $i->name }}</td>
                                         <td>
-                                            {{ $i->model }}
+                                            {{ $i->official_account->name }}
                                         </td>
                                         <td>
-                                            <a href="{{route('official_account.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
-                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('official_account.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
+                                            {{ $i->listindex }}
+                                        </td>
+
+                                        <td>
+                                            <a href="{{route('wechat_menu.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
+                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('wechat_menu.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
                                             </button>
                                         </td>
 
