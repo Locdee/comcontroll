@@ -28,6 +28,6 @@ class WechatMenu extends Model
     }
 
     public function children(){
-        return $this->hasMany(WechatMenu::class,'id','pid');
+        return $this->hasMany(self::class,'pid','id');
     }
 }

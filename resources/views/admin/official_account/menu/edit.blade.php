@@ -35,7 +35,7 @@
                     <a href="{{route('wechat_menu.index')}}">浏览</a>
                 </li>
                 <li>
-                    <strong>增加</strong>
+                    <strong>编辑</strong>
                 </li>
             </ol>
         </div>
@@ -50,13 +50,14 @@
         <div class="row">
 
                 <div class=" text-center large-box "style="margin-top: 20px">
-                    <form id="signupForm" method="post" action="{{route('wechat_menu.store')}}" class="form-horizontal">
+                    <form id="signupForm" method="post" action="{{route('wechat_menu.update',['id'=>$menu->id])}}" class="form-horizontal">
                         {{ csrf_field() }}
+                        {{ method_field('put') }}
                     <div class="col-md-12">
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">名称：</label>
                             <div class="col-sm-9">
-                                <input id="name" type="text" name="name"  class="form-control" placeholder="请输入名称">
+                                <input id="name" type="text" name="name"  class="form-control" placeholder="请输入名称" value="{{$menu->name}}">
                                 <span class="help-block m-b-none">菜单栏名称</span>
                             </div>
                         </div>
@@ -68,7 +69,7 @@
                                 <select class="form-control" name="type">
                                     @foreach($menu_type_arr as $type)
                                         @if($type['disable']==1)
-                                        <option value="{{$type['type']}}">{{$type['text']}}</option>
+                                        <option value="{{$type['type']}}" {{$menu->type==$type['type']?'selected':''}}>{{$type['text']}}</option>
                                         @endif
                                     @endforeach
                                 </select>
@@ -77,15 +78,15 @@
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">显示顺序：</label>
                             <div class="col-sm-9">
-                                <input id="listindex" type="number" name="listindex"  class="form-control" placeholder="显示顺序" value="0">
+                                <input id="listindex" type="number" name="listindex"  class="form-control" placeholder="显示顺序" value="{{$menu->listindex}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">所在公众号：</label>
                             <div class="col-sm-9">
-                                <select class="form-control" name="official_account_id">
+                                <select class="form-control" name="official_account_id" data-id="{{$menu->id}}">
                                     @foreach($official_list as $o)
-                                        <option value="{{$o->id}}">{{$o->name}}</option>
+                                        <option value="{{$o->id}}" {{ $menu->official_account_id==$o->id?'selected':'' }}>{{$o->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -94,8 +95,11 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">父级菜单栏：</label>
                             <div class="col-sm-9">
-                                <select class="form-control" name="pid">
+                                <select class="form-control" name="pid" >
                                     <option value="0">一级菜单栏</option>
+                                    @foreach($parent_menu_list as $p)
+                                        <option value="{{$p->id}}" {{$menu->pid==$p->id?'selected':''}}>{{$p->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -105,7 +109,7 @@
                             <div class="col-sm-9">
                                 <select class="form-control" name="status">
                                     @foreach($status_arr as $k=>$status)
-                                        <option value="{{ $k }}" >{{ $status}}</option>
+                                        <option value="{{ $k }}" {{$menu->status==$k?'selected':''}}>{{ $status}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -113,29 +117,32 @@
                         <div class="form-group click reply" >
                             <label class="col-sm-3 control-label">click_key值：</label>
                             <div class="col-sm-9">
-                                <input id="click_key" type="text" name="click_key"  class="form-control" placeholder="请输入关键词">
+                                <input id="click_key" type="text" name="click_key"  class="form-control" placeholder="请输入关键词" value="{{$menu->click_key}}">
                                 <span class="help-block m-b-none">点击key值(和微信自动回复中的click_key结合使用)</span>
                             </div>
                         </div>
 
+
+
+
                             <div class="form-group miniprogram reply" >
                                 <label class="col-sm-3 control-label">appid：</label>
                                 <div class="col-sm-9">
-                                    <input id="appid" type="text" name="appid"  class="form-control" placeholder="小程序appid">
+                                    <input id="appid" type="text" name="appid"  class="form-control" placeholder="小程序appid" value="{{$menu->appid}}">
                                     <span class="help-block m-b-none">小程序appid</span>
                                 </div>
                             </div>
                             <div class="form-group view miniprogram reply" >
                                 <label class="col-sm-3 control-label">跳转网页(小程序)链接：</label>
                                 <div class="col-sm-9">
-                                    <input id="url" type="text" name="url"  class="form-control" placeholder="请填写链接地址">
+                                    <input id="url" type="text" name="url"  class="form-control" placeholder="请填写链接地址" value="{{$menu->url}}">
                                     <span class="help-block m-b-none">跳转网页(小程序)链接地址</span>
                                 </div>
                             </div>
                             <div class="form-group miniprogram reply" >
                                 <label class="col-sm-3 control-label">小程序路径：</label>
                                 <div class="col-sm-9">
-                                    <input id="pagepath" type="text" name="pagepath"  class="form-control" placeholder="请填写路径">
+                                    <input id="pagepath" type="text" name="pagepath"  class="form-control" placeholder="路径" value="{{$menu->pagepath}}">
                                     <span class="help-block m-b-none">小程序路径</span>
                                 </div>
                             </div>
@@ -362,10 +369,11 @@
             });
             $('select[name=official_account_id]').change(function(){
                 var account_id = $(this).val();
+                var i = $(this).data('id');
                 $.ajax({
                     type:'GET',
                     url:'{{route('get_parent_menu')}}',
-                    data:{official_account_id:account_id},
+                    data:{official_account_id:account_id,id:i},
                     dataType:'json',
                     success:function(res){
                         if(res.status==1){
@@ -377,7 +385,7 @@
                         }
                     }
                 })
-            }).trigger('change');
+            });
             // validate signup form on keyup and submit
             var icon = "<i class='fa fa-times-circle'></i> ";
             $("#signupForm").validate({

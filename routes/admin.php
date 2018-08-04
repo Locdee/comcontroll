@@ -48,6 +48,7 @@ Route::resource('admin','AdminController');
 Route::resource('official_account','OfficialAccountController');
 //公众号菜单栏管理
 Route::resource('wechat_menu','WeChatMenuController');
+Route::get('get_parent_menu','WeChatMenuController@ajax_menu')->name('get_parent_menu');
 //自动回复
 Route::resource('auto_reply','WechatAutoReplyController');
 Route::put('auto_reply/status/{id}','WechatAutoReplyController@status')->name('auto_reply.status');

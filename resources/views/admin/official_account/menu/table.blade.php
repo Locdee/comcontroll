@@ -88,9 +88,32 @@
                                             <a href="{{route('wechat_menu.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
                                             <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('wechat_menu.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
                                             </button>
+
+                                            <button data-id="{{$i->id}}" class="btn btn-info show_children" type="button"><i class="fa fa-plus-square-o"></i> 显示子菜单</button>
+                                            <button data-id="{{$i->id}}" class="btn btn-default hidden_children" type="button"><i class="fa fa-minus-square-o"></i> 隐藏子菜单</button>
                                         </td>
 
                                     </tr>
+                                        @foreach($i->children as $child)
+                                            <tr class="children-{{$i->id}} children">
+                                                <td>
+                                                    <input type="checkbox"  class="i-checks" name="input[]">
+                                                </td>
+                                                <td>&nbsp;|-{{ $child->name }}</td>
+                                                <td>
+                                                    {{ $child->official_account->name }}
+                                                </td>
+                                                <td>
+                                                    {{ $child->listindex }}
+                                                </td>
+
+                                                <td>
+                                                    <a href="{{route('wechat_menu.edit',['id'=>$child->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
+                                                    <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('wechat_menu.destroy',['id'=>$child->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span></button>
+                                                </td>
+
+                                            </tr>
+                                        @endforeach
                                     @endforeach
                                 </tbody>
                             </table>
@@ -160,6 +183,22 @@
                     }
 
                 });
+            });
+            $('.children').hide();
+            $('.hidden_children').hide();
+
+            //显示子菜单
+            $('.show_children').click(function(){
+                var id = $(this).data('id');
+                $('.children-'+id).show();
+                $(this).hide();
+                $(this).siblings('.hidden_children').show();
+            });
+            $('.hidden_children').click(function(){
+                var id = $(this).data('id');
+                $('.children-'+id).hide();
+                $(this).hide();
+                $(this).siblings('.show_children').show();
             });
         });
     </script>
