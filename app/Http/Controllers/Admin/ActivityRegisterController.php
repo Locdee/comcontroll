@@ -15,18 +15,17 @@ class ActivityRegisterController extends Controller
         foreach($official_list as $o){
             $o_ids[]=$o->id;
         }
-        $activity_list = Activity::whereIn('official_account_id',$o_ids)->get(['id','activityname']);
+        $activity_list = Activity::whereIn('official_account_id',$o_ids)->orderBy('id','desc')->get(['id','activityname']);
         $ac_ids = array(0);
         foreach($activity_list as $a){
             $ac_ids[]=$a->id;
         }
         $ac_id = $request->get('activity_id',0);
 
-        $condition = array();
-        if($ac_id){
-            $condition[]=array('activity_id',$ac_id);
-        }else{
-            abort('403','请选择相关活动');
+//        $condition = array();
+        if($ac_id==0){
+           $ac_id= $activity_list[0]->id;
+//            abort('403','请选择相关活动');
         }
         $activity = Activity::find($ac_id);
         $activity->register_content = \GuzzleHttp\json_decode($activity->register_content);
@@ -86,9 +85,13 @@ class ActivityRegisterController extends Controller
 
         $data= $request->all();
         $register = ActivityRegister::find($id);
-        $content = json_encode($data, JSON_UNESCAPED_UNICODE);
 
-        $data['content']=$content;
+        $old_content = json_decode($register->content,true);
+//        $content = json_encode($data, JSON_UNESCAPED_UNICODE);
+
+        $content=array_merge($old_content,$data);
+        $data['content']= json_encode($content, JSON_UNESCAPED_UNICODE);
+
         if($register->update($data)){
             return ajaxResponse('保存成功',1);
         }else{

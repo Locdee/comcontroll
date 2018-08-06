@@ -71,13 +71,13 @@
                         <label class="col-sm-3 control-label">活动类型：</label>
                         <div class="col-sm-9">
                             <label class="checkbox-inline">
-                                <input name="is_register" type="checkbox" value="1" id="is_register">信息采集(报名，征稿等)</label>
+                                <input name="is_register" type="checkbox" value="1" id="is_register" class="activity_type">信息采集(报名，征稿等)</label>
                             <label class="checkbox-inline">
-                                <input name="is_vote" type="checkbox" value="1" id="is_vote">投票</label>
+                                <input name="is_vote" type="checkbox" value="1" id="is_vote" class="activity_type">投票</label>
                             <label class="checkbox-inline">
-                                <input name="is_lottery" type="checkbox" value="1" id="is_lottery">抽奖</label>
+                                <input name="is_lottery" type="checkbox" value="1" id="is_lottery" class="activity_type">抽奖</label>
                             <label class="checkbox-inline">
-                                <input name="is_questionnaire" type="checkbox" value="1" id="is_questionnaire">答题</label>
+                                <input name="is_questionnaire" type="checkbox" value="1" id="is_questionnaire" class="activity_type">答题</label>
                         </div>
                         <div class="register_part">
                             <div class="form-group" id="data_5">
@@ -88,35 +88,6 @@
                                     <input type="text" class="input-sm form-control" name="register_end_time" value="{{ date('Y-m-d') }}" />
                                 </div>
                             </div>
-                            <div>
-                                <button type="button" class="btn btn-w-m btn-success" id="add_element">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true">添加采集要素</span>
-                                </button>
-                            </div>
-                            <div id="element_list" style="background-color: #7fe3e9">
-                                <div class="element">
-                                    <div class="form-group" >
-                                        <label class="col-sm-3 control-label">要素名称：</label>
-                                        <div class="col-sm-3">
-                                            <input id="name" type="text" name="element_name[]"  class="form-control" placeholder="请输入文本">
-                                            <span class="help-block m-b-none">需要采集的要素名称</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group" >
-                                        <label class="col-sm-3 control-label">类型：</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control" name="element_type[]">
-                                                @foreach($register_element_type_arr as $key=>$i)
-                                                    <option value="{{$key}}">{{$i}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="btn btn-w-m btn-warning element_remove"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                                </div>
-                            </div>
-
                         </div>
                         <div class="vote_part">
                             <div class="form-group" >
@@ -162,7 +133,6 @@
                                     <input type="text" class="input-sm form-control" name="lottery_end_time" value="{{ date('Y-m-d') }}" />
                                 </div>
                             </div>
-
                         </div>
                         <div class="questionnaire_part">
                             <div class="form-group" id="">
@@ -174,15 +144,70 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="element-block">
+                            <div>
+                                <button type="button" class="btn btn-w-m btn-success" id="add_element">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true">添加相关信息元素</span>
+                                </button>
+                            </div>
+
+                            <div id="element_list" style="background-color: #7fe3e9;border: 1px solid; margin-bottom: 20px">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-content">
+                                        <p class="text-info">用户的openid等微信信息，ip地址会自动搜集。</p>
+                                        <p class="text-info">这里一般都是需要用户自己填写的(如电话号码、地址等)。</p>
+                                        <p>各位编辑大大们就不用重复填写了。谢谢</p>
+                                    </div>
+                                </div>
+
+                                <div class="element">
+                                    <div class="form-group" >
+                                        <label class="col-sm-3 control-label">信息名称：</label>
+                                        <div class="col-sm-3">
+                                            <input id="name" type="text" name="element_name[]"  class="form-control" placeholder="请输入文本">
+                                            <span class="help-block m-b-none">信息名称仅在后台显示</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" >
+                                        <label class="col-sm-3 control-label">信息类型：</label>
+                                        <div class="col-sm-3">
+                                            <select class="form-control" name="element_type[]">
+                                                @foreach($register_element_type_arr as $key=>$i)
+                                                    <option value="{{$key}}">{{$i}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" >
+                                        <label class="col-sm-3 control-label">信息搜集事件：</label>
+                                        <div class="col-sm-6">
+                                            <input name="time_key[]" type="hidden" value="0" >
+
+                                            <label><input type="checkbox" name="register_time_0" value="1">信息采集</label>
+                                            <label><input type="checkbox" name="vote_team_time_0" value="1">候选人信息</label>
+                                            <label><input type="checkbox" name="vote_people_time_0" value="1">投票人信息</label>
+
+                                            <label><input type="checkbox" name="lottery_before_time_0" value="1">抽奖前采集</label>
+                                            <label><input type="checkbox" name="lottery_after_time_0" value="1">中奖后采集</label>
+
+                                            <label><input type="checkbox" name="questionnaire_before_time_0" value="1">答题前采集</label>
+                                            <label><input type="checkbox" name="questionnaire_after_time_0" value="1">答题后采集</label>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-w-m btn-warning element_remove"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label">活动状态：</label>
                             <div class="col-sm-9">
-                                @foreach($status_arr as $k=>$status)
-                                <label class="checkbox-inline">
-                                    <input type="radio" name="status" value="{{ $k }}" required>{{ $status}}
-                                </label>
-                                @endforeach
+                                <select name="status" class="form-control help-block m-b-none">
+                                    @foreach($status_arr as $k=>$status)
+                                        <option value="{{ $k }}">{{$status}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -278,21 +303,15 @@
             var icon = "<i class='fa fa-times-circle'></i> ";
             $("#signupForm").validate({
                 rules: {
-                    name: "required",
-                    model: "required"
+                    activityname: "required"
                 },
                 messages: {
-                    name: icon + "请输入活动名称",
-                    model: icon + "请输入模型名"
+                    activityname: icon + "请输入活动名称"
                 },
                 submitHandler:function(form){
                     Actionsubmit(form,'POST','{{route("activity.index")}}');
                 }
             });
-            $('.register_part').hide();
-            $('.vote_part').hide();
-            $('.lottery_part').hide();
-            $('.questionnaire_part').hide();
 
             $('input[name=is_register]').click(function(){
                 if($(this).is(':checked')){
@@ -300,14 +319,14 @@
                 }else{
                     $('.register_part').hide();
                 }
-            });
+            }).trigger('click').trigger('click');
             $('input[name=is_vote]').click(function(){
                 if($(this).is(':checked')){
                     $('.vote_part').show();
                 }else{
                     $('.vote_part').hide();
                 }
-            });
+            }).trigger('click').trigger('click');
 
             $('input[name=is_lottery]').click(function(){
                 if($(this).is(':checked')){
@@ -315,14 +334,14 @@
                 }else{
                     $('.lottery_part').hide();
                 }
-            });
+            }).trigger('click').trigger('click');
             $('input[name=is_questionnaire]').click(function(){
                 if($(this).is(':checked')){
                     $('.questionnaire_part').show();
                 }else{
                     $('.questionnaire_part').hide();
                 }
-            });
+            }).trigger('click').trigger('click');
             //时间选择
             $('.register_part .input-daterange').datepicker({
                 keyboardNavigation: false,
@@ -345,32 +364,50 @@
                 forceParse: false,
                 autoclose: true
             });
-
+            var times=1;
             $('#add_element').click(function(){
+
                 $('#element_list').append(`
                     <div class="element">
-                                        <div class="form-group" >
-                                            <label class="col-sm-3 control-label">要素名称：</label>
-                                            <div class="col-sm-3">
-                                                <input id="name" type="text" name="element_name[]"  class="form-control" placeholder="请输入文本">
-                                                <span class="help-block m-b-none">需要采集的要素名称</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group" >
-                                            <label class="col-sm-3 control-label">类型：</label>
-                                            <div class="col-sm-3">
-                                                <select class="form-control" name="element_type[]">
-                                                    @foreach($register_element_type_arr as $key=>$i)
-                            <option value="{{$key}}">{{$i}}</option>
-                                                    @endforeach
-                            </select>
+                        <div class="form-group" >
+                            <label class="col-sm-3 control-label">信息名称：</label>
+                            <div class="col-sm-3">
+                                <input id="name" type="text" name="element_name[]"  class="form-control" placeholder="请输入文本">
+                                <span class="help-block m-b-none">信息名称仅在后台显示</span>
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="form-group" >
+                            <label class="col-sm-3 control-label">类型：</label>
+                            <div class="col-sm-3">
+                                <select class="form-control" name="element_type[]">
+                                    @foreach($register_element_type_arr as $key=>$i)
+                                        <option value="{{$key}}">{{$i}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <label class="col-sm-3 control-label">信息搜集事件：</label>
+                            <div class="col-sm-6">
+                               <input name="time_key[]" type="hidden" value="${times}" >
+                                <label><input type="checkbox" name="register_time_${times}" value="1">信息采集</label>
+                                <label><input type="checkbox" name="vote_team_time_${times}" value="1">候选人信息</label>
+                                <label><input type="checkbox" name="vote_people_time_${times}" value="1">投票人信息</label>
+
+                                <label><input type="checkbox" name="lottery_before_time_${times}" value="1">抽奖前采集</label>
+                                <label><input type="checkbox" name="lottery_after_time_${times}" value="1">中奖后采集</label>
+
+                                <label><input type="checkbox" name="questionnaire_before_time_${times}" value="1">答题前采集</label>
+                                <label><input type="checkbox" name="questionnaire_after_time_${times}" value="1">答题后采集</label>
+                            </div>
+                        </div>
                     <button type="button" class="btn btn-w-m btn-warning element_remove"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                 </div>
             `);
+            times++;
             });
+
             $('#element_list').on('click','.element_remove',function(){
                 $(this).parent().remove();
             });

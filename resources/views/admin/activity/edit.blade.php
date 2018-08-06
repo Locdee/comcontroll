@@ -91,33 +91,8 @@
                             </div>
                             <div>
                                 <button type="button" class="btn btn-w-m btn-success" id="add_element">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true">添加采集要素</span>
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true">添加信息要素</span>
                                 </button>
-                            </div>
-                            <div id="element_list" style="background-color: #7fe3e9">
-                                @foreach($activity->register_content as $element)
-                                    <div class="element">
-                                        <div class="form-group" >
-                                            <label class="col-sm-3 control-label">要素名称：</label>
-                                            <div class="col-sm-3">
-                                                <input id="name" type="text" name="element_name[]"  class="form-control" placeholder="请输入文本" value="{{$element->name}}">
-                                                <span class="help-block m-b-none">需要采集的要素名称</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group" >
-                                            <label class="col-sm-3 control-label">类型：</label>
-                                            <div class="col-sm-3">
-                                                <select class="form-control" name="element_type[]">
-                                                    @foreach($register_element_type_arr as $key=>$i)
-                                                        <option value="{{$key}}" {{ $element->type==$key?'selected':'' }}>{{$i}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <button type="button" class="btn btn-w-m btn-warning element_remove"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                                    </div>
-                                @endforeach
                             </div>
 
                         </div>
@@ -143,14 +118,14 @@
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">每人投票次数：</label>
                                 <div class="col-sm-3">
-                                    <input id="vote_times" type="number" name="vote_person_times" min="1"  class="form-control" placeholder="请输入文本" value="{{$activity->vote_rule->vote_person_times}}">
+                                    <input id="vote_times" type="number" name="vote_person_times" min="1"  class="form-control" placeholder="请输入文本" value="{{!empty($activity->vote_rule)?$activity->vote_rule->vote_person_times:''}}">
                                     <span class="help-block m-b-none">个人每天或总的投票次数</span>
                                 </div>
                             </div>
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">候选人重复投票次数：</label>
                                 <div class="col-sm-3">
-                                    <input id="vote_repeat_times" type="number" name="vote_repeat_times" min="1"  class="form-control" placeholder="请输入数字"  value="{{$activity->vote_rule->vote_repeat_times}}">
+                                    <input id="vote_repeat_times" type="number" name="vote_repeat_times" min="1"  class="form-control" placeholder="请输入数字"  value="{{!empty($activity->vote_rule)?$activity->vote_rule->vote_repeat_times:''}}">
                                     <span class="help-block m-b-none">个人每天或总的对同一候选人的投票次数</span>
                                 </div>
                             </div>
@@ -177,15 +152,70 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="element-block">
+                            <div>
+                                <button type="button" class="btn btn-w-m btn-success" id="add_element">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true">添加相关信息元素</span>
+                                </button>
+                            </div>
 
+                            <div id="element_list" style="background-color: #7fe3e9;border: 1px solid; margin-bottom: 20px">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-content">
+                                        <p class="text-info">用户的openid等微信信息，ip地址会自动搜集。</p>
+                                        <p class="text-info">这里一般都是需要用户自己填写的(如电话号码、地址等)。</p>
+                                        <p>各位编辑大大们就不用重复填写了。谢谢</p>
+                                    </div>
+                                </div>
+                                @foreach($activity->register_content as $ekey=>$element)
+                                    <div class="element">
+                                        <div class="form-group" >
+                                            <label class="col-sm-3 control-label">信息名称：</label>
+                                            <div class="col-sm-3">
+                                                <input id="name" type="text" name="element_name[]"  class="form-control" placeholder="请输入文本" value="{{$element->name}}">
+                                                <span class="help-block m-b-none">信息名称仅在后台显示</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" >
+                                            <label class="col-sm-3 control-label">类型：</label>
+                                            <div class="col-sm-3">
+                                                <select class="form-control" name="element_type[]">
+                                                    @foreach($register_element_type_arr as $key=>$i)
+                                                        <option value="{{$key}}" {{ $element->type==$key?'selected':'' }}>{{$i}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" >
+                                            <label class="col-sm-3 control-label">信息搜集事件：</label>
+                                            <div class="col-sm-6">
+                                                <input name="time_key[]" type="hidden" value="{{$ekey}}" >
+
+                                                <label><input type="checkbox" name="register_time_{{$ekey}}" value="1" {{$element->register_time==1?'checked':''}}>信息采集</label>
+                                                <label><input type="checkbox" name="vote_team_time_{{$ekey}}" value="1"  {{$element->vote_team_time==1?'checked':''}}>候选人信息</label>
+                                                <label><input type="checkbox" name="vote_people_time_{{$ekey}}" value="1"  {{$element->vote_people_time==1?'checked':''}}>投票人信息</label>
+
+                                                <label><input type="checkbox" name="lottery_before_time_{{$ekey}}" value="1"  {{$element->lottery_before_time==1?'checked':''}}>抽奖前采集</label>
+                                                <label><input type="checkbox" name="lottery_after_time_{{$ekey}}" value="1"  {{$element->lottery_after_time==1?'checked':''}}>中奖后采集</label>
+
+                                                <label><input type="checkbox" name="questionnaire_before_time_{{$ekey}}" value="1"  {{$element->questionnaire_before_time==1?'checked':''}}>答题前采集</label>
+                                                <label><input type="checkbox" name="questionnaire_after_time_{{$ekey}}" value="1"  {{$element->questionnaire_after_time==1?'checked':''}}>答题后采集</label>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-w-m btn-warning element_remove"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">活动状态：</label>
                             <div class="col-sm-9">
-                                @foreach($status_arr as $k=>$status)
-                                <label class="checkbox-inline">
-                                    <input type="radio" name="status" value="{{ $k }}" required {{$activity->status==$k?'checked':''}}>{{ $status}}
-                                </label>
-                                @endforeach
+                                <select name="status" class="form-control help-block m-b-none">
+                                    @foreach($status_arr as $k=>$status)
+                                        <option value="{{ $k }}" {{$activity->status==$k?'checked':''}}>{{$status}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -285,8 +315,8 @@
                     model: "required"
                 },
                 messages: {
-                    name: icon + "请输入节点名称",
-                    model: icon + "请输入模型名"
+                    name: icon + "请输入活动名称",
+                    model: icon + "请输入模型名称"
                 },
                 submitHandler:function(form){
                     Actionsubmit(form,'POST','{{route("activity.index")}}');
@@ -349,31 +379,50 @@
                 autoclose: true
             });
 
+            var times=Number({{count($activity->register_content)}});
             $('#add_element').click(function(){
+
                 $('#element_list').append(`
                     <div class="element">
-                                        <div class="form-group" >
-                                            <label class="col-sm-3 control-label">要素名称：</label>
-                                            <div class="col-sm-3">
-                                                <input id="name" type="text" name="element_name[]"  class="form-control" placeholder="请输入文本">
-                                                <span class="help-block m-b-none">需要采集的要素名称</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group" >
-                                            <label class="col-sm-3 control-label">类型：</label>
-                                            <div class="col-sm-3">
-                                                <select class="form-control" name="element_type[]">
-                                                    @foreach($register_element_type_arr as $key=>$i)
-                            <option value="{{$key}}">{{$i}}</option>
-                                                    @endforeach
-                            </select>
+                        <div class="form-group" >
+                            <label class="col-sm-3 control-label">信息名称：</label>
+                            <div class="col-sm-3">
+                                <input id="name" type="text" name="element_name[]"  class="form-control" placeholder="请输入文本">
+                                <span class="help-block m-b-none">信息名称仅在后台显示</span>
+                            </div>
                         </div>
+
+                        <div class="form-group" >
+                            <label class="col-sm-3 control-label">类型：</label>
+                            <div class="col-sm-3">
+                                <select class="form-control" name="element_type[]">
+                                    @foreach($register_element_type_arr as $key=>$i)
+                        <option value="{{$key}}">{{$i}}</option>
+                                    @endforeach
+                        </select>
                     </div>
+                </div>
+                <div class="form-group" >
+                    <label class="col-sm-3 control-label">信息采集时间：</label>
+                    <div class="col-sm-6">
+                       <input name="time_key[]" type="hidden" value="${times}" >
+                                <label><input type="checkbox" name="register_time_${times}" value="1">信息采集</label>
+                                <label><input type="checkbox" name="vote_team_time_${times}" value="1">候选人信息</label>
+                                <label><input type="checkbox" name="vote_people_time_${times}" value="1">投票人信息</label>
+
+                                <label><input type="checkbox" name="lottery_before_time_${times}" value="1">抽奖前采集</label>
+                                <label><input type="checkbox" name="lottery_after_time_${times}" value="1">中奖后采集</label>
+
+                                <label><input type="checkbox" name="questionnaire_before_time_${times}" value="1">答题前采集</label>
+                                <label><input type="checkbox" name="questionnaire_after_time_${times}" value="1">答题后采集</label>
+                            </div>
+                        </div>
                     <button type="button" class="btn btn-w-m btn-warning element_remove"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                 </div>
             `);
+                times++;
             });
+
             $('#element_list').on('click','.element_remove',function(){
                 $(this).parent().remove();
             });

@@ -1,7 +1,7 @@
 <div class="col-md-12">
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">相关描述：</label>
+        <label class="col-sm-3 control-label">{{$i->name}}：</label>
         <div class="col-sm-9" style="height: 800px">
             <!-- 实例化编辑器 -->
             <script type="text/javascript">

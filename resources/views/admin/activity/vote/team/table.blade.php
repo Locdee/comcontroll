@@ -49,7 +49,7 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-sm-6">
-                                <a class="btn btn-w-m btn-success" href="{{route('register_activity.create',['activity_id'=>$ac_id])}}">添加信息</a>
+                                <a class="btn btn-w-m btn-success" href="{{route('vote_team.create',['activity_id'=>$ac_id])}}">添加信息</a>
                             </div>
                             <div class="col-sm-6 right">
                                 <div class="input-group">
@@ -78,10 +78,11 @@
                                         <th><input type="checkbox" class="i-checks" name="input[]">全选</th>
 
                                         @foreach($activity->register_content as $k=>$i)
-                                            @if($i->register_time==1)
+                                            @if($i->vote_team_time==1)
                                                 <th>{{$i->name}}</th>
                                             @endif
                                         @endforeach
+                                        <th>投票</th>
                                         <th>状态</th>
                                         <th>操作</th>
                                     </tr>
@@ -94,7 +95,7 @@
                                         </td>
 
                                         @foreach($activity->register_content as $k=>$e)
-                                            @if($e->register_time==1)
+                                            @if($e->vote_team_time==1)
                                                 @if($e->type==1)
                                                     <th>{{empty($i->content[$e->r_name])?'':$i->content[$e->r_name]}}</th>
                                                 @elseif($e->type==2)
@@ -124,6 +125,7 @@
                                                 @endif
                                             @endif
                                         @endforeach
+                                        <td>{{$i->ticket}}</td>
                                         <td>
                                             @if($i->status==1)
                                                 <button type="button" class="btn btn-w-m btn-success btn-status">显示</button>
@@ -133,8 +135,8 @@
                                         </td>
 
                                         <td>
-                                            <a href="{{route('register_activity.edit',['id'=>$i->id,'activity_id'=>$ac_id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
-                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('register_activity.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
+                                            <a href="{{route('vote_team.edit',['id'=>$i->id,'activity_id'=>$ac_id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
+                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('vote_team.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
                                             </button>
                                         </td>
 

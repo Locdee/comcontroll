@@ -54,22 +54,23 @@
                         <input name="activity_id" type="hidden" value="{{$ac_id}}">
                     <div class="col-md-12">
                         @foreach($activity->register_content as $i)
-                            @if($i->type==1)
-                                <div class="form-group" >
-                                    <label class="col-sm-3 control-label">{{$i->name}}：</label>
-                                    <div class="col-sm-9">
-                                        <input id="name" type="text" name="{{$i->r_name}}"  class="form-control" placeholder="请输入文本">
-                                        <span class="help-block m-b-none">{{$i->name}}信息</span>
+                            @if($i->register_time==1)
+                                @if($i->type==1)
+                                    <div class="form-group" >
+                                        <label class="col-sm-3 control-label">{{$i->name}}：</label>
+                                        <div class="col-sm-9">
+                                            <input id="name" type="text" name="{{$i->r_name}}"  class="form-control" placeholder="请输入文本">
+                                            <span class="help-block m-b-none">{{$i->name}}信息</span>
+                                        </div>
                                     </div>
-                                </div>
-                            @elseif($i->type==2)
-                                @include('common.single_image_uploader')
-                            @elseif($i->type==3)
-                                @include('common.multi_image_uploader')'
-                            @elseif($i->type==4)
-                                @include('common.ueditor')'
+                                @elseif($i->type==2)
+                                    @include('common.single_image_uploader')
+                                @elseif($i->type==3)
+                                    @include('common.multi_image_uploader')'
+                                @elseif($i->type==4)
+                                    @include('common.ueditor')'
+                                @endif
                             @endif
-
                         @endforeach
                         <div class="form-group">
                             <label class="col-sm-3 control-label">状态：</label>

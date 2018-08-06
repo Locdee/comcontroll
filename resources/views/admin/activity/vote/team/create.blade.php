@@ -31,16 +31,16 @@
             <h2>{{$activity->activityname}}</h2>
             <ol class="breadcrumb">
                 <li>
-                    <a href="{{route('register_activity.index',['activity_id'=>$ac_id])}}">浏览</a>
+                    <a href="{{route('vote_team.index',['activity_id'=>$ac_id])}}">浏览</a>
                 </li>
                 <li>
-                    <strong>编辑</strong>
+                    <strong>增加</strong>
                 </li>
             </ol>
         </div>
         <div class="col-sm-8">
             <div class="title-action">
-                <a href="{{route('register_activity.index',['activity_id'=>$ac_id])}}" class="btn btn-primary">返回</a>
+                <a href="{{route('vote_team.index',['activity_id'=>$ac_id])}}" class="btn btn-primary">返回</a>
             </div>
         </div>
     </div>
@@ -49,37 +49,35 @@
         <div class="row">
 
                 <div class=" text-center large-box "style="margin-top: 20px">
-                    <form id="signupForm" method="post" action="{{route('register_activity.update',['id'=>$register->id])}}" class="form-horizontal">
+                    <form id="signupForm" method="post" action="{{route('vote_team.store')}}" class="form-horizontal">
                         {{ csrf_field() }}
-                        {{ method_field('put') }}
-                        {{--<input name="activity_id" type="hidden" value="{{$ac_id}}">--}}
+                        <input name="activity_id" type="hidden" value="{{$ac_id}}">
                     <div class="col-md-12">
                         @foreach($activity->register_content as $i)
-                            @if($i->register_time==1)
+                            @if($i->vote_team_time==1)
                                 @if($i->type==1)
                                     <div class="form-group" >
                                         <label class="col-sm-3 control-label">{{$i->name}}：</label>
                                         <div class="col-sm-9">
-                                            <input id="name" type="text" name="{{$i->r_name}}"  class="form-control" placeholder="请输入文本" value="{{!empty($register->content[$i->r_name])?$register->content[$i->r_name]:''}}">
+                                            <input id="name" type="text" name="{{$i->r_name}}"  class="form-control" placeholder="请输入文本">
                                             <span class="help-block m-b-none">{{$i->name}}信息</span>
                                         </div>
                                     </div>
                                 @elseif($i->type==2)
                                     @include('common.single_image_uploader')
                                 @elseif($i->type==3)
-                                    @include('common.multi_image_uploader')
+                                    @include('common.multi_image_uploader')'
                                 @elseif($i->type==4)
-                                    @include('common.ueditor')
+                                    @include('common.ueditor')'
                                 @endif
                             @endif
-
                         @endforeach
                         <div class="form-group">
                             <label class="col-sm-3 control-label">状态：</label>
                             <div class="col-sm-9">
                                 <select class="form-control" name="status">
                                     @foreach($status_arr as $key=>$i)
-                                        <option value="{{$key}}" {{$register->status==$key?'selected':''}} >{{$i}}</option>
+                                        <option value="{{$key}}" >{{$i}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -177,7 +175,7 @@
                     node_id: icon + "请选择管理节点"
                 },
                 submitHandler:function(form){
-                    Actionsubmit(form,'POST','{{route("register_activity.index",['activity_id'=>$ac_id])}}');
+                    Actionsubmit(form,'POST','{{route("vote_team.index",['activity_id'=>$ac_id])}}');
                 }
             });
 

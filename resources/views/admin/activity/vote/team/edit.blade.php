@@ -55,7 +55,7 @@
                         {{--<input name="activity_id" type="hidden" value="{{$ac_id}}">--}}
                     <div class="col-md-12">
                         @foreach($activity->register_content as $i)
-                            @if($i->register_time==1)
+                            @if($i->vote_team_time==1)
                                 @if($i->type==1)
                                     <div class="form-group" >
                                         <label class="col-sm-3 control-label">{{$i->name}}：</label>
@@ -72,7 +72,6 @@
                                     @include('common.ueditor')
                                 @endif
                             @endif
-
                         @endforeach
                         <div class="form-group">
                             <label class="col-sm-3 control-label">状态：</label>

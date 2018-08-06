@@ -71,6 +71,11 @@ class ActivityController extends Controller
     //保存
     public function store(Request $request){
         $data = $request->all();
+        $data['is_vote']=$request->get('is_vote',0);
+        $data['is_register']=$request->get('is_register',0);
+        $data['is_lottery']=$request->get('is_lottery',0);
+        $data['is_questionnaire']=$request->get('is_questionnaire',0);
+//        dd($data);
         //时间处理
         $data['register_start_time']=strtotime($data['register_start_time']);
         $data['register_end_time']=strtotime($data['register_end_time']);
@@ -91,19 +96,40 @@ class ActivityController extends Controller
             4=>'reach_text'
         );
 
-        if($data['is_register']==1){
+//        if($data['is_register']==1){
             $content_arr = array();
-            $element_name = $request->get('element_name');
+            $element_name = $request->get('element_name',[]);
             $element_type = $request->get('element_type');
+
+            $element_time_key=$request->get('time_key');
             foreach($element_name as $k=>$i){
                 $content = array();
                 $content['name']=$i;
+
+                if(empty($i)){
+                    return ajaxResponse('请填写信息元素名称');
+                }
+
                 $content['type']=$element_type[$k];
                 $content['r_name']=$r_name_arr[$element_type[$k]].'_'.$k;
+                $key= $element_time_key[$k];
+
+                //收集情况
+                $content['register_time']=$request->get('register_time_'.$key,0);
+
+                $content['vote_team_time']=$request->get('vote_team_time_'.$key,0);
+                $content['vote_people_time']=$request->get('vote_people_time_'.$key,0);
+
+                $content['lottery_before_time']=$request->get('lottery_before_time_'.$key,0);
+                $content['lottery_after_time']=$request->get('lottery_after_time_'.$key,0);
+
+                $content['questionnaire_before_time']=$request->get('questionnaire_before_time_'.$key,0);
+                $content['questionnaire_after_time']=$request->get('questionnaire_after_time_'.$key,0);
+
                 $content_arr[]=$content;
             }
             $data['register_content'] = json_encode($content_arr,JSON_UNESCAPED_UNICODE);
-        }
+//        }
 
         if($data['is_vote']){
             $rule_arr = array(
@@ -125,6 +151,12 @@ class ActivityController extends Controller
     public function update($id,Request $request){
         $activity = Activity::find($id);
         $data = $request->all();
+
+        $data['is_vote']=$request->get('is_vote',0);
+        $data['is_register']=$request->get('is_register',0);
+        $data['is_lottery']=$request->get('is_lottery',0);
+        $data['is_questionnaire']=$request->get('is_questionnaire',0);
+
         //时间处理
         $data['register_start_time']=strtotime($data['register_start_time']);
         $data['register_end_time']=strtotime($data['register_end_time']);
@@ -146,10 +178,11 @@ class ActivityController extends Controller
             4=>'reach_text'
         );
 
-        if($data['is_register']==1){
+//        if($data['is_register']==1){
             $content_arr = array();
             $element_name = $request->get('element_name');
             $element_type = $request->get('element_type');
+            $element_time_key=$request->get('time_key');
             foreach($element_name as $k=>$i){
                 $content = array();
                 $content['name']=$i;
@@ -157,10 +190,24 @@ class ActivityController extends Controller
 
                 $content['r_name']=$r_name_arr[$element_type[$k]].'_'.$k;
 
+                $key= $element_time_key[$k];
+
+                //收集情况
+                $content['register_time']=$request->get('register_time_'.$key,0);
+
+                $content['vote_team_time']=$request->get('vote_team_time_'.$key,0);
+                $content['vote_people_time']=$request->get('vote_people_time_'.$key,0);
+
+                $content['lottery_before_time']=$request->get('lottery_before_time_'.$key,0);
+                $content['lottery_after_time']=$request->get('lottery_after_time_'.$key,0);
+
+                $content['questionnaire_before_time']=$request->get('questionnaire_before_time_'.$key,0);
+                $content['questionnaire_after_time']=$request->get('questionnaire_after_time_'.$key,0);
+
                 $content_arr[]=$content;
             }
             $data['register_content'] = json_encode($content_arr,JSON_UNESCAPED_UNICODE);
-        }
+//        }
 
         if($data['is_vote']){
             $rule_arr = array(
