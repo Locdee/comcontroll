@@ -95,7 +95,7 @@
 
                                     </tr>
                                         @foreach($i->children as $child)
-                                            <tr class="children-{{$i->id}} children">
+                                            <tr class="children-{{$i->id}} children" style="background-color: lightgrey">
                                                 <td>
                                                     <input type="checkbox"  class="i-checks" name="input[]">
                                                 </td>
@@ -184,8 +184,8 @@
 
                 });
             });
-            $('.children').hide();
-            $('.hidden_children').hide();
+//            $('.children').hide();
+//            $('.hidden_children').hide();
 
             //显示子菜单
             $('.show_children').click(function(){
@@ -199,7 +199,7 @@
                 $('.children-'+id).hide();
                 $(this).hide();
                 $(this).siblings('.show_children').show();
-            });
+            }).trigger('click');
         });
     </script>
 

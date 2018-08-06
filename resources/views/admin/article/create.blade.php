@@ -108,6 +108,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="col-sm-3 control-label">分类：</label>
                             <div class="col-sm-9">
@@ -118,6 +119,7 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="col-sm-3 control-label">状态：</label>
                             <div class="col-sm-9">
