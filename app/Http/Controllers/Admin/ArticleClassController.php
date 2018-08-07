@@ -10,15 +10,21 @@ use App\Model\Article;
 class ArticleClassController extends Controller
 {
     //
-    public function index(){
+    public function index(Request $request){
         $official_list = admin_offical_list();
         $o_ids = array(0);
         foreach($official_list as $o){
             $o_ids[]=$o->id;
         }
-        $article_class_list = ArticleClass::whereIn('official_account_id',$o_ids)->get();
+        $official_account_id = $request->get('official_account_id',0);
+        $condition = array();
+        if($official_account_id>0){
+            $condition[]=array('official_account_id',$official_account_id);
+        }
+
+        $article_class_list = ArticleClass::whereIn('official_account_id',$o_ids)->where($condition)->get();
         $status_arr=[1=>'已开启',2=>'已关闭'];
-        return view('admin.article_class.table',compact('official_list','article_class_list','status_arr'));
+        return view('admin.article_class.table',compact('official_list','article_class_list','status_arr','official_account_id'));
     }
 
     public function create(){

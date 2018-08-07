@@ -50,6 +50,7 @@
                             <div class="col-sm-6">
                                 <a class="btn btn-w-m btn-success" href="{{route('activity.create')}}">增加活动</a>
                             </div>
+                            <form>
                             <div class="col-sm-6 right">
                                 <div class="input-group">
                                     <div class="col-sm-6 right">
@@ -60,15 +61,16 @@
                                         <select name="official_account_id" class="form-control ">
                                             <option value="">相关公众号</option>
                                             @foreach($official_list as $official)
-                                                <option value="{{$official->id}}">{{$official->name}}</option>
+                                                <option value="{{$official->id}}" {{$official_account_id==$official->id?'selected':''}}>{{$official->name}}</option>
                                             @endforeach
                                         </select>
 
                                     </div>
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                        <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
                                 </div>
                             </div>
+                            </form>
                         </div>
                         <div class="table-responsive" style="overflow-x:unset">
                             <table class="table table-striped table-bordered">
@@ -143,7 +145,7 @@
                                                     @endif
 
                                                     @if($i->is_questionnaire==1)
-                                                        <li><a href="buttons.html#">相关题目</a>
+                                                        <li><a href="{{route('questionnaire.index',['activity_id'=>$i->id])}}">相关题目</a>
                                                         </li>
                                                         <li><a href="buttons.html#">答题记录</a>
                                                         </li>

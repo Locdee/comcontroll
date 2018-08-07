@@ -24,15 +24,19 @@ class VoteTeamController extends Controller
         }
         $ac_id = $request->get('activity_id',0);
 
-//        $condition = array();
+
         if($ac_id==0){
             $ac_id= $activity_list[0]->id;
 //            abort('403','请选择相关活动');
         }
+        $condition = array();
+        $condition[]=array('activity_id',$ac_id);
+
         $activity = Activity::find($ac_id);
         $activity->register_content = \GuzzleHttp\json_decode($activity->register_content);
 
-        $register_list = ActivityRegister::where('activity_id',$ac_id)->paginate(20);
+        $register_list = ActivityRegister::where('activity_id',$ac_id)->where($condition)->paginate(20);
+
         foreach($register_list as $key=>$i){
             $register_list[$key]->content=\GuzzleHttp\json_decode($i->content,true);
         }
@@ -50,6 +54,8 @@ class VoteTeamController extends Controller
             1=>'正常',
             2=>'隐藏'
         );
+
+
         $activity->register_content = \GuzzleHttp\json_decode($activity->register_content);
         return view('admin.activity.vote.team.create',compact('activity','ac_id','status_arr'));
     }

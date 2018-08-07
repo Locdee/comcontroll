@@ -16,9 +16,14 @@ class ActivityController extends Controller
             $o_ids[]=$o->id;
         }
 
-        $activity_list = Activity::whereIn('official_account_id',$o_ids)->paginate(20);
+        $official_account_id = $request->get('official_account_id',0);
+        $condition = array();
+        if($official_account_id){
+            $condition[]=array('official_account_id',$official_account_id);
+        }
 
-        return view('admin.activity.table',compact('official_list','activity_list'));
+        $activity_list = Activity::whereIn('official_account_id',$o_ids)->where($condition)->paginate(20);
+        return view('admin.activity.table',compact('official_list','activity_list','official_account_id'));
     }
 
     //添加

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class LotterLogController extends Controller
+class LotteryLogController extends Controller
 {
     //
 }

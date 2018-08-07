@@ -72,7 +72,7 @@ Route::resource('prize','PrizeController');
 Route::resource('lottery_log','LotteryLogController');
 
 //相关题目
-Route::resource('question','QuestionController');
+Route::resource('questionnaire','QuestionnaireController');
 //答题记录
 Route::resource('answer_log','AnswerLogController');
 

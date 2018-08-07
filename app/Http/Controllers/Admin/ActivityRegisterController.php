@@ -15,7 +15,7 @@ class ActivityRegisterController extends Controller
         foreach($official_list as $o){
             $o_ids[]=$o->id;
         }
-        $activity_list = Activity::whereIn('official_account_id',$o_ids)->orderBy('id','desc')->get(['id','activityname']);
+        $activity_list = Activity::whereIn('official_account_id',$o_ids)->where('is_register',1)->orderBy('id','desc')->get(['id','activityname']);
         $ac_ids = array(0);
         foreach($activity_list as $a){
             $ac_ids[]=$a->id;
