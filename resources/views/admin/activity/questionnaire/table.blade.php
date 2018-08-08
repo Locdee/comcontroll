@@ -49,29 +49,33 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-sm-6">
-                                <a class="btn btn-w-m btn-success" href="{{route('prize.create',['activity_id'=>$ac_id])}}">增加奖品</a>
+                                <a class="btn btn-w-m btn-success" href="{{route('questionnaire.create',['activity_id'=>$ac_id])}}">添加题目</a>
                             </div>
-                            <form>
-                                <div class="col-sm-6 right">
-                                    <div class="input-group">
-                                        <div class="col-sm-6 right">
-                                            <input type="text" placeholder="请输入关键词" class="form-control">
-                                        </div>
-                                        <div class="col-sm-6 right">
-
-                                            <select name="activity_id" data-placeholder="选择相关活动..." class="chosen-select" style="width: 100%" tabindex="2">
-                                                <option value="">相关活动</option>
-                                                @foreach($activity_list as $a)
-                                                    <option value="{{$a->id}}" {{ $ac_id==$a->id?'selected':'' }}>{{$a->activityname}}</option>
-                                                @endforeach
-                                            </select>
-
-                                        </div>
-                                        <span class="input-group-btn">
-                                            <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                            <div class="col-sm-6 right">
+                                <form>
+                                <div class="input-group">
+                                    <div class="col-sm-4 right">
+                                        <input type="text" placeholder="请输入关键词" class="form-control">
                                     </div>
+                                    <div class="col-sm-8 right">
+                                        <select name="type" data-placeholder="选择相关题型." class="form-control" style="width: 30%" tabindex="2">
+                                            <option value="0">全部</option>
+                                            @foreach($type_arr as $key=>$i)
+                                                <option value="{{$key}}" {{ $type==$key?'selected':'' }}>{{$i}}</option>
+                                            @endforeach
+                                        </select>
+                                        <select name="activity_id" data-placeholder="选择相关活动..." class="chosen-select" style="width: 40%" tabindex="2">
+                                            @foreach($activity_list as $a)
+                                                <option value="{{$a->id}}" {{ $ac_id==$a->id?'selected':'' }}>{{$a->activityname}}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
                                 </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">
@@ -79,39 +83,34 @@
                                     <tr>
 
                                         <th><input type="checkbox" class="i-checks" name="input[]">全选</th>
-                                        <th>奖品</th>
-                                        <th>剩余数量</th>
-                                        <th>权重</th>
-                                        <th>相关活动</th>
+                                        <th>题目</th>
+                                        <th>得分</th>
+                                        <th>题型</th>
                                         <th>状态</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($prize_list as $i)
+                                    @foreach($question_list as $i)
                                     <tr>
                                         <td>
                                             <input type="checkbox"  class="i-checks" name="input[]">
                                         </td>
-                                        <td>{{ $i->prizename }}</td>
-                                        <td>
-                                            {{ $i->count }}
-                                        </td>
-                                        <td>
-                                            {{ $i->weight }}
-                                        </td>
-                                        <td>{{ $i->activity->activityname}}</td>
+                                        <td>{{$i->question}}</td>
+
+                                        <td>{{$i->score}}</td>
+                                        <td>{{$type_arr[$i->type]}}</td>
                                         <td>
                                             @if($i->status==1)
-                                                <button type="button" class="btn btn-w-m btn-success btn-status">正常</button>
+                                                <button type="button" class="btn btn-w-m btn-success btn-status">显示</button>
                                             @else($i->status==2)
-                                                <button type="button" class="btn btn-w-m btn-success btn-status">已下架</button>
+                                                <button type="button" class="btn btn-w-m btn-success btn-status">隐藏</button>
                                             @endif
                                         </td>
 
                                         <td>
-                                            <a href="{{route('prize.edit',['id'=>$i->id,'activity_id'=>$ac_id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
-                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('prize.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
+                                            <a href="{{route('questionnaire.edit',['id'=>$i->id,'activity_id'=>$ac_id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
+                                            <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('questionnaire.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
                                             </button>
                                         </td>
 

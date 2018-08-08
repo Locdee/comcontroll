@@ -51,25 +51,27 @@
                             <div class="col-sm-6">
                                 <a class="btn btn-w-m btn-success" href="{{route('article_class.create')}}">增加</a>
                             </div>
-                            <div class="col-sm-6 right">
-                                <div class="input-group">
-                                    <div class="col-sm-6 right">
-                                        <input type="text" placeholder="请输入关键词" class="form-control">
-                                    </div>
-                                    <div class="col-sm-6 right">
+                            <form>
+                                <div class="col-sm-6 right">
+                                    <div class="input-group">
+                                        <div class="col-sm-6 right">
+                                            <input type="text" placeholder="请输入关键词" class="form-control">
+                                        </div>
+                                        <div class="col-sm-6 right">
 
-                                        <select name="official_account_id" data-placeholder="选择公众号..." class="chosen-select" style="width: 100%" tabindex="2">
-                                            <option value="">相关公众号</option>
-                                            @foreach($official_list as $o)
-                                                <option value="{{$o->id}}" {{ 0==$o->id?'selected':'' }}>{{$o->name}}</option>
-                                            @endforeach
-                                        </select>
+                                            <select name="official_account_id" data-placeholder="选择公众号..." class="chosen-select" style="width: 100%" tabindex="2">
+                                                <option value="">相关公众号</option>
+                                                @foreach($official_list as $o)
+                                                    <option value="{{$o->id}}" {{ $official_account_id==$o->id?'selected':'' }}>{{$o->name}}</option>
+                                                @endforeach
+                                            </select>
 
+                                        </div>
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
                                     </div>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">

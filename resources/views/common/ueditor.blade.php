@@ -12,7 +12,7 @@
             </script>
 
             <!-- 编辑器容器 -->
-            <script id="container_{{$i->r_name}}" name="{{$i->r_name}}" type="text/plain">@if(!empty($register->content[$i->r_name])){!! $register->content[$i->r_name] !!}}@endif</script>
+            <script id="container_{{$i->r_name}}" name="{{$i->r_name}}" type="text/plain">@if(!empty($register->content[$i->r_name])){!! $register->content[$i->r_name] !!}@endif</script>
 
         </div>
     </div>

@@ -51,6 +51,7 @@
                             <div class="col-sm-6">
                                 <a class="btn btn-w-m btn-success" href="{{route('vote_team.create',['activity_id'=>$ac_id])}}">添加信息</a>
                             </div>
+                            <form>
                             <div class="col-sm-6 right">
                                 <div class="input-group">
                                     <div class="col-sm-6 right">
@@ -66,9 +67,10 @@
 
                                     </div>
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                        <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
                                 </div>
                             </div>
+                            </form>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">

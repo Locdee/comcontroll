@@ -51,25 +51,27 @@
                             <div class="col-sm-6">
                                 <a class="btn btn-w-m btn-success" href="{{route('article.create')}}">增加</a>
                             </div>
-                            <div class="col-sm-6 right">
-                                <div class="input-group">
-                                    <div class="col-sm-6 right">
-                                        <input type="text" placeholder="请输入关键词" class="form-control">
-                                    </div>
-                                    <div class="col-sm-6 right">
+                            <form>
+                                <div class="col-sm-6 right">
+                                    <div class="input-group">
+                                        <div class="col-sm-6 right">
+                                            <input type="text" placeholder="请输入关键词" class="form-control">
+                                        </div>
+                                        <div class="col-sm-6 right">
 
-                                        <select name="class_id" data-placeholder="选择分类..." class="chosen-select" style="width: 100%" tabindex="2">
-                                            <option value="">全部分类</option>
-                                            @foreach($article_class_list as $c)
-                                                <option value="{{$c->id}}" {{ 0==$c->id?'selected':'' }}>{{$c->classname}}({{$c->official->name}})</option>
-                                            @endforeach
-                                        </select>
+                                            <select name="class_id" data-placeholder="选择分类..." class="chosen-select" style="width: 100%" tabindex="2">
+                                                <option value="">全部分类</option>
+                                                @foreach($article_class_list as $c)
+                                                    <option value="{{$c->id}}" {{ $class_id==$c->id?'selected':'' }}>{{$c->classname}}({{$c->official->name}})</option>
+                                                @endforeach
+                                            </select>
 
+                                        </div>
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
                                     </div>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">

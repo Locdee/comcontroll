@@ -51,24 +51,26 @@
                             <div class="col-sm-6">
                                 <a class="btn btn-w-m btn-success" href="{{route('register_activity.create',['activity_id'=>$ac_id])}}">添加信息</a>
                             </div>
-                            <div class="col-sm-6 right">
-                                <div class="input-group">
-                                    <div class="col-sm-6 right">
-                                        <input type="text" placeholder="请输入关键词" class="form-control">
-                                    </div>
-                                    <div class="col-sm-6 right">
+                            <form>
+                                <div class="col-sm-6 right">
+                                    <div class="input-group">
+                                        <div class="col-sm-6 right">
+                                            <input type="text" placeholder="请输入关键词" class="form-control">
+                                        </div>
+                                        <div class="col-sm-6 right">
 
-                                        <select name="activity_id" data-placeholder="选择相关活动..." class="chosen-select" style="width: 100%" tabindex="2">
-                                            @foreach($activity_list as $a)
-                                                <option value="{{$a->id}}" {{ $ac_id==$a->id?'selected':'' }}>{{$a->activityname}}</option>
-                                            @endforeach
-                                        </select>
+                                            <select name="activity_id" data-placeholder="选择相关活动..." class="chosen-select" style="width: 100%" tabindex="2">
+                                                @foreach($activity_list as $a)
+                                                    <option value="{{$a->id}}" {{ $ac_id==$a->id?'selected':'' }}>{{$a->activityname}}</option>
+                                                @endforeach
+                                            </select>
 
+                                        </div>
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
                                     </div>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">

@@ -16,7 +16,7 @@ class PrizeController extends Controller
         foreach($official_list as $o){
             $o_ids[]=$o->id;
         }
-        $activity_list = Activity::whereIn('official_account_id',$o_ids)->get(['id','activityname']);
+        $activity_list = Activity::whereIn('official_account_id',$o_ids)->where('is_lottery',1)->get(['id','activityname']);
         $ac_ids = array(0);
         foreach($activity_list as $a){
             $ac_ids[]=$a->id;
@@ -40,7 +40,7 @@ class PrizeController extends Controller
         foreach($official_list as $o){
             $o_ids[]=$o->id;
         }
-        $activity_list = Activity::whereIn('official_account_id',$o_ids)->get(['id','activityname']);
+        $activity_list = Activity::whereIn('official_account_id',$o_ids)->where('is_lottery',1)->get(['id','activityname']);
 
         $ac_id = $request->get('activity_id',0);
         $status_arr = array(
@@ -67,7 +67,7 @@ class PrizeController extends Controller
         foreach($official_list as $o){
             $o_ids[]=$o->id;
         }
-        $activity_list = Activity::whereIn('official_account_id',$o_ids)->get(['id','activityname']);
+        $activity_list = Activity::whereIn('official_account_id',$o_ids)->where('is_lottery',1)->get(['id','activityname']);
 
 //        $ac_id = $request->get('activity_id',0);
         $status_arr = array(
