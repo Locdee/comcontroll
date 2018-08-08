@@ -9,9 +9,15 @@ use App\Model\Admin;
 class OfficialAccountController extends Controller
 {
     //列表
-    public function index(){
-        $list = OfficialAccount::get();
-        return view('admin.official_account.table',compact('list'));
+    public function index(Request $request){
+        $condition = [];
+        $keyword = $request->get('keyword','');
+        if($keyword){
+            $condition[]=['name','like','%'.$keyword.'%'];
+        }
+
+        $list = OfficialAccount::where($condition)->paginate();
+        return view('admin.official_account.table',compact('list','keyword'));
     }
 
     public function create(){

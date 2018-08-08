@@ -55,7 +55,7 @@
                                 <div class="col-sm-6 right">
                                     <div class="input-group">
                                         <div class="col-sm-6 right">
-                                            <input type="text" placeholder="请输入关键词" class="form-control">
+                                            <input name="keyword" value="{{$keyword}}" type="text" placeholder="请输入关键词" class="form-control">
                                         </div>
                                         <div class="col-sm-6 right">
 
@@ -111,6 +111,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{$article_class_list->appends(['keyword'=>$keyword,'official_account_id'=>$official_account_id])->links()}}
                         </div>
 
                     </div>

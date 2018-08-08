@@ -17,4 +17,8 @@ class LotteryLog extends Model
     public function prize(){
         return $this->hasOne(Prize::class,'id','prize_id');
     }
+
+    public function activity(){
+        return $this->hasOne(Activity::class,'id','activity_id');
+    }
 }

@@ -55,7 +55,7 @@
                                 <div class="col-sm-6 right">
                                     <div class="input-group">
                                         <div class="col-sm-6 right">
-                                            <input type="text" placeholder="请输入关键词" class="form-control">
+                                            <input name="keyword" value="{{$keyword}}" type="text" placeholder="请输入关键词" class="form-control">
                                         </div>
                                         <div class="col-sm-6 right">
 
@@ -103,9 +103,9 @@
                                         <td>{{ $i->activity->activityname}}</td>
                                         <td>
                                             @if($i->status==1)
-                                                <button type="button" class="btn btn-w-m btn-success btn-status">正常</button>
+                                                <button type="button" class="btn btn-w-m btn-success btn-status" data-url="{{route('prize.status',['id'=>$i->id])}}" data-status="2">正常</button>
                                             @else($i->status==2)
-                                                <button type="button" class="btn btn-w-m btn-success btn-status">已下架</button>
+                                                <button type="button" class="btn btn-w-m btn-default btn-status" data-url="{{route('prize.status',['id'=>$i->id])}}" data-status="1">已下架</button>
                                             @endif
                                         </td>
 
@@ -119,6 +119,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{$prize_list->appends(['keyword'=>$keyword,'activity_id'=>$ac_id])->links()}}
                         </div>
 
                     </div>
@@ -166,6 +167,33 @@
             $('.chosen-select').chosen({
                 no_results_text:'没有相关活动',//搜索无结果时显示的提示
                 search_contains:true,   //关键字模糊搜索，设置为false，则只从开头开始匹配
+            });
+            //修改状态
+            $('.btn-status').click(function(){
+                var url = $(this).data('url');
+                var s =$(this).data('status');
+                layer.confirm('确认修改该奖品状态吗？', {
+                    title:'提示框',
+                    btn: ['确定', '取消'], //可以无限个按钮
+                    yes:function(){
+                        $.ajax({
+                            type:'PUT',
+                            dataType:'json',
+                            url:url,
+                            data:{status:s},
+                            success:function(res){
+                                if(res.status=='1'){
+                                    layer.msg(res.message);
+                                    setTimeout('location.reload();',1000);
+                                }else{
+                                    layer.msg(res.message);
+                                }
+                            }
+
+                        })
+                    }
+
+                });
             });
 
             //删除弹窗事件

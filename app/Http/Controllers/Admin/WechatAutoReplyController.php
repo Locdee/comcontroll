@@ -11,13 +11,16 @@ class WechatAutoReplyController extends Controller
 {
     //
     public function index(Request $request){
-        $official_id = $request->get('official_id',0);
+        $official_account_id = $request->get('official_account_id',0);
 
         $condition = array();
-        if($official_id>0){
-            $condition[] = array('official_account_id',$official_id);
+        if($official_account_id>0){
+            $condition[] = array('official_account_id',$official_account_id);
         }
-
+        $keyword = $request->get('keyword','');
+        if($keyword){
+            $condition[]=['key','like','%'.$keyword.'%'];
+        }
         $status_arr=[1=>'已开启',2=>'已关闭'];
         $type_arr = [
             'text'=>'文本消息',
@@ -33,9 +36,9 @@ class WechatAutoReplyController extends Controller
             $o_ids[]=$o->id;
         }
 //        dd($o_ids);
-        $list = WechatAutoReply::whereIn('official_account_id',$o_ids)->where($condition)->get();
+        $list = WechatAutoReply::whereIn('official_account_id',$o_ids)->where($condition)->paginate(20);
 //        dd($list);
-        return view('admin.official_account.auto_reply.table',compact('official_list','status_arr','list','type_arr'));
+        return view('admin.official_account.auto_reply.table',compact('official_list','status_arr','list','type_arr','official_account_id','keyword'));
     }
 
     public function create(Request $request){

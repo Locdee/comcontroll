@@ -47,16 +47,26 @@
                     </div>
                     <div class="ibox-content">
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-2">
                                 <a class="btn btn-w-m btn-success" href="{{route('activity.create')}}">增加活动</a>
                             </div>
                             <form>
-                            <div class="col-sm-6 right">
+                            <div class="col-sm-10 right">
                                 <div class="input-group">
-                                    <div class="col-sm-6 right">
-                                        <input type="text" placeholder="请输入关键词" class="form-control">
+                                    <div class="col-sm-4 right">
+                                        <input name="keyword" value="{{$keyword}}" type="text" placeholder="请输入关键词" class="form-control">
                                     </div>
-                                    <div class="col-sm-6 right">
+                                    <div class="col-sm-4 right">
+
+                                        <select name="type" class="form-control ">
+                                            <option value="">所有类型</option>
+                                            @foreach($type_arr as $key=>$t)
+                                                <option value="{{$key}}" {{$type==$key?'selected':''}}>{{$t}}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
+                                    <div class="col-sm-4 right">
 
                                         <select name="official_account_id" class="form-control ">
                                             <option value="">相关公众号</option>
@@ -112,9 +122,9 @@
                                         <td>{{ $i->official->name}}</td>
                                         <td>
                                             @if($i->status==1)
-                                                <button type="button" class="btn btn-w-m btn-success btn-status">进行中</button>
+                                                <button type="button" class="btn btn-w-m btn-success btn-status"  data-url="{{route('activity.status',['id'=>$i->id])}}" data-status="2">进行中</button>
                                             @else($i->status==2)
-                                                <button type="button" class="btn btn-w-m btn-success btn-status">已关闭</button>
+                                                <button type="button" class="btn btn-w-m btn-default btn-status"  data-url="{{route('activity.status',['id'=>$i->id])}}" data-status="1">已关闭</button>
                                             @endif
                                         </td>
                                         <td>
@@ -165,6 +175,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{$activity_list->appends(['official_account_id'=>$official_account_id,'keyword'=>$keyword,'type'=>$type])->links()}}
                         </div>
 
                     </div>
@@ -207,15 +218,45 @@
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green',
             });
-            //删除弹窗事件
+
+
+
+            //修改状态
             $('.btn-status').click(function(){
                 var url = $(this).data('url');
+                var s =$(this).data('status');
                 layer.confirm('确认修改该活动状态吗？', {
                     title:'提示框',
                     btn: ['确定', '取消'], //可以无限个按钮
                     yes:function(){
                         $.ajax({
                             type:'PUT',
+                            dataType:'json',
+                            url:url,
+                            data:{status:s},
+                            success:function(res){
+                                if(res.status=='1'){
+                                    layer.msg(res.message);
+                                    setTimeout('location.reload();',1000);
+                                }else{
+                                    layer.msg(res.message);
+                                }
+                            }
+
+                        })
+                    }
+
+                });
+            });
+            //删除弹窗事件
+            $('.btn-delete').click(function(){
+                var url = $(this).data('url');
+                layer.confirm('确认删除吗？', {
+                    title:'提示框',
+                    btn: ['确定', '取消'], //可以无限个按钮
+                    yes:function(){
+                        $.ajax({
+                            type:'DELETE',
                             dataType:'json',
                             url:url,
                             success:function(res){

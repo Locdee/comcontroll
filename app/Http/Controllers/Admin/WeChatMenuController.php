@@ -45,18 +45,20 @@ class WeChatMenuController extends Controller
             $o_ids[]=$o->id;
         }
 
-        $account_id = $request->get('account_id',0);
+        $account_id = $request->get('official_account_id',0);
         $condition = [];
+        $condition[]=['pid',0];
         if($account_id>0){
             $condition[] = ['official_account_id',$account_id];
         }
+
         $status_arr = array(
             1=>'显示',
             2=>'隐藏'
         );
-        $menu_list = WechatMenu::whereIn('official_account_id',$o_ids)->where('pid',0)->orderBy('listindex','desc')->get();
+        $menu_list = WechatMenu::whereIn('official_account_id',$o_ids)->where($condition)->orderBy('listindex','desc')->get();
 //        dd($menu_list);
-        return view('admin.official_account.menu.table',compact('official_list','status_arr','menu_list'));
+        return view('admin.official_account.menu.table',compact('official_list','status_arr','menu_list','account_id'));
     }
 
     public function create(){
@@ -149,5 +151,15 @@ class WeChatMenuController extends Controller
         );
         $menu_list = WechatMenu::where($condition)->orderBy('listindex','desc')->get()->toArray();
         return ajaxResponse('',1,$menu_list);
+    }
+
+    public function status($id,Request $request){
+        $menu = WechatMenu::find($id);
+        $menu->status = $request->get('status');
+        if($menu->save()!==false){
+            return ajaxResponse("修改成功",1);
+        }else{
+            return ajaxResponse("修改失败");
+        }
     }
 }

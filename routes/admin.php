@@ -48,6 +48,7 @@ Route::resource('admin','AdminController');
 Route::resource('official_account','OfficialAccountController');
 //公众号菜单栏管理
 Route::resource('wechat_menu','WeChatMenuController');
+Route::put('wechat_menu/status/{id}','WeChatMenuController@status')->name('wechat_menu.status');
 Route::get('get_parent_menu','WeChatMenuController@ajax_menu')->name('get_parent_menu');
 //自动回复
 Route::resource('auto_reply','WechatAutoReplyController');
@@ -65,9 +66,11 @@ Route::resource('vote_team','VoteTeamController');
 
 //活动
 Route::resource('activity','ActivityController');
+Route::put('activity/status/{id}','ActivityController@status')->name('activity.status');
 
 //相关奖品
 Route::resource('prize','PrizeController');
+Route::put('prize/status/{id}','PrizeController@status')->name('prize.status');
 //中奖记录
 Route::resource('lottery_log','LotteryLogController');
 

@@ -31,6 +31,10 @@ class QuestionnaireController extends Controller
         if($type>0){
             $condition[]=['type',$type];
         }
+        $keyword = $request->get('keyword','');
+        if($keyword){
+            $condition[]=['question','like','%'.$keyword.'%'];
+        }
         $status_arr = array(
             1=>'正常',
             2=>'下架'
@@ -42,7 +46,7 @@ class QuestionnaireController extends Controller
         );
         $question_list = Questionnaire::where($condition)->paginate(20);
 
-        return view('admin.activity.questionnaire.table',compact('activity_list','question_list','activity','ac_id','type_arr','type','status_arr'));
+        return view('admin.activity.questionnaire.table',compact('activity_list','question_list','activity','ac_id','type_arr','type','status_arr','keyword'));
     }
 
     public function create(Request $request){

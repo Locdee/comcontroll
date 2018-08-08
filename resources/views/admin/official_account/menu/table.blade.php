@@ -17,6 +17,7 @@
     <link href="{{asset('admin/css/plugins/iCheck/custom.css')}}" rel="stylesheet">
     <link href="{{asset('admin/css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('admin/css/style.css?v=4.1.0')}}" rel="stylesheet">
+    <link href="{{asset('admin/css/plugins/chosen/chosen.css')}}" rel="stylesheet">
 
 </head>
 
@@ -26,7 +27,8 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-
+                        <p>修改菜单栏注意事项：</p>
+                        <p>1.一级菜单栏修改隐藏将导致二级菜单栏也隐藏；</p>
                         {{--<div class="ibox-tools">--}}
                             {{--<a class="collapse-link">--}}
                                 {{--<i class="fa fa-chevron-up"></i>--}}
@@ -47,15 +49,27 @@
                     </div>
                     <div class="ibox-content">
                         <div class="row">
-                            <div class="col-sm-9">
+                            <div class="col-sm-7">
                                 <a class="btn btn-w-m btn-success" href="{{route('wechat_menu.create')}}">增加菜单栏</a>
                             </div>
-                            <div class="col-sm-3 right">
-                                <div class="input-group">
-                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                            <form>
+                                <div class="col-sm-5 right">
+                                        <div class="col-sm-6 right">
+                                            <select name="official_account_id" data-placeholder="选择公众号..." class="chosen-select" style="width: 100%" tabindex="2">
+                                                <option value="">所有公众号</option>
+                                                @foreach($official_list as $o)
+                                                    <option value="{{$o->id}}" {{ $account_id==$o->id?'selected':'' }}>{{$o->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4 right">
+                                            <span class="input-group-btn">
+                                                <button name="search" value="1" type="submit" class="btn btn-sm btn-primary"> 搜索</button>
+                                                <button type="button" class="btn btn-sm btn-info" name="reflash_menu" value="1">更新菜单栏</button>
+                                            </span>
+                                        </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">
@@ -83,14 +97,20 @@
                                         <td>
                                             {{ $i->listindex }}
                                         </td>
-
+                                        <td>
+                                            @if($i->status==1)
+                                                <button type="button" class="btn btn-w-m btn-success btn-status" data-url="{{route('wechat_menu.status',['id'=>$i->id])}}" data-status="2">显示</button>
+                                            @else
+                                                <button type="button" class="btn btn-w-m btn-default btn-status" data-url="{{route('wechat_menu.status',['id'=>$i->id])}}" data-status="1">隐藏</button>
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{route('wechat_menu.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
                                             <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('wechat_menu.destroy',['id'=>$i->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span>
                                             </button>
 
-                                            <button data-id="{{$i->id}}" class="btn btn-info show_children" type="button"><i class="fa fa-plus-square-o"></i> 显示子菜单</button>
-                                            <button data-id="{{$i->id}}" class="btn btn-default hidden_children" type="button"><i class="fa fa-minus-square-o"></i> 隐藏子菜单</button>
+                                            <button data-id="{{$i->id}}" class="btn btn-info show_children" type="button"><i class="fa fa-plus-square-o"></i> 显示二级菜单</button>
+                                            <button data-id="{{$i->id}}" class="btn btn-default hidden_children" type="button"><i class="fa fa-minus-square-o"></i> 隐藏二级菜单</button>
                                         </td>
 
                                     </tr>
@@ -106,7 +126,13 @@
                                                 <td>
                                                     {{ $child->listindex }}
                                                 </td>
-
+                                                <td>
+                                                    @if($child->status==1)
+                                                        <button type="button" class="btn btn-w-m btn-success btn-status" data-url="{{route('wechat_menu.status',['id'=>$child->id])}}" data-status="2">显示</button>
+                                                    @else
+                                                        <button type="button" class="btn btn-w-m btn-default btn-status" data-url="{{route('wechat_menu.status',['id'=>$child->id])}}" data-status="1">隐藏</button>
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <a href="{{route('wechat_menu.edit',['id'=>$child->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
                                                     <button class="btn btn-warning btn-delete " type="button" data-url="{{ route('wechat_menu.destroy',['id'=>$child->id]) }}"><i class="fa fa-times"></i> <span class="bold">删除</span></button>
@@ -137,7 +163,8 @@
 
     <!-- 自定义js -->
     <script src="{{asset('admin/js/content.js?v=1.0.0')}}"></script>
-
+    <!-- Chosen -->
+    <script src="{{asset('admin/js/plugins/chosen/chosen.jquery.js')}}"></script>
 
     <!-- iCheck -->
     <script src="{{asset('admin/js/plugins/iCheck/icheck.min.js')}}"></script>
@@ -149,6 +176,12 @@
 
     <script>
         $(document).ready(function () {
+            //下拉选择
+            $('.chosen-select').chosen({
+                no_results_text:'没有相关活动',//搜索无结果时显示的提示
+                search_contains:true,   //关键字模糊搜索，设置为false，则只从开头开始匹配
+            });
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -159,6 +192,34 @@
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green',
             });
+            //修改状态
+            $('.btn-status').click(function(){
+                var url = $(this).data('url');
+                var s =$(this).data('status');
+                layer.confirm('确认修改该菜单栏状态吗？', {
+                    title:'提示框',
+                    btn: ['确定', '取消'], //可以无限个按钮
+                    yes:function(){
+                        $.ajax({
+                            type:'PUT',
+                            dataType:'json',
+                            url:url,
+                            data:{status:s},
+                            success:function(res){
+                                if(res.status=='1'){
+                                    layer.msg(res.message);
+                                    setTimeout('location.reload();',1000);
+                                }else{
+                                    layer.msg(res.message);
+                                }
+                            }
+
+                        })
+                    }
+
+                });
+            });
+
             //删除弹窗事件
             $('.btn-delete').click(function(){
                 var url = $(this).data('url');
@@ -193,13 +254,13 @@
                 $('.children-'+id).show();
                 $(this).hide();
                 $(this).siblings('.hidden_children').show();
-            });
+            }).trigger('click');
             $('.hidden_children').click(function(){
                 var id = $(this).data('id');
                 $('.children-'+id).hide();
                 $(this).hide();
                 $(this).siblings('.show_children').show();
-            }).trigger('click');
+            });
         });
     </script>
 

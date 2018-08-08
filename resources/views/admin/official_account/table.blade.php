@@ -50,12 +50,14 @@
                             <div class="col-sm-9">
                                 <a class="btn btn-w-m btn-success" href="{{route('official_account.create')}}">增加公众号账号</a>
                             </div>
-                            <div class="col-sm-3 right">
-                                <div class="input-group">
-                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                            <form>
+                                <div class="col-sm-3 right">
+                                    <div class="input-group">
+                                        <input  name="keyword" value="{{$keyword}}"  type="text" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
+                                            <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">
@@ -76,7 +78,7 @@
                                         </td>
                                         <td>{{ $i->name }}</td>
                                         <td>
-                                            {{ $i->model }}
+                                            {{ $i->appid }}
                                         </td>
                                         <td>
                                             <a href="{{route('official_account.edit',['id'=>$i->id])}}" class="btn btn-info " type="button"><i class="fa fa-paste"></i> 编辑</a>
@@ -88,6 +90,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{$list->appends(['keyword'=>$keyword])->links()}}
                         </div>
 
                     </div>

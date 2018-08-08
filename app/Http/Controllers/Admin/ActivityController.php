@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Model\ActivityRegister;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Activity;
@@ -21,9 +22,23 @@ class ActivityController extends Controller
         if($official_account_id){
             $condition[]=array('official_account_id',$official_account_id);
         }
+        $keyword = $request->get('keyword','');
+        if($keyword){
+            $condition[]=['activityname','like','%'.$keyword.'%'];
+        }
+        $type_arr = [
+            'is_register'=>'信息采集',
+            'is_vote'=>'投票',
+            'is_lottery'=>'抽奖',
+            'is_questionnaire'=>'答题'
+        ];
 
+        $type = $request->get('type','');
+        if($type){
+            $condition[]=[$type,1];
+        }
         $activity_list = Activity::whereIn('official_account_id',$o_ids)->where($condition)->paginate(20);
-        return view('admin.activity.table',compact('official_list','activity_list','official_account_id'));
+        return view('admin.activity.table',compact('official_list','activity_list','official_account_id','keyword','type_arr','type'));
     }
 
     //添加
@@ -232,6 +247,10 @@ class ActivityController extends Controller
     //删除
     public function destroy($id){
         $activity = Activity::find($id);
+        if(ActivityRegister::where('activity_id',$id)->count()>0){
+            return ajaxResponse('该活动已经有数据产生，无法进行删除');
+        }
+//        return ajaxResponse('删除成功',1);
 
         if($activity->delete()){
             return ajaxResponse('删除成功',1);
@@ -243,5 +262,15 @@ class ActivityController extends Controller
     //批量更新
     public function batch_status(){
 
+    }
+
+    public function status($id,Request $request){
+        $activity = Activity::find($id);
+        $activity->status = $request->get('status');
+        if($activity->save()!==false){
+            return ajaxResponse("修改成功",1);
+        }else{
+            return ajaxResponse("修改失败");
+        }
     }
 }

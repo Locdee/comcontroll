@@ -26,12 +26,18 @@ class PrizeController extends Controller
         if($ac_id){
             $condition[]=array('activity_id',$ac_id);
         }
-        $prize_list = Prize::whereIn('activity_id',$ac_ids)->where($condition)->get();
+
+        $keyword = $request->get('keyword','');
+        if($keyword){
+            $condition[]=['prizename','like','%'.$keyword.'%'];
+        }
+
+        $prize_list = Prize::whereIn('activity_id',$ac_ids)->where($condition)->paginate(20);
         $status_arr = array(
             1=>'正常',
             2=>'下架'
         );
-        return view('admin.activity.lottery.prize.table',compact('prize_list','status_arr','activity_list','ac_id'));
+        return view('admin.activity.lottery.prize.table',compact('prize_list','status_arr','activity_list','ac_id','keyword'));
     }
 
     public function create(Request $request){
@@ -99,4 +105,14 @@ class PrizeController extends Controller
         }
     }
 
+    public function status($id,Request $request){
+        $prize = Prize::find($id);
+        $prize->status=$request->get('status');;
+        if($prize->save()){
+            return ajaxResponse('保存成功',1);
+        }else{
+            return ajaxResponse('保存失败');
+        }
+
+    }
 }

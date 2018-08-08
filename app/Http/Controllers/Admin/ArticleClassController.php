@@ -21,10 +21,13 @@ class ArticleClassController extends Controller
         if($official_account_id>0){
             $condition[]=array('official_account_id',$official_account_id);
         }
-
-        $article_class_list = ArticleClass::whereIn('official_account_id',$o_ids)->where($condition)->get();
+        $keyword = $request->get('keyword','');
+        if($keyword){
+            $condition[]=['classname','like','%'.$keyword.'%'];
+        }
+        $article_class_list = ArticleClass::whereIn('official_account_id',$o_ids)->where($condition)->paginate(30);
         $status_arr=[1=>'已开启',2=>'已关闭'];
-        return view('admin.article_class.table',compact('official_list','article_class_list','status_arr','official_account_id'));
+        return view('admin.article_class.table',compact('official_list','article_class_list','status_arr','official_account_id','keyword'));
     }
 
     public function create(){

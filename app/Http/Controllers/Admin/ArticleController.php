@@ -26,10 +26,16 @@ class ArticleController extends Controller
         if($class_id>0){
             $condition[]=['class_id',$class_id];
         }
-        $article_list = Article::whereIn('class_id',$c_ids)->where($condition)->paginate(20);
+
+        $keyword = $request->get('keyword','');
+        if($keyword){
+            $condition[]=['title','like','%'.$keyword.'%'];
+        }
+
+        $article_list = Article::whereIn('class_id',$c_ids)->where($condition)->paginate(1);
         $status_arr=[1=>'显示',2=>'隐藏',3=>'头条'];
 
-        return view('admin.article.table',compact('status_arr','article_list','official_list','article_class_list','class_id'));
+        return view('admin.article.table',compact('status_arr','article_list','official_list','article_class_list','class_id','keyword'));
     }
 
     public function create(Request $request){

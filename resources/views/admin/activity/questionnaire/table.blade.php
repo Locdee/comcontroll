@@ -55,21 +55,24 @@
                                 <form>
                                 <div class="input-group">
                                     <div class="col-sm-4 right">
-                                        <input type="text" placeholder="请输入关键词" class="form-control">
+                                        <input name="keyword" value="{{$keyword}}" type="text" placeholder="请输入关键词" class="form-control">
                                     </div>
                                     <div class="col-sm-8 right">
-                                        <select name="type" data-placeholder="选择相关题型." class="form-control" style="width: 30%" tabindex="2">
-                                            <option value="0">全部</option>
-                                            @foreach($type_arr as $key=>$i)
-                                                <option value="{{$key}}" {{ $type==$key?'selected':'' }}>{{$i}}</option>
-                                            @endforeach
-                                        </select>
-                                        <select name="activity_id" data-placeholder="选择相关活动..." class="chosen-select" style="width: 40%" tabindex="2">
-                                            @foreach($activity_list as $a)
-                                                <option value="{{$a->id}}" {{ $ac_id==$a->id?'selected':'' }}>{{$a->activityname}}</option>
-                                            @endforeach
-                                        </select>
-
+                                        <div class="col-sm-6">
+                                            <select name="type" data-placeholder="选择相关题型." class="form-control"  tabindex="2">
+                                                <option value="0">全部</option>
+                                                @foreach($type_arr as $key=>$i)
+                                                    <option value="{{$key}}" {{ $type==$key?'selected':'' }}>{{$i}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <select name="activity_id" data-placeholder="选择相关活动..." style="width: 100%" class="chosen-select" tabindex="2">
+                                                @foreach($activity_list as $a)
+                                                    <option value="{{$a->id}}" {{ $ac_id==$a->id?'selected':'' }}>{{$a->activityname}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                     <span class="input-group-btn">
                                         <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
@@ -118,6 +121,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{$question_list->appends(['keyword'=>$keyword,'type'=>$type,'activity_id'=>$ac_id])->links()}}
                         </div>
 
                     </div>

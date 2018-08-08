@@ -27,14 +27,22 @@ class ActivityRegisterController extends Controller
            $ac_id= $activity_list[0]->id;
 //            abort('403','请选择相关活动');
         }
+
+        $condition = array();
+        $condition[]=array('activity_id',$ac_id);
+        $keyword = $request->get('keyword','');
+        if($keyword){
+            $condition[]=['content','like','%'.$keyword.'%'];
+        }
+
         $activity = Activity::find($ac_id);
         $activity->register_content = \GuzzleHttp\json_decode($activity->register_content);
 
-        $register_list = ActivityRegister::where('activity_id',$ac_id)->paginate(20);
+        $register_list = ActivityRegister::where($condition)->paginate(20);
         foreach($register_list as $key=>$i){
             $register_list[$key]->content=\GuzzleHttp\json_decode($i->content,true);
         }
-        return view('admin.activity.register.table',compact('activity_list','register_list','activity','ac_id'));
+        return view('admin.activity.register.table',compact('activity_list','register_list','activity','ac_id','keyword'));
     }
 
     public function create(Request $request){
@@ -97,5 +105,16 @@ class ActivityRegisterController extends Controller
         }else{
             return ajaxResponse('文件保存失败');
         }
+    }
+
+    public function status($id,Request $request){
+        $register = ActivityRegister::find($id);
+        $register->status=$request->get('status');;
+        if($register->save()){
+            return ajaxResponse('保存成功',1);
+        }else{
+            return ajaxResponse('保存失败');
+        }
+
     }
 }
