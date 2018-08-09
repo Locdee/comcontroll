@@ -59,8 +59,8 @@
                                         </div>
                                         <div class="col-sm-6 right">
 
-                                            <select name="activity_id" data-placeholder="选择相关活动..." class="chosen-select" style="width: 100%" tabindex="2">
-                                                <option value="">相关活动</option>
+                                            <select name="activity_id" data-placeholder="选择相关专题..." class="chosen-select" style="width: 100%" tabindex="2">
+                                                <option value="">相关专题</option>
                                                 @foreach($activity_list as $a)
                                                     <option value="{{$a->id}}" {{ $ac_id==$a->id?'selected':'' }}>{{$a->activityname}}</option>
                                                 @endforeach
@@ -82,7 +82,7 @@
                                         <th>奖品</th>
                                         <th>剩余数量</th>
                                         <th>权重</th>
-                                        <th>相关活动</th>
+                                        <th>相关专题</th>
                                         <th>状态</th>
                                         <th>操作</th>
                                     </tr>
@@ -165,7 +165,7 @@
             });
             //下拉选择
             $('.chosen-select').chosen({
-                no_results_text:'没有相关活动',//搜索无结果时显示的提示
+                no_results_text:'没有相关专题',//搜索无结果时显示的提示
                 search_contains:true,   //关键字模糊搜索，设置为false，则只从开头开始匹配
             });
             //修改状态

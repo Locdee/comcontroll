@@ -167,7 +167,7 @@
             $('.btn-status').click(function(){
                 var url = $(this).data('url');
                 var s =$(this).data('status');
-                layer.confirm('确认修改该回复状态吗？', {
+                layer.confirm('确认修改该咨询状态吗？', {
                     title:'提示框',
                     btn: ['确定', '取消'], //可以无限个按钮
                     yes:function(){

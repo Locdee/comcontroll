@@ -34,7 +34,7 @@
 <body class="gray-bg">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-sm-4">
-            <h2>增加自动回复</h2>
+            <h2>编辑咨询</h2>
             <ol class="breadcrumb">
                 <li>
                     <a href="{{route('article.index')}}">浏览</a>
@@ -63,7 +63,7 @@
                             <label class="col-sm-3 control-label">标题：</label>
                             <div class="col-sm-9">
                                 <input id="title" type="text" name="title"  class="form-control" placeholder="请输入标题" value="{{$article->title}}">
-                                <span class="help-block m-b-none">文章标题</span>
+                                <span class="help-block m-b-none">咨询标题</span>
                             </div>
                         </div>
                         <div class="form-group" >
@@ -75,21 +75,21 @@
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">作者：</label>
                             <div class="col-sm-9">
-                                <input id="author" type="text" name="author"  class="form-control" placeholder="文章作者" value="{{$article->author}}">
+                                <input id="author" type="text" name="author"  class="form-control" placeholder="咨询作者" value="{{$article->author}}">
                             </div>
                         </div>
 
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">链接：</label>
                             <div class="col-sm-9">
-                                <input id="url" type="text" name="url"  class="form-control" placeholder="外部文章地址" value="{{$article->url}}">
+                                <input id="url" type="text" name="url"  class="form-control" placeholder="外部咨询地址" value="{{$article->url}}">
                             </div>
                         </div>
                         <div class="text_content reply">
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">来源：</label>
                                 <div class="col-sm-9">
-                                    <input id="source" type="text" name="source"  class="form-control" placeholder="文章来源" value="{{$article->source}}">
+                                    <input id="source" type="text" name="source"  class="form-control" placeholder="咨询来源" value="{{$article->source}}">
                                 </div>
                             </div>
                         </div>

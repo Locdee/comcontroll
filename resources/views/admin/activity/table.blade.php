@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>后台反馈管理</title>
+    <title>专题管理</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -48,7 +48,7 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-sm-2">
-                                <a class="btn btn-w-m btn-success" href="{{route('activity.create')}}">增加活动</a>
+                                <a class="btn btn-w-m btn-success" href="{{route('activity.create')}}">增加专题</a>
                             </div>
                             <form>
                             <div class="col-sm-10 right">
@@ -134,31 +134,31 @@
                                                 <ul class="dropdown-menu">
                                                     @if($i->is_register==1)
                                                     <li>
-                                                        <a href="{{route('register_activity.index',['activity_id'=>$i->id])}}">信息采集列表</a>
+                                                        <a href="{{route('register_activity.index',['activity_id'=>$i->id])}}" data-id="{{route('register_activity.index')}}">信息采集(活动报名)表</a>
                                                     </li>
                                                         <li class="divider"></li>
                                                     @endif
 
                                                     @if($i->is_vote==1)
                                                         <li>
-                                                            <a href="buttons.html#">投票记录</a>
+                                                            <a href="{{route('vote_team.index',['activity_id'=>$i->id])}}" data-id="{{route('vote_team.index')}}">投票队伍</a>
                                                         </li>
                                                         <li class="divider"></li>
                                                     @endif
 
                                                     @if($i->is_lottery==1)
-                                                        <li><a href="{{route('prize.index',['activity_id'=>$i->id])}}">相关奖品</a>
+                                                        <li><a href="{{route('prize.index',['activity_id'=>$i->id])}}" data-id="{{route('prize.index')}}">奖品管理</a>
                                                         </li>
-                                                        <li><a href="{{route('lottery_log.index',['activity_id'=>$i->id])}}">抽奖记录</a>
+                                                        <li><a href="{{route('lottery_log.index',['activity_id'=>$i->id])}}" data-id="{{route('lottery_log.index')}}">抽奖记录</a>
                                                         </li>
                                                             <li class="divider"></li>
                                                     @endif
 
                                                     @if($i->is_questionnaire==1)
-                                                        <li><a href="{{route('questionnaire.index',['activity_id'=>$i->id])}}">相关题目</a>
+                                                        <li><a href="{{route('questionnaire.index',['activity_id'=>$i->id])}}" data-id="{{route('questionnaire.index')}}">相关题目</a>
                                                         </li>
-                                                        <li><a href="buttons.html#">答题记录</a>
-                                                        </li>
+                                                        {{--<li><a href="buttons.html#">答题记录</a>--}}
+                                                        {{--</li>--}}
                                                             <li class="divider"></li>
                                                     @endif
 
@@ -219,13 +219,80 @@
                 radioClass: 'iradio_square-green',
             });
 
+            //跳转到父级窗口
+            $('.dropdown-menu').on('click','a',function(event){
+                event.preventDefault();
+                var dataUrl = $(this).data('id');
+                var src = $(this).attr('href');
+                var menuName = '';
+                var dataIndex = 0;
+                var flag = true;
+//                alert(menuName);
+                $('.J_menuItem',parent.document).each(function(){
+//                    alert($(this).data('id'));
+                    if ($(this).attr('href') == dataUrl){
+                        dataIndex = $(this).data('index');
+                        menuName = $.trim($(this).text());
+//                        alert(menuName);
+                    }
+                });
+//                alert(menuName);
+
+                $('.J_menuTabs',parent.document).each(function(){
+
+                    if (dataUrl == undefined || $.trim(dataUrl).length == 0)return false;
+
+                    // 选项卡菜单已存在
+                    $('.J_menuTab',parent.document).each(function () {
+                        if ($(this).data('id') == dataUrl) {
+                            if (!$(this).hasClass('active')) {
+                                $(this).addClass('active').siblings('.J_menuTab').removeClass('active');
+//                                window.parent.func(scrollToTab(this));
+                                // 显示tab对应的内容区
+                                $('.J_mainContent .J_iframe',parent.document).each(function () {
+                                    if ($(this).data('id') == dataUrl) {
+//                                        var src = $(this).attr('src');
+                                        $(this).attr('src',src);
+                                        $(this).show().siblings('.J_iframe').hide();
+                                        return false;
+                                    }
+                                });
+                            }
+                            flag = false;
+                            return false;
+                        }
+                    });
+
+                    // 选项卡菜单不存在
+                    if (flag) {
+                        var str = '<a href="javascript:;" class="active J_menuTab" data-id="' + dataUrl + '">' + menuName + ' <i class="fa fa-times-circle"></i></a>';
+                        $('.J_menuTab',parent.document).removeClass('active');
+
+                        // 添加选项卡对应的iframe
+                        var str1 = '<iframe class="J_iframe" name="iframe' + dataIndex + '" width="100%" height="100%" src="' + src + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
+                        $('.J_mainContent',parent.document).find('iframe.J_iframe').hide().parents('.J_mainContent').append(str1);
+
+                        //显示loading提示
+//            var loading = layer.load();
+//
+//            $('.J_mainContent iframe:visible').load(function () {
+//                //iframe加载完成后隐藏loading提示
+//                layer.close(loading);
+//            });
+                        // 添加选项卡
+                        $('.J_menuTabs .page-tabs-content',parent.document).append(str);
+//                        window.parent.func(scrollToTab($('.J_menuTab.active',parent.document)));
+                    }
+                    return false;
+                });
+            });
 
 
             //修改状态
             $('.btn-status').click(function(){
                 var url = $(this).data('url');
                 var s =$(this).data('status');
-                layer.confirm('确认修改该活动状态吗？', {
+                layer.confirm('确认修改该专题状态吗？', {
                     title:'提示框',
                     btn: ['确定', '取消'], //可以无限个按钮
                     yes:function(){

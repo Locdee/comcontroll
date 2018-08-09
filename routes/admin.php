@@ -63,7 +63,7 @@ Route::resource('article','ArticleController');
 Route::resource('vote','VoteController');
 //投票队伍
 Route::resource('vote_team','VoteTeamController');
-
+Route::put('vote_team/status/{id}','VoteTeamController@status')->name('vote_team.status');
 //活动
 Route::resource('activity','ActivityController');
 Route::put('activity/status/{id}','ActivityController@status')->name('activity.status');
@@ -76,6 +76,7 @@ Route::resource('lottery_log','LotteryLogController');
 
 //相关题目
 Route::resource('questionnaire','QuestionnaireController');
+Route::put('questionnaire/status/{id}','QuestionnaireController@status')->name('questionnaire.status');
 //答题记录
 Route::resource('answer_log','AnswerLogController');
 

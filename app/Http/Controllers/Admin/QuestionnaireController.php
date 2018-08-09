@@ -171,4 +171,14 @@ class QuestionnaireController extends Controller
             return ajaxResponse('删除失败');
         }
     }
+
+    public function status($id,Request $request){
+        $questionnair = Questionnaire::find($id);
+        $questionnair->status=$request->get('status');;
+        if($questionnair->save()){
+            return ajaxResponse('保存成功',1);
+        }else{
+            return ajaxResponse('保存失败');
+        }
+    }
 }

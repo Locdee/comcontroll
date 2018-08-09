@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Model\Activity;
 use App\Model\ActivityRegister;
+use App\Model\VoteLog;
 class VoteTeamController extends Controller
 {
     //
@@ -109,4 +110,30 @@ class VoteTeamController extends Controller
             return ajaxResponse('文件保存失败');
         }
     }
+
+    //删除
+    public function destroy($id){
+        $register = ActivityRegister::find($id);
+
+//        return ajaxResponse('删除成功',1);
+
+        if($register->delete()){
+            VoteLog::where('team_id',$id)->delete();
+            return ajaxResponse('删除成功',1);
+        }else{
+            return ajaxResponse('删除失败');
+        }
+    }
+
+
+    public function status($id,Request $request){
+        $register = ActivityRegister::find($id);
+        $register->status=$request->get('status');;
+        if($register->save()){
+            return ajaxResponse('保存成功',1);
+        }else{
+            return ajaxResponse('保存失败');
+        }
+    }
+
 }

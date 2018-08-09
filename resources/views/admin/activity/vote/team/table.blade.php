@@ -59,7 +59,7 @@
                                     </div>
                                     <div class="col-sm-6 right">
 
-                                        <select name="activity_id" data-placeholder="选择相关活动..." class="chosen-select" style="width: 100%" tabindex="2">
+                                        <select name="activity_id" data-placeholder="选择相关专题..." class="chosen-select" style="width: 100%" tabindex="2">
                                             @foreach($activity_list as $a)
                                                 <option value="{{$a->id}}" {{ $ac_id==$a->id?'selected':'' }}>{{$a->activityname}}</option>
                                             @endforeach
@@ -130,9 +130,9 @@
                                         <td>{{$i->ticket}}</td>
                                         <td>
                                             @if($i->status==1)
-                                                <button type="button" class="btn btn-w-m btn-success btn-status">显示</button>
+                                                <button type="button" class="btn btn-w-m btn-success btn-status" data-url="{{route('vote_team.status',['id'=>$i->id])}}" data-status="2">显示</button>
                                             @else($i->status==2)
-                                                <button type="button" class="btn btn-w-m btn-success btn-status">隐藏</button>
+                                                <button type="button" class="btn btn-w-m btn-default btn-status" data-url="{{route('vote_team.status',['id'=>$i->id])}}" data-status="1">隐藏</button>
                                             @endif
                                         </td>
 
@@ -191,14 +191,40 @@
             });
             //下拉选择
             $('.chosen-select').chosen({
-                no_results_text:'没有相关活动',//搜索无结果时显示的提示
+                no_results_text:'没有相关专题',//搜索无结果时显示的提示
                 search_contains:true,   //关键字模糊搜索，设置为false，则只从开头开始匹配
             });
+            //修改状态
+            $('.btn-status').click(function(){
+                var url = $(this).data('url');
+                var s =$(this).data('status');
+                layer.confirm('确认修改该队伍状态吗？', {
+                    title:'提示框',
+                    btn: ['确定', '取消'], //可以无限个按钮
+                    yes:function(){
+                        $.ajax({
+                            type:'PUT',
+                            dataType:'json',
+                            url:url,
+                            data:{status:s},
+                            success:function(res){
+                                if(res.status=='1'){
+                                    layer.msg(res.message);
+                                    setTimeout('location.reload();',1000);
+                                }else{
+                                    layer.msg(res.message);
+                                }
+                            }
 
+                        })
+                    }
+
+                });
+            });
             //删除弹窗事件
             $('.btn-delete').click(function(){
                 var url = $(this).data('url');
-                layer.confirm('确认删除该奖品吗？', {
+                layer.confirm('删除该队伍将会将投票记录一起删除，确认删除吗？', {
                     title:'提示框',
                     btn: ['确定', '取消'], //可以无限个按钮
                     yes:function(){

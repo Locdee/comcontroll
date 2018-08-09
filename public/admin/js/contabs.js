@@ -122,6 +122,8 @@ $(function () {
                     // 显示tab对应的内容区
                     $('.J_mainContent .J_iframe').each(function () {
                         if ($(this).data('id') == dataUrl) {
+                            var src = $(this).attr('src');
+                            $(this).attr('src',src);
                             $(this).show().siblings('.J_iframe').hide();
                             return false;
                         }
@@ -263,7 +265,10 @@ $(function () {
             // 显示tab对应的内容区
             $('.J_mainContent .J_iframe').each(function () {
                 if ($(this).data('id') == currentId) {
+                    var src = $(this).attr('src');
+                    $(this).attr('src',src);
                     $(this).show().siblings('.J_iframe').hide();
+
                     return false;
                 }
             });

@@ -53,7 +53,7 @@
 
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">所属活动：</label>
+                            <label class="col-sm-3 control-label">所属专题：</label>
                             <div class="col-sm-9">
                                 <select class="form-control" name="activity_id">
                                     @foreach($activity_list as $o)

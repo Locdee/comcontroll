@@ -26,13 +26,13 @@
 <body class="gray-bg">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-sm-4">
-            <h2>增加活动</h2>
+            <h2>增加专题</h2>
             <ol class="breadcrumb">
                 <li>
                     <a href="{{route('activity.index')}}">浏览</a>
                 </li>
                 <li>
-                    <strong>编辑活动</strong>
+                    <strong>编辑专题</strong>
                 </li>
             </ol>
         </div>
@@ -52,10 +52,10 @@
                         {{ method_field('put') }}
                     <div class="col-md-12">
                         <div class="form-group" >
-                            <label class="col-sm-3 control-label">活动名称：</label>
+                            <label class="col-sm-3 control-label">专题名称：</label>
                             <div class="col-sm-9">
                                 <input id="name" type="text" name="activityname"  class="form-control" placeholder="请输入文本" value="{{$activity->activityname}}">
-                                <span class="help-block m-b-none">活动名称</span>
+                                <span class="help-block m-b-none">专题名称</span>
                             </div>
                         </div>
 
@@ -69,7 +69,7 @@
                                 </select>
                             </div>
                         </div>
-                        <label class="col-sm-3 control-label">活动类型：</label>
+                        <label class="col-sm-3 control-label">专题类型：</label>
                         <div class="col-sm-9">
                             <label class="checkbox-inline">
                                 <input name="is_register" type="checkbox" value="1" id="is_register" {{$activity->is_register==1?'checked':''}}>信息采集(报名，征稿等)</label>
@@ -209,7 +209,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">活动状态：</label>
+                            <label class="col-sm-3 control-label">专题状态：</label>
                             <div class="col-sm-9">
                                 <select name="status" class="form-control help-block m-b-none">
                                     @foreach($status_arr as $k=>$status)
@@ -315,7 +315,7 @@
                     model: "required"
                 },
                 messages: {
-                    name: icon + "请输入活动名称",
+                    name: icon + "请输入专题名称",
                     model: icon + "请输入模型名称"
                 },
                 submitHandler:function(form){

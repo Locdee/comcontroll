@@ -32,7 +32,7 @@ class ArticleController extends Controller
             $condition[]=['title','like','%'.$keyword.'%'];
         }
 
-        $article_list = Article::whereIn('class_id',$c_ids)->where($condition)->paginate(1);
+        $article_list = Article::whereIn('class_id',$c_ids)->where($condition)->paginate(20);
         $status_arr=[1=>'显示',2=>'隐藏',3=>'头条'];
 
         return view('admin.article.table',compact('status_arr','article_list','official_list','article_class_list','class_id','keyword'));

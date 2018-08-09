@@ -17,8 +17,8 @@ class HomeController extends Controller
         return view('admin.index',compact('menu_tree'));
     }
     public function main(){
-//        dd(Auth::guard('admin')->user() );
-        return view('admin.main');
+        $admin = Auth::guard('admin')->user();
+        return view('admin.main',compact('admin'));
     }
 
 }

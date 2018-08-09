@@ -21,6 +21,7 @@
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-sm-12">
             <h2>欢迎使用 杭州网微信公众号后台管理系统！</h2>
+            <p>登录次数：{{$admin->login_count}} ,上次登录IP：{{$admin->last_login_ip}} , 上次登录时间：{{$admin->last_login_time}}</p>
         </div>
     </div>
     <div class="wrapper wrapper-content">
