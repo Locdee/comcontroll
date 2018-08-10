@@ -135,7 +135,7 @@
                 <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{{ route('admin.main') }}" frameborder="0" data-id="index_v1.html" seamless></iframe>
             </div>
             <div class="footer text-center">
-                <div class="">&copy; 2017-2018 <a href="javascript:void(0);" target="_blank">杭州网</a>
+                <div class="">&copy; {{date('Y')-1}}-{{date('Y')}} <a href="javascript:void(0);" target="_blank">杭州网</a>
                 </div>
             </div>
         </div>

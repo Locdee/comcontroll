@@ -247,7 +247,7 @@
                         if ($(this).data('id') == dataUrl) {
                             if (!$(this).hasClass('active')) {
                                 $(this).addClass('active').siblings('.J_menuTab').removeClass('active');
-//                                window.parent.func(scrollToTab(this));
+                                window.parent.window.scrollToTab($('.J_menuTab.active',parent.document));
                                 // 显示tab对应的内容区
                                 $('.J_mainContent .J_iframe',parent.document).each(function () {
                                     if ($(this).data('id') == dataUrl) {
@@ -281,7 +281,7 @@
 //            });
                         // 添加选项卡
                         $('.J_menuTabs .page-tabs-content',parent.document).append(str);
-//                        window.parent.func(scrollToTab($('.J_menuTab.active',parent.document)));
+                        window.parent.window.scrollToTab($('.J_menuTab.active',parent.document));
                     }
                     return false;
                 });

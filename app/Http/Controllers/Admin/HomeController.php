@@ -14,6 +14,8 @@ class HomeController extends Controller
         $menu_tree = AdminMenuController::tree();
 //        dd($menu_tree);
 //        dd(Auth::guard('admin')->user() );
+//        return substr(md5('123456'),0,24);
+
         return view('admin.index',compact('menu_tree'));
     }
     public function main(){
