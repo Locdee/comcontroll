@@ -47,9 +47,9 @@ Route::resource('admin','AdminController');
 //公众号管理
 Route::resource('official_account','OfficialAccountController');
 //公众号菜单栏管理
-Route::resource('wechat_menu','WeChatMenuController');
-Route::put('wechat_menu/status/{id}','WeChatMenuController@status')->name('wechat_menu.status');
-Route::get('get_parent_menu','WeChatMenuController@ajax_menu')->name('get_parent_menu');
+Route::resource('wechat_menu','WechatMenuController');
+Route::put('wechat_menu/status/{id}','WechatMenuController@status')->name('wechat_menu.status');
+Route::get('get_parent_menu','WechatMenuController@ajax_menu')->name('get_parent_menu');
 //自动回复
 Route::resource('auto_reply','WechatAutoReplyController');
 Route::put('auto_reply/status/{id}','WechatAutoReplyController@status')->name('auto_reply.status');

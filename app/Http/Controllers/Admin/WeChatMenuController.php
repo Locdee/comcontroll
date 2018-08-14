@@ -8,7 +8,7 @@ use App\Model\WechatMenu;
 use App\Model\OfficialAccount;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class WeChatMenuController extends Controller
+class WechatMenuController extends Controller
 {
     //
     private $menu_type_arr = array(

@@ -56,7 +56,7 @@
                                 <div class="col-sm-5 right">
                                         <div class="col-sm-6 right">
                                             <select name="official_account_id" data-placeholder="选择公众号..." class="chosen-select" style="width: 100%" tabindex="2">
-                                                <option value="">所有公众号</option>
+                                                <option value="0">所有公众号</option>
                                                 @foreach($official_list as $o)
                                                     <option value="{{$o->id}}" {{ $account_id==$o->id?'selected':'' }}>{{$o->name}}</option>
                                                 @endforeach
@@ -65,7 +65,7 @@
                                         <div class="col-sm-4 right">
                                             <span class="input-group-btn">
                                                 <button name="search" value="1" type="submit" class="btn btn-sm btn-primary"> 搜索</button>
-                                                <button type="button" class="btn btn-sm btn-info" name="reflash_menu" value="1">更新菜单栏</button>
+                                                <button type="button" class="btn btn-sm btn-info" name="reflash_menu" id="add_memu" value="1">更新菜单栏</button>
                                             </span>
                                         </div>
                                 </div>
@@ -260,6 +260,26 @@
                 $('.children-'+id).hide();
                 $(this).hide();
                 $(this).siblings('.show_children').show();
+            });
+
+            //更新菜单栏
+            $('#add_memu').click(function(){
+                var id = $('select[name=official_account_id]').val();
+//                alert(id);
+                if(id=='0'){
+                    layer.msg('请选择要更新菜单栏的公众号');
+                    return;
+                }
+
+                $.ajax({
+                    type:'GET',
+                    url:'{{route('wechat.add_menu')}}',
+                    data:{official_id:id},
+                    dataType:'json',
+                    success:function(res){
+                        layer.msg(res.message);
+                    }
+                })
             });
         });
     </script>
