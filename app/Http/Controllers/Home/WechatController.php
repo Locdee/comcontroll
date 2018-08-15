@@ -165,7 +165,7 @@ class WechatController extends Controller
         $event_key = $message->EventKey;
         switch($message->Event){
             case 'CLICK':
-                $reply = WechatAutoReply::where([['official_account_id',$official_id],['click_key',$event_key]])->first();
+                $reply = WechatAutoReply::where([['official_account_id',$official_id],['status',1],['click_key',$event_key]])->first();
                 return self::mes_handler($reply);
                 break;
             default:
@@ -178,39 +178,27 @@ class WechatController extends Controller
     public static function text_headler($message){
         $content = $message->Content;
         $official_id = app('request')->get('official_id',0);
-
-        $reply = WechatAutoReply::where([['official_account_id',$official_id],['key',$content]])->first();
+        $account = OfficialAccount::find($official_id);
+        $reply = WechatAutoReply::where([['official_account_id',$official_id],['status',1],['key',$content]])->first();
 //        dd($reply);
 //        return $reply->content;
 
 //        return new Text(['content'=>$reply->content]);
 
         if($reply){
-            switch($reply->msg_type){
-                case 'text':
-                    return new Text(['content'=>$reply->content]);
-                    break;
-                case 'news':
-                    return new News([
-                        'title'=>$reply->title,
-                        'description'=>$reply->description,
-                        'url'=>$reply->url,
-                        'image'=>'http://comcontrol.hangzhou.com.cn'.$reply->pic_url,
-                    ]);
-                    break;
-                default:
-                    return new Text(['content'=>'未知消息类型']);
-                    break;
-            }
+            return self::mes_handler($reply);
         }else{
-            return new Text(['content'=>'欢迎关注'.$official_id]);
+            return new Text(['content'=>'欢迎关注'.$account->name]);
         }
     }
     //图片消息(待开发)
     public function image_handler($imgeurl){
 
     }
-    public static function mes_handler(WechatAutoReply $reply){
+    public static function mes_handler(WechatAutoReply $reply=null){
+        if($reply==null){
+            return new Text(['content'=>'未知事件']);
+        }
         switch($reply->msg_type){
             case 'text':
                 return new Text(['content'=>$reply->content]);
@@ -220,7 +208,7 @@ class WechatController extends Controller
                     'title'=>$reply->title,
                     'description'=>$reply->description,
                     'url'=>$reply->url,
-                    'image'=>'http://comcontroll.hangzhou.com.cn'.$reply->pic_url,
+                    'image'=>'http://comcontrol.hangzhou.com.cn'.$reply->pic_url,
                 ]);
                 break;
             default:

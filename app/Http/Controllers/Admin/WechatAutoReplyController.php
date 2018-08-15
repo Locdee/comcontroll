@@ -86,6 +86,11 @@ class WechatAutoReplyController extends Controller
 
     public function store(Request $request){
         $data = $request->all();
+        if($data['click_key'] && $data['status']==1){
+            if(WechatAutoReply::where([['official_account_id',$data['official_account_id']],['status',1],['click_key',$data['click_key']]])->count()>0){
+                return ajaxResponse('该公众号下点击key值有重复');
+            }
+        }
         if(WechatAutoReply::create($data)){
             return ajaxResponse('添加自动回复成功',1);
         }else{
@@ -139,6 +144,11 @@ class WechatAutoReplyController extends Controller
     public function update(Request $request,$id){
         $data = $request->all();
         $auto_reply = WechatAutoReply::find($id);
+        if($data['click_key'] && $data['status']==1){
+            if(WechatAutoReply::where([['official_account_id',$data['official_account_id']],['status',1],['click_key',$data['click_key']],['id','<>',$id]])->count()>0){
+                return ajaxResponse('该公众号下点击key值有重复');
+            }
+        }
         if($auto_reply->update($data)!==false){
             return ajaxResponse("修改成功",1);
         }else{
